@@ -12,14 +12,36 @@ var moveIndex;
 var marker;
 var hexagonGroup;
 
+// bon c'est un peu nul, mais bon...
+var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
+// var deux = [[-2,-2],[-2,-1],[-2,-2],[1,-2],[1,1],[1,2],[2,-2],[2,1]]
+// var trois = [[-1,-1],[-1,0],[-1,-1],[0,-1],[0,0],[0,1],[1,-1],[1,0]]
+
+// deux= [];
+// for(var i = -2; i < 3; i++) {
+//     for(var j = -2; j < 3; j++) {
+//         deux.push([i,j])
+//     }
+// };
+// for(var i = 1; i < 4; i++) {
+//     for(var j = 1; j < 4; j++) {
+//         var ii=i+j;
+//         deux[ii]=undefined
+//     }
+// };
+
+//maths
+function convert (x,y) {
+    return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
+};
+
+
 marker=function () {
-    this.sprite
-    this.landed=true
+    this.sprite;
+    this.pos;
+    this.landed=true;
 };
 marker.prototype={
-    land:function () {
-        this.landed=true
-    },
     preload:function (game) {
         // ici feinter avec les couleurs
         game.load.image("marker", "images/vaisseau.png");
@@ -31,22 +53,40 @@ marker.prototype={
         this.sprite.scale.setTo(0.5);
 	this.sprite.visible=false;
     },
+
+    
     move:function () {
+//        if (this.pos===undefined) {
+            this.pos=moveIndex
+  //      };
         if (this.landed) {
             hexagonGroup.setAll('alpha', 1);
             this.landed=false
         }else{
             hexagonGroup.setAll('alpha', 0.1);
-            var index=moveIndex.x%2+Math.floor(moveIndex.x/2)*gridSizeY+2*moveIndex.y;
-            console.log(moveIndex);
-            console.log(index);
-            
-            var r=hexagonGroup.getAt(index);
-            r.alpha=1;
+            var indices=[];
+            for(var i = 0; i < un.length; i++) {
+                if (un[i]!==undefined) {
+                    var x= un[i][0]+this.pos.x;
+                    var y= un[i][1]+this.pos.y;
+                    // nawak...
+                    if (this.pos.x%2==1) {
+                        if(un[i][0]==(-1)){y+=1 }
+                    }else{
+                        if(un[i][0]==(1)){y-=1 }
+                    };
+                    if (x>=0 && y>=0 && x<gridSizeX && y<gridSizeY) {
+                        indices.push ( convert(x,y) )
+                    }
+                }
+            };
+            for(var i = 0; i < indices.length; i++) {
+                hexagonGroup.getAt(indices[i]).alpha=1;
+            }
             this.landed=true
         };
-    }
-}
+    },
+};
 
 board= function (game) {
     this.joueur1;
@@ -58,8 +98,8 @@ board.prototype={
         game.debug.text("appuyez sur x pour switcher", 100,100)
     },
     preload:function () {
-	game.load.image("hexagonM", "images/hexMer.png");
-        game.load.image("hexagonT", "images/hexTerre.png");
+	game.load.image("hexagonM", "images/hexagon.png");
+        game.load.image("hexagonT", "images/hexagon.png");
         this.joueur1=new marker; this.joueur1.preload(game)
     },
     create: function() {
@@ -78,7 +118,7 @@ board.prototype={
                         hexagon= game.add.sprite(hexagonX,hexagonY,"hexagonM");
                     };
                     // scalage bourrin
-                    hexagon.scale.setTo(0.138,0.185);
+                    //hexagon.scale.setTo(0.138,0.185);
 		    hexagonGroup.add(hexagon);
 		}
 	    }
@@ -138,7 +178,8 @@ board.prototype={
                 }
             }
             moveIndex={x:candidateX, y:candidateY};
-            this.placeMarker(candidateX,candidateY);
+            if(hexagonGroup.getAt(convert(candidateX,candidateY)).alpha==1)
+                {this.placeMarker(candidateX,candidateY)};
         }else{
             this.colorizeHex()
         }
