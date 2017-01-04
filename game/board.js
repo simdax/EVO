@@ -1,12 +1,14 @@
 var hexagonWidth = 80;
 var hexagonHeight = 70;
-var gridSizeX = 10;
-var gridSizeY = 16;
-var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
-var moveIndex;
 var sectorWidth = hexagonWidth/4*3;
 var sectorHeight = hexagonHeight;
 var gradient = (hexagonWidth/4)/(hexagonHeight/2);
+
+var gridSizeX = 10;
+var gridSizeY = 10;
+var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
+
+var moveIndex;
 var marker;
 var hexagonGroup;
 
@@ -35,9 +37,12 @@ marker.prototype={
             this.landed=false
         }else{
             hexagonGroup.setAll('alpha', 0.1);
-            var r=hexagonGroup.getRandom();
-            r.tint=Math.random() * 0xffffff;
-            r.alpha = 1;
+            var index=moveIndex.x%2+Math.floor(moveIndex.x/2)*gridSizeY+2*moveIndex.y;
+            console.log(moveIndex);
+            console.log(index);
+            
+            var r=hexagonGroup.getAt(index);
+            r.alpha=1;
             this.landed=true
         };
     }
@@ -57,7 +62,6 @@ board.prototype={
         game.load.image("hexagonT", "images/hexTerre.png");
         this.joueur1=new marker; this.joueur1.preload(game)
     },
-
     create: function() {
 	hexagonGroup = game.add.group();
 	game.stage.backgroundColor = "#000000"
@@ -91,22 +95,19 @@ board.prototype={
 	hexagonGroup.add(this.joueur1.sprite);
 
         // events
-        moveIndex = game.input.addMoveCallback(this.checkHex, this);
+        game.input.addMoveCallback(this.checkHex, this);
         game.input.onDown.add(this.joueur1.move, this)
         // changing state
         var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
         key.onDown.add(this.goTo, this)
 
     },
-    // update:function () {
-    //     console.log(moveIndex);
-    // },
-    // pr
+    
+    // private
     goTo:function () {
         game.state.start("interieur")
     },
     checkHex: function(){
-        console.log(this.joueur1.landed);
         if (this.joueur1.landed) {            
             var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
             var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
@@ -136,9 +137,9 @@ board.prototype={
                     }
                 }
             }
+            moveIndex={x:candidateX, y:candidateY};
             this.placeMarker(candidateX,candidateY);
         }else{
-            console.log("you");
             this.colorizeHex()
         }
     },
