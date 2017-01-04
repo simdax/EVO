@@ -1,28 +1,66 @@
-window.onload = function() {
-    
-    var game = new Phaser.Game(800, 600, Phaser.CANVAS, "", {preload: onPreload, create: onCreate});                
+var hexagonWidth = 80;
+var hexagonHeight = 70;
+var gridSizeX = 10;
+var gridSizeY = 16;
+var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
+var moveIndex;
+var sectorWidth = hexagonWidth/4*3;
+var sectorHeight = hexagonHeight;
+var gradient = (hexagonWidth/4)/(hexagonHeight/2);
+var marker;
+var hexagonGroup;
 
-    var hexagonWidth = 80;
-    var hexagonHeight = 70;
-    var gridSizeX = 30;
-    var gridSizeY = 36;
-    var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
-    var moveIndex;
-    var sectorWidth = hexagonWidth/4*3;
-    var sectorHeight = hexagonHeight;
-    var gradient = (hexagonWidth/4)/(hexagonHeight/2);
-    var marker;
-    var hexagonGroup;
-    
-    function onPreload() {
+marker=function () {
+    this.sprite
+    this.landed=true
+};
+marker.prototype={
+    land:function () {
+        this.landed=true
+    },
+    preload:function (game) {
+        // ici feinter avec les couleurs
+        game.load.image("marker", "images/vaisseau.png");
+        //game.input.onTap.addOnce(this.land,true)
+    },
+    create:function (game) {
+        this.sprite = game.add.sprite(0,0,"marker");
+	this.sprite.anchor.setTo(0.5);
+        this.sprite.scale.setTo(0.5);
+	this.sprite.visible=false;
+    },
+    move:function () {
+        if (this.landed) {
+            hexagonGroup.setAll('alpha', 1);
+            this.landed=false
+        }else{
+            hexagonGroup.setAll('alpha', 0.1);
+            var r=hexagonGroup.getRandom();
+            r.tint=Math.random() * 0xffffff;
+            r.alpha = 1;
+            this.landed=true
+        };
+    }
+}
+
+board= function (game) {
+    this.joueur1;
+    this.joueur2;
+};
+
+board.prototype={  
+    render:function () {
+        game.debug.text("appuyez sur x pour switcher", 100,100)
+    },
+    preload:function () {
 	game.load.image("hexagonM", "images/hexMer.png");
         game.load.image("hexagonT", "images/hexTerre.png");
-        game.load.image("marker", "images/vaisseau.png");
-    }
+        this.joueur1=new marker; this.joueur1.preload(game)
+    },
 
-    function onCreate() {
+    create: function() {
 	hexagonGroup = game.add.group();
-	game.stage.backgroundColor = "#ffffff"
+	game.stage.backgroundColor = "#000000"
 	for(var i = 0; i < gridSizeX/2; i ++){
 	    for(var j = 0; j < gridSizeY; j ++){
 		if(gridSizeX%2==0 || i+1<gridSizeX/2 || j%2==0){
@@ -36,7 +74,7 @@ window.onload = function() {
                         hexagon= game.add.sprite(hexagonX,hexagonY,"hexagonM");
                     };
                     // scalage bourrin
-                    hexagon.scale.setTo(0.14,0.17);
+                    hexagon.scale.setTo(0.138,0.185);
 		    hexagonGroup.add(hexagon);
 		}
 	    }
@@ -49,59 +87,77 @@ window.onload = function() {
         if(gridSizeX%2==0){
             hexagonGroup.x-=hexagonWidth/8;
         }
-	marker = game.add.sprite(0,0,"marker");
-	marker.anchor.setTo(0.5);
-        marker.scale.setTo(0.5);
-	marker.visible=false;
-	hexagonGroup.add(marker);
-        moveIndex = game.input.addMoveCallback(checkHex, this);   		
-    }
-    
-    function checkHex(){
-        var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
-        var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
-        var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
-        var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight; 
-        if(candidateX%2==0){
-            if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
-                candidateX--;
-                candidateY--;
-            }
-            if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
-                candidateX--;
-            }
-        }    
-        else{
-            if(deltaY>=hexagonHeight/2){
-                if(deltaX<(hexagonWidth/2-deltaY*gradient)){
+        this.joueur1.create(game);
+	hexagonGroup.add(this.joueur1.sprite);
+
+        // events
+        moveIndex = game.input.addMoveCallback(this.checkHex, this);
+        game.input.onDown.add(this.joueur1.move, this)
+        // changing state
+        var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
+        key.onDown.add(this.goTo, this)
+
+    },
+    // update:function () {
+    //     console.log(moveIndex);
+    // },
+    // pr
+    goTo:function () {
+        game.state.start("interieur")
+    },
+    checkHex: function(){
+        console.log(this.joueur1.landed);
+        if (this.joueur1.landed) {            
+            var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
+            var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
+            var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
+            var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight; 
+            if(candidateX%2==0){
+                if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
                     candidateX--;
-                }
-            }
-            else{
-                if(deltaX<deltaY*gradient){
-                    candidateX--;
-                }
-                else{
                     candidateY--;
                 }
+                if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
+                    candidateX--;
+                }
+            }    
+            else{
+                if(deltaY>=hexagonHeight/2){
+                    if(deltaX<(hexagonWidth/2-deltaY*gradient)){
+                        candidateX--;
+                    }
+                }
+                else{
+                    if(deltaX<deltaY*gradient){
+                        candidateX--;
+                    }
+                    else{
+                        candidateY--;
+                    }
+                }
             }
+            this.placeMarker(candidateX,candidateY);
+        }else{
+            console.log("you");
+            this.colorizeHex()
         }
-        placeMarker(candidateX,candidateY);
-    }
-    
-    function placeMarker(posX,posY){
+    },
+    colorizeHex:function (posX,posY) {
+        hexagonGroup.getRandom.tint=Math.random() * 0xffffff;
+    },
+    placeMarker: function(posX,posY){
 	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
-	    marker.visible=false;
+	    this.joueur1.sprite.visible=false;
 	}
 	else{
-	    marker.visible=true;
-	    marker.x = hexagonWidth/4*3*posX+hexagonWidth/2;
-	    marker.y = hexagonHeight*posY;
+	    this.joueur1.sprite.visible=true;
+	    this.joueur1.sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
+	    this.joueur1.sprite.y = hexagonHeight*posY;
 	    if(posX%2==0){
-		marker.y += hexagonHeight/2;
+		this.joueur1.sprite.y += hexagonHeight/2;
 	    }
 	    else{
-		marker.y += hexagonHeight;
+		this.joueur1.sprite.y += hexagonHeight;
 	    }
 	}
     }
