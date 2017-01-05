@@ -19,12 +19,18 @@ var poserBete=false;
 var pointeur=0;
 var nb;
 
-function highlight () {
-    var pos={x:stack[pointeur].pos[0], y:stack[pointeur].pos[1]};
-    //    bon l'algo d'entourag est un peu nul, mais bon...
-    var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
+function highlight (point) {
+    var pos;
+    if (point==undefined) {
+        pos={x:stack[pointeur].pos[0], y:stack[pointeur].pos[1]};        
+    }else{
+        pos={x:point[0], y:point[1]};        
+    }
 
     hexagonGroup.setAll('alpha', 0.1);
+
+    //    bon l'algo d'entourag est un peu nul, mais bon...
+    var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
     var indices=[];
     for(var i = 0; i < un.length; i++) {
         if (un[i]!==undefined) {
@@ -71,6 +77,7 @@ marker.prototype={
     },
     grab:function () {
         hl=true;
+        console.log("couocu");
         pointeur=this.id;
         if (action) {
             var pos=[moveIndex.x, moveIndex.y];
@@ -83,10 +90,6 @@ marker.prototype={
             if(hl)(highlight());
             action=true
         }
-    },
-    preload:function () {
-        //ici feinter avec les couleurs
-        game.load.image(this.image, "images/"+this.image+".png");
     },
     create:function () {
         var sp = game.add.sprite(0,0,this.image);
@@ -106,7 +109,6 @@ marker.prototype={
 
 
 var joueur =new marker("vaisseau");
-var animal =new marker("hexagon");
 
 stack=[joueur];
 
@@ -119,17 +121,17 @@ boardState.prototype={
             game.debug.text("action", 100,150)
         }else{
             game.debug.text("en attente", 100,150)
-        }
+        };
+        game.debug.text(mvts, 0,100);
+        game.debug.text("pointeur : "+pointeur, 50,50)
     },
     preload:function () {
 
         // terrain
 	game.load.image("hexMer", "images/hexMer.png");
         game.load.image("hexTerre", "images/hexTerre.png");
-
-        // sprites 
-        joueur.preload();
-        animal.preload();
+        game.load.image("vaisseau", "images/vaisseau.png");
+        game.load.image("hexagon", "images/hexagon.png");
         
         //Menu
         game.load.spritesheet('button', 'images/buttons/button_sprite_sheet.png', 193, 71);
@@ -148,18 +150,20 @@ boardState.prototype={
                     j * 25 + 500,
                     'button',
                     function () {
-                        highlight();
-                        stack.push(animal)
-                        animal.create(joueur.pos);
+                        highlight(joueur.pos);
+                        var niou=new marker("hexagon");
+                        stack.push(niou);
+                        console.log(joueur);
+                        niou.create();
                         action=true;
-                        pointeur=animal.id;
+                        pointeur=niou.id;
                     }, this, 2, 1, 0);
                 button.scale.setTo(0.5)
             }; 
         };
 
         pointeur=0;
-        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
+//        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
         
         //      events
         game.input.addMoveCallback(this.checkHex, this);
@@ -172,9 +176,7 @@ boardState.prototype={
     
     //  private
     goTo:function () {
-        if (action) {
-            game.state.start("interieur")
-        }
+        game.state.start("interieur")
     },
     checkHex: function(){
         var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
