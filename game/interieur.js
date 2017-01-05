@@ -1,3 +1,104 @@
+function check(dic,k) {
+    var keys=Object.keys(dic);
+    for(var i = 0; i<keys.length ; i++) {
+        if((Object.keys(dic[keys[i]])).indexOf(k) >= 0){return true}
+    };
+    return false
+};
+
+
+
+var joueur = function () {
+this.inventaire= {
+    mollusques: {
+        annelides:true,
+        escargots:false
+    },
+    cephalopodes:{
+        seches:false,
+        pieuvres:false,
+    },
+    arthropodes:{
+        insectes:false,
+        arachnides:false,
+    },
+    selaciens:{
+        roussettes:false,
+        requins:false,
+    },
+    osteoichtyens:{
+        thons:false,
+        coelacanthes:false
+    },
+    anapasides:{
+        grenouilles:false,
+        serpents:false,
+        crocodiles:false,
+    },
+    dinosauriens:{
+        compsognathus:false,
+        tyrannosaures:false
+    },
+    cetaces:{
+        orques:false,
+    },
+    mammiferes:{
+        rongeur:false,
+        hippopotame:false,
+        gorille:false,
+    }
+};    
+    this.xps=0;
+}
+
+joueur.prototype={
+    set:function (key,val) {
+        var k=Object.keys(this.inventaire);
+        for(var i = 0; i < k.length; i++) {
+            if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
+                this.inventaire[k[i]][key] = val
+            } // exists
+        }
+    },
+    get:function (key) {
+        var k=Object.keys(this.inventaire);
+        for(var i = 0; i < k.length; i++) {
+            if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
+                return this.inventaire[k[i]][key]
+            } // exists
+        }
+        return -1; //error
+    },
+    checkPhylums:function () {
+        var res=0;
+        for(var p in this.inventaire) {
+            if (Object.values(p).every(true)) {
+                res+=1
+            }
+        };
+        return res
+    },
+    gagnerXP:function () {
+        this.xps = this.xps + 1 + this.checkPhylums()
+    },
+    acheter:function (espece) {
+        switch(this.get(espece)){
+        case -1:
+        console.log("error");
+        break;
+        case true:
+        console.log("tu l'as déjà !");
+        break;
+        default:
+            if(phylum.xp < this.xps){
+                this.xps -= espece.xp;
+                this.set(espece, true)
+            }{
+                console.log("pas assez d'argent");
+            };
+        }
+    }
+}
 
 // //trios en haut
 // game.add.text(100,60,"2");
@@ -23,13 +124,14 @@ bebete.prototype={
         bebete.meurt()
     },
     meurt:function () {
-          this.sprite.destroy()
+        this.sprite.destroy()
     },
 }
 
 var Espece={
     nb:2,
 }
+
 
 var Especes= {
     mollusques: {
@@ -66,7 +168,7 @@ var Especes= {
     },
     mammiferes:{
         rongeur:{proies:["escargots"],xp:3},
-        hippopotame:{proies:["crocodile"],xp:3},
+        hippopotame:{proies:["crocodiles"],xp:3},
         gorille:{proies:[],xp:2}
     }
 };
@@ -99,6 +201,8 @@ phylum.prototype={
     }
 };
 
+// image du jeu
+
 interieur = function (game) {};
 interieur.prototype={
     preload: function () {
@@ -128,6 +232,6 @@ interieur.prototype={
         key.onDown.add(this.goTo, this)
     },
     goTo:function () {
-        game.state.start("board")
+        game.state.start("board", true,false)
     }
 };
