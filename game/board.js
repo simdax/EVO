@@ -20,31 +20,31 @@ var pointeur=0;
 var nb;
 
 function highlight () {
-    var pos={x:stack[pointer].pos[0], y:stack[pointer].pos[1]};
-//    bon l'algo d'entourag est un peu nul, mais bon...
+    var pos={x:stack[pointeur].pos[0], y:stack[pointeur].pos[1]};
+    //    bon l'algo d'entourag est un peu nul, mais bon...
     var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
 
-        hexagonGroup.setAll('alpha', 0.1);
-        var indices=[];
-        for(var i = 0; i < un.length; i++) {
-            if (un[i]!==undefined) {
-                var x= un[i][0]+pos.x;
-                var y= un[i][1]+pos.y;
-//              nawak...
-                if (pos.x%2==1) {
-                    if(un[i][0]==(-1)){y+=1 }
-                }else{
-                    if(un[i][0]==(1)){y-=1 }
-                };
+    hexagonGroup.setAll('alpha', 0.1);
+    var indices=[];
+    for(var i = 0; i < un.length; i++) {
+        if (un[i]!==undefined) {
+            var x= un[i][0]+pos.x;
+            var y= un[i][1]+pos.y;
+            //              nawak...
+            if (pos.x%2==1) {
+                if(un[i][0]==(-1)){y+=1 }
+            }else{
+                if(un[i][0]==(1)){y-=1 }
+            };
 
-                if (x>=0 && y>=0 && x<(gridSizeX)  && y<(gridSizeY)) {
-                    indices.push ( convert(x,y) )
-                }
+            if (x>=0 && y>=0 && x<(gridSizeX)  && y<(gridSizeY)) {
+                indices.push ( convert(x,y) )
             }
-        };
-        for(var i = 0; i < indices.length; i++) {
-            hexagonGroup.getAt(indices[i]).alpha=1;
         }
+    };
+    for(var i = 0; i < indices.length; i++) {
+        hexagonGroup.getAt(indices[i]).alpha=1;
+    }
 };
 function normal() {
     hexagonGroup.setAll('alpha', 1)
@@ -61,19 +61,17 @@ var mvts=3;
 marker=function (image) {
     this.image=image;
     this.pos=[0,0]; this.id;
-    this.sprite; this.mvts=4
+    this.sprite; this.mvts=4;
 }; 
 marker.prototype={
     first:function () {
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
-        this.sprite.events.onInputDown.add(this.grab)
+        this.sprite.events.onInputDown.add(this.grab,this)
     },
-    grab:function (sprite) {
+    grab:function () {
         hl=true;
         pointeur=this.id;
-//        this.sprite=sprite;
-        // if action means end action
         if (action) {
             var pos=[moveIndex.x, moveIndex.y];
             if(pos != this.pos) {this.pos=pos; mvts -= 1};
@@ -154,25 +152,25 @@ boardState.prototype={
                         stack.push(animal)
                         animal.create(joueur.pos);
                         action=true;
-                        pointer=animal.id;
+                        pointeur=animal.id;
                     }, this, 2, 1, 0);
                 button.scale.setTo(0.5)
             }; 
         };
 
-        pointer=0;
+        pointeur=0;
         this.placeMarker(joueur.pos[0], joueur.pos[1]);        
         
-//      events
+        //      events
         game.input.addMoveCallback(this.checkHex, this);
         
-  //    changing state
+        //    changing state
         var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
         key.onDown.add(this.goTo, this)
         if(hl){highlight()}
     },
     
-//  private
+    //  private
     goTo:function () {
         if (action) {
             game.state.start("interieur")
@@ -217,17 +215,17 @@ boardState.prototype={
     },
     placeMarker: function(posX,posY){
 	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
-	    stack[pointer].sprite.visible=false;
+	    stack[pointeur].sprite.visible=false;
 	}
 	else{
-	    stack[pointer].sprite.visible=true;
-	    stack[pointer].sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
-	    stack[pointer].sprite.y = hexagonHeight*posY;
+	    stack[pointeur].sprite.visible=true;
+	    stack[pointeur].sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
+	    stack[pointeur].sprite.y = hexagonHeight*posY;
 	    if(posX%2==0){
-		stack[pointer].sprite.y += hexagonHeight/2;
+		stack[pointeur].sprite.y += hexagonHeight/2;
 	    }
 	    else{
-		stack[pointer].sprite.y += hexagonHeight;
+		stack[pointeur].sprite.y += hexagonHeight;
 	    }
 	}
     }
