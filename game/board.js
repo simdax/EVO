@@ -42,7 +42,7 @@ function highlight (point) {
             }else{
                 if(un[i][0]==(1)){y-=1 }
             };
-            if (x>=0 && y>=0 && x<=(gridSizeX/2)  && y<(gridSizeY/2)) {
+            if (x>=0 && y>=0 && x<=(gridSizeX)  && y<(gridSizeY/2)) {
                 indices.push ( convert(x,y) )
             }
         }
@@ -115,7 +115,6 @@ boardState= function (game) {};
 
 boardState.prototype={  
     render:function () {
-        game.debug.text("appuyez sur x pour switcher", 100,100)
         if (action) {
             game.debug.text("action", 100,150)
         }else{
