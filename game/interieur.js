@@ -133,7 +133,7 @@ var Espece={
 }
 
 
-var Especes= {
+Especes= {
     mollusques: {
         annelides:{proies:[],xp:0},
         escargots:{proies:[],xp:0}

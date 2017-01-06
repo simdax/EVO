@@ -42,8 +42,7 @@ function highlight (point) {
             }else{
                 if(un[i][0]==(1)){y-=1 }
             };
-
-            if (x>=0 && y>=0 && x<(gridSizeX)  && y<(gridSizeY)) {
+            if (x>=0 && y>=0 && x<=(gridSizeX/2)  && y<(gridSizeY/2)) {
                 indices.push ( convert(x,y) )
             }
         }
@@ -134,7 +133,9 @@ boardState.prototype={
         game.load.image("hexagon", "images/hexagon.png");
         
         //Menu
-        game.load.spritesheet('button', 'images/buttons/button_sprite_sheet.png', 193, 71);
+        game.load.spritesheet('button',
+                              'images/buttons/flixel-button.png',
+                              77,18);
 
     },
     create: function() {
@@ -143,27 +144,56 @@ boardState.prototype={
         hexagonGroup.add(betesGroup);
         joueur.create();
         // menu
-        for(var i = 0; i < 5; i++) {
-            for(var j = 0; j < 5; j++) {
-                button = game.add.button(
-                    i * 100 + 80,
-                    j * 25 + 500,
-                    'button',
-                    function () {
-                        highlight(joueur.pos);
-                        var niou=new marker("hexagon");
-                        stack.push(niou);
-                        console.log(joueur);
-                        niou.create();
-                        action=true;
-                        pointeur=niou.id;
-                    }, this, 2, 1, 0);
-                button.scale.setTo(0.5)
-            }; 
+        var reduceY=1;
+        var reduceX=0.8;
+        var espacement = 70;
+        var c=0;
+        for(var i in Especes) {
+            var d=0;
+            var posX = c * espacement + 80;
+            var posY = d * 25 + 500;
+            button = game.add.button
+            //new LabelButton
+            ( posX,posY,
+              'button', function () {
+                  
+              });
+            button.scale.setTo(reduceX,reduceY);
+            game.add.text(posX+3,posY+5,i,
+                          {'font': '10px Arial',
+                           'fill': 'red'    }
+                         );
+            var labels=Object.keys(Especes[i]);
+            d += 1;
+            for(var j = 0; j < labels.length; j++) {
+                var posX = c * espacement + 80;
+                var posY = d * 25 + 500;
+                button = game.add.button
+                //new LabelButton
+                ( posX,posY,
+                  'button',
+                  //"salut ",
+                  function () {
+                      highlight(joueur.pos);
+                      var niou=new marker("hexagon");
+                      stack.push(niou);
+                      console.log(joueur);
+                      niou.create();
+                      action=true;
+                      pointeur=niou.id;
+                  }, this, 2, 1, 0);
+                button.scale.setTo(reduceX,reduceY);
+                game.add.text(posX+10,posY+5,labels[j],
+                              {'font': '10px Arial',
+                               'fill': 'black'    }
+                             );
+                d +=1
+            };
+            c += 1
         };
 
         pointeur=0;
-//        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
+        //        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
         
         //      events
         game.input.addMoveCallback(this.checkHex, this);
