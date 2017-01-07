@@ -135,41 +135,41 @@ var Espece={
 
 Especes= {
     mollusques: {
-        annelides:{proies:[],xp:0},
-        escargots:{proies:[],xp:0}
+        annelides:{proies:[],xp:0,type:"terrestre"},
+        escargots:{proies:[],xp:0,type:"terrestre"}
     },
     cephalopodes:{
-        seches:{proies:["annelides"],xp:3},
-        pieuvres:{proies:["thons"],xp:3}
+        seches:{proies:["annelides"],xp:3,type:"marin"},
+        pieuvres:{proies:["thons"],xp:3,type:"marin"}
     },
     arthropodes:{
-        insectes:{proies:[],xp:1},
-        arachnides:{proies:["insectes"],xp:4}
+        insectes:{proies:[],xp:1,type:"terrestre"},
+        arachnides:{proies:["insectes"],xp:4,type:"terrestre"}
     },
     selaciens:{
-        roussettes:{proies:["seches"],xp:3},
-        requins:{proies:["coelacanthes"],xp:3}
+        roussettes:{proies:["seches"],xp:3,type:"marin"},
+        requins:{proies:["coelacanthes"],xp:3,type:"marin"}
     },
     osteoichtyens:{
-        thons:{proies:["annelides"],xp:3},
-        coelacanthes:{proies:["thons"],xp:3}
+        thons:{proies:["annelides"],xp:3,type:"marin"},
+        coelacanthes:{proies:["thons"],xp:3,type:"marin"}
     },
     anapasides:{
-        grenouilles:{proies:["insectes"],xp:3},
-        serpents:{proies:["rongeurs"],xp:3},
-        crocodiles:{proies:["serpents","compsognathus"],xp:4}
+        grenouilles:{proies:["insectes"],xp:3,type:"terrestre"},
+        serpents:{proies:["rongeurs"],xp:3,type:"terrestre"},
+        crocodiles:{proies:["serpents","compsognathus"],xp:4,type:"terrestre"}
     },
     dinosauriens:{
-        compsognathus:{proies:["grenouilles"],xp:2},
-        tyrannosaures:{proies:["hippopotames","compsognathus","gorilles"],xp:7}
+        compsognathus:{proies:["grenouilles"],xp:2,type:"terrestre"},
+        tyrannosaures:{proies:["hippopotames","compsognathus","gorilles"],xp:7,type:"terrestre"}
     },
     cetaces:{
-        orques:{proies:["pieuvres","requins"],xp:7}
+        orques:{proies:["pieuvres","requins"],xp:7,type:"marin"}
     },
     mammiferes:{
-        rongeur:{proies:["escargots"],xp:3},
-        hippopotame:{proies:["crocodiles"],xp:3},
-        gorille:{proies:[],xp:2}
+        rongeur:{proies:["escargots"],xp:3,type:"terrestre"},
+        hippopotame:{proies:["crocodiles"],xp:3,type:"terrestre"},
+        gorille:{proies:[],xp:2,type:"terrestre"}
     }
 };
 

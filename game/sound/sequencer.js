@@ -41,48 +41,35 @@ note = function(note, scale, root) {
     return root + scale[note] + (octave*7) * scale.length;
 };
 
-// morceau.play = function() {
+morceau.play = function() {
 
-//     var delay=0;
-//     var r1,r2;
-//     var n1,n2;
+    var delay=0;
+    var r1,r2;
+    var n1,n2;
 
-//     if (indexR === morceau.rythme.length) {
-//         indexR = 0;
-//     };
-//     if (indexM === morceau.mel.length) {
-//         indexM = 0;
-//     };
+    if (indexR === morceau.rythme.length) {
+        indexR = 0;
+    };
+    if (indexM === morceau.mel.length) {
+        indexM = 0;
+    };
     
-//     r1 = morceau.rythme[indexR];
-//     n1 = note(morceau.mel[indexM], morceau.scale, morceau.root);
+    r1 = morceau.rythme[indexR];
+    n1 = note(morceau.mel[indexM], morceau.scale, morceau.root);
 
-//     r2 = r1;
-//     n2 = note(morceau.mel[indexM+2], morceau.scale, morceau.root);
+    r2 = r1;
+    n2 = note(morceau.mel[indexM+2], morceau.scale, morceau.root);
     
-//     morceau.synth.triggerAttackRelease(convertMidi(n1), r1*0.95);
-//     morceau.synth.triggerAttackRelease(convertMidi(n1), r1*0.95);
+    morceau.synth.triggerAttackRelease(convertMidi(n1), r1*0.95);
+    morceau.synth.triggerAttackRelease(convertMidi(n1), r1*0.95);
 
-//     // main
-//     morceau.synth.triggerAttackRelease(convertMidi(n2), r2*0.95);
-//     setTimeout(morceau.play, r1*1000);
+    // main
+    morceau.synth.triggerAttackRelease(convertMidi(n2), r2*0.95);
+    setTimeout(morceau.play, r1*1000);
     
-//     indexM += 1;
-//     indexR += 1;
+    indexM += 1;
+    indexR += 1;
 
-// };
+};
 
 // morceau.play()
-
-// setup
-callback=function (time,pitch) {
-    morceau.synth.triggerAttackRelease(pitch, "2n", time)
-};
-Tone.Transport.start();
-
-//create a looped note event every half-note
-var note = new Tone.Sequence(
-    callback, ["C4", "D4", "E4"]
-);
-
-note.start(0);
