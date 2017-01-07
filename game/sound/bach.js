@@ -1,5 +1,5 @@
 var mels={
-    a:[null,0,1,2,3,1,2,0],
+    a:[7,0,1,2,3,1,2,0],
     b:[5,6,7,8, 8,9,4,3,1],
 };
 bob=function (t) {
@@ -23,14 +23,12 @@ bob.prototype={
                     octave=Math.floor(index/this.scale.length);
                     index=index%this.scale.length; 
                 };
-                console.log([index,octave]);
                 mel.push(Tone.Frequency(
                     this.root+(this.scale[index])+(12*octave),
                     "midi").toNote()
                         )
             }
         };
-        console.log(mel);
         return mel},
     play:function() {
         forme= new Tone.CtrlMarkov({
@@ -39,28 +37,28 @@ bob.prototype={
         });
         var mm={};
         for(var mel in mels){
-            console.log(mels[mel]);
             mm[mel]=this.convert(mels[mel])
         }
         var callback=function (t,n) {
             synth.triggerAttackRelease(n,0.25)
         };
         var setMel=function (mel) {
-            console.log(mel);
             for(var i = 0; i < mel.length; i++) {
-                seq.add(i, mel[i])
-            }
-        };
+                seq.at(i, mel[i])
+            };
 
+        };
+        function setForme() {
+            var next=forme.next();
+            var m = mm[next];
+            setMel(m);
+        }
+        new Tone.Loop(function () {
+            setForme()
+        },"1m").start(0);
+        
         var seq=new Tone.Sequence(callback,mm.a,"8n");
         seq.start(0);
-
-        var loop=new Tone.Loop(function () {
-            var next=forme.next();
-            setMel(mm[next]);
-        }, "2m");
-        loop.start("2m")
-
 
     }
 }
