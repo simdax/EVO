@@ -70,15 +70,17 @@ marker=function (image) {
 }; 
 marker.prototype={
     first:function () {
+//        bip.start();
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
-        this.sprite.events.onInputDown.add(this.grab,this)
+        this.sprite.events.onInputDown.add(this.grab,this);
     },
     grab:function () {
+        //bip.start()
         hl=true;
-        console.log("couocu");
         pointeur=this.id;
         if (action) {
+            synth.triggerAttackRelease("B6",0.25)
             var pos=[moveIndex.x, moveIndex.y];
             if(pos != this.pos) {this.pos=pos; mvts -= 1};
             if (mvts==0) {

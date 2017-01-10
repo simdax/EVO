@@ -1,16 +1,9 @@
-var mels={
-    a:[7,0,1,2,3,1,2,0],
-    b:[5,6,7,8, 8,9,4,3,1],
-};
-bob=function (t) {
-    this.timbre=t;
-    Tone.Transport.start();
-};
-bob.prototype={
-    root:60,
-    scale:[0,2,4,5,9,11,12],
-    b:[-3,-2,-2,-2],
-    parcours:[0,4,],
+
+ConvertMel=function(root,scale) {
+    this.root=root || 60;
+    this.scale=scale || [0,2,4,5,9,11,12]
+}; 
+ConvertMel.prototype={
     convert:function (m) {
         var mel=[];
         for(var i = 0; i < m.length; i++) {
@@ -24,44 +17,57 @@ bob.prototype={
                     index=index%this.scale.length; 
                 };
                 mel.push(Tone.Frequency(
-                    this.root+(this.scale[index])+(12*octave),
-                    "midi").toNote()
-                        )
-            }
+                    this.root+(this.scale[index])+(12*octave),"midi").toNote()
+                        )}
         };
-        return mel},
-    play:function() {
-        forme= new Tone.CtrlMarkov({
-            "a": ["a","b"],
-            "b": ["a","b"],
-        });
-        var mm={};
-        for(var mel in mels){
-            mm[mel]=this.convert(mels[mel])
-        }
-        var callback=function (t,n) {
-            synth.triggerAttackRelease(n,0.25)
-        };
-        var setMel=function (mel) {
-            for(var i = 0; i < mel.length; i++) {
-                seq.at(i, mel[i])
-            };
+        return mel
+    }
+};
 
-        };
-        function setForme() {
-            var next=forme.next();
-            var m = mm[next];
-            setMel(m);
-        }
-        new Tone.Loop(function () {
-            setForme()
-        },"1m").start(0);
-        
-        var seq=new Tone.Sequence(callback,mm.a,"8n");
-        seq.start(0);
+function melange(n,r) {
+    var res=[];
+    for(var i = 0; i < n.length; i++) {
+        res.push([n[i],r[i]])
+    };
+    return res
+}
 
+
+bob=function (mels, forme, timbre) {
+    this.converter=new ConvertMel();
+    this.mm={};
+    this.mels= mels || {
+        a:[7,0,1,2,3,1,2,0],
+        b:[5,4,3,2,1,3,2,4],
+        c:[3,2,1,0,2,1,3,2],
+    };
+    this.timbre=timbre || t;
+    this.formes= new Tone.CtrlMarkov( forme || {
+        "a": ["a","b","c"],
+        "b": ["a","b","c"],
+        "c": ["a","b","c"],
+    }); 
+    //setup
+    for(var mel in this.mels){
+        this.mm[mel]=this.converter.convert(this.mels[mel])
+    };
+    var callback=function (t,n) {
+        synth.triggerAttackRelease(n,0.5)
+    };
+    this.seq= new Tone.Sequence(callback,new Array(8));
+};
+bob.prototype={
+    setForme: function(i) {
+        var m=this.mm[i];
+        for(var i = 0; i < m.length; i++) {
+            this.seq.at(i, m[i])
+            console.log(m[i]);
+        };
+        console.log("forme settée");
+    },
+    play:function () {
+        this.seq.start(0)
     }
 }
 
-bach= new bob(synth);
-bach.play()
+
