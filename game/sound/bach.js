@@ -1,4 +1,3 @@
-
 ConvertMel=function(root,scale) {
     this.root=root || 60;
     this.scale=scale || [0,2,4,5,9,11,12]
@@ -23,14 +22,6 @@ ConvertMel.prototype={
         return mel
     }
 };
-
-function melange(n,r) {
-    var res=[];
-    for(var i = 0; i < n.length; i++) {
-        res.push([n[i],r[i]])
-    };
-    return res
-}
 
 
 bob=function (mels, forme, timbre) {

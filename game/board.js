@@ -80,7 +80,8 @@ marker.prototype={
         hl=true;
         pointeur=this.id;
         if (action) {
-            synth.triggerAttackRelease("B6",0.25)
+            game.sound.play('bip')
+            //synth.triggerAttackRelease("B6",0.25)
             var pos=[moveIndex.x, moveIndex.y];
             if(pos != this.pos) {this.pos=pos; mvts -= 1};
             if (mvts==0) {
@@ -127,6 +128,8 @@ boardState.prototype={
     },
     preload:function () {
 
+        // audio
+        game.load.audio('bip', "sound/mp3/button.mp3");
         // terrain
 	game.load.image("hexMer", "images/hexMer.png");
         game.load.image("hexTerre", "images/hexTerre.png");
@@ -137,7 +140,6 @@ boardState.prototype={
         game.load.spritesheet('button',
                               'images/buttons/flixel-button.png',
                               77,18);
-
     },
     create: function() {
         createHexGrp();

@@ -1,6 +1,6 @@
-bip= new Tone.Player({
-    "url" : "./sound/mp3/button.mp3"
-}).toMaster()
+// bip= new Tone.Player({
+//     "url" : "./sound/mp3/button.mp3"
+// }).toMaster()
 
 
 
