@@ -135,7 +135,7 @@ var Espece={
 
 Especes= {
     mollusques: {
-        annelides:{proies:[],xp:0,type:"terrestre"},
+        annelides:{proies:[],xp:0,type:"marin"},
         escargots:{proies:[],xp:0,type:"terrestre"}
     },
     cephalopodes:{
