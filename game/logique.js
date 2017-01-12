@@ -8,50 +8,59 @@ function check(dic,k) {
 
 
 
-var joueur = function () {
-this.inventaire= {
-    mollusques: {
-        annelides:true,
-        escargots:false
-    },
-    cephalopodes:{
-        seches:false,
-        pieuvres:false,
-    },
-    arthropodes:{
-        insectes:false,
-        arachnides:false,
-    },
-    selaciens:{
-        roussettes:false,
-        requins:false,
-    },
-    osteoichtyens:{
-        thons:false,
-        coelacanthes:false
-    },
-    anapasides:{
-        grenouilles:false,
-        serpents:false,
-        crocodiles:false,
-    },
-    dinosauriens:{
-        compsognathus:false,
-        tyrannosaures:false
-    },
-    cetaces:{
-        orques:false,
-    },
-    mammiferes:{
-        rongeurs:false,
-        hippopotames:false,
-        gorilles:false,
-    }
-};    
-    this.xps=0;
+var Joueur = function () {
+
+    this.vaisseau=new marker("vaisseau")
+    this.xps=10;
+    this.phylums=[];
+    this.mvts=4;
+    
+    this.inventaire= {
+        mollusques: {
+            annelides:false,
+            escargots:false
+        },
+        cephalopodes:{
+            seches:false,
+            pieuvres:false,
+        },
+        arthropodes:{
+            insectes:false,
+            arachnides:false,
+        },
+        selaciens:{
+            roussettes:false,
+            requins:false,
+        },
+        osteoichtyens:{
+            thons:false,
+            coelacanthes:false
+        },
+        anapasides:{
+            grenouilles:false,
+            serpents:false,
+            crocodiles:false,
+        },
+        dinosauriens:{
+            compsognathus:false,
+            tyrannosaures:false
+        },
+        cetaces:{
+            orques:false,
+        },
+        mammiferes:{
+            rongeurs:false,
+            hippopotames:false,
+            gorilles:false,
+        }
+    };    
+ 
 }
 
-joueur.prototype={
+Joueur.prototype={
+    createBetes:function (name) {
+        
+    },
     set:function (key,val) {
         var k=Object.keys(this.inventaire);
         for(var i = 0; i < k.length; i++) {
@@ -84,11 +93,11 @@ joueur.prototype={
     acheter:function (espece) {
         switch(this.get(espece)){
         case -1:
-        console.log("error");
-        break;
+            console.log("error");
+            break;
         case true:
-        console.log("tu l'as déjà !");
-        break;
+            console.log("tu l'as déjà !");
+            break;
         default:
             if(phylum.xp < this.xps){
                 this.xps -= espece.xp;

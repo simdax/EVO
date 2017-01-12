@@ -10,13 +10,16 @@ var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
 
 var moveIndex=[0,0];
 var marker;
-var menuGroup;
+//var menuGroup;
 var hexagonGroup;
 var betesGroup;
 
 var action=true;
 var hl=false;
 var poserBete=false;
+
+
+stack=[]
 var pointeur=0;
 var nb;
 
@@ -64,20 +67,27 @@ function convert (x,y) {
 
 var mvts=4;
 
+
+var joueur// =new marker("vaisseau",game);
+
+
 marker=function (image) {
+    // prop
     this.image=image;
-    this.pos=[0,0]; this.id;
+    this.pos=[0,0];
+    this.id;
     this.sprite; this.mvts=4;
+    //init
+    stack.push(this)
+    this.create()
 }; 
 marker.prototype={
     first:function () {
-
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
         this.sprite.events.onInputDown.add(this.grab,this);
     },
     grab:function () {
-        
         hl=true;
         pointeur=this.id;
         if (action) {
@@ -95,8 +105,12 @@ marker.prototype={
         }
     },
     create:function () {
-        var sp = game.add.sprite(0,0,this.image);
+        var sp; var img=this.image;
+        !function () {
+            sp=game.add.sprite(0,0,img);
+        }();
         this.id=stack.length-1;
+        pointeur=this.id;
 	sp.anchor.setTo(0.5);
         sp.scale.setTo(0.85);
 	sp.visible=false;
@@ -104,165 +118,77 @@ marker.prototype={
         sp.events.onInputDown.addOnce(
             this.first,this
         );
-        betesGroup.add(sp);
+        // !function () {
+        //     betesGroup.add(sp);
+        // }()
         this.sprite=sp
     },
 };
 
-
-
-var joueur =new marker("vaisseau");
-
-stack=[joueur];
+//stack=[joueur];
 
 boardState= function (game) {};
 
-boardState.prototype={  
-    render:function () {
-        
-        // todo, infos plus belles
-        game.debug.text(mvts, 0,100);
-        game.debug.text(mvts, 0,100);
-        game.debug.text(mvts, 0,100);
-        game.debug.text(mvts, 0,100);
-        
-        game.debug.text("ici des textures", 680, 300)
-        if (action) {
-            game.debug.text("action", 100,150)
-        }else{
-            game.debug.text("en attente", 100,150)
-        };
-        
-        //        game.debug.text("pointeur : "+pointeur, 50,50)
-    },
-    preload:function () {
+boardState.prototype={
+    
 
+    preload:function () {
+        
         // AUDIO _________________
         game.load.audio('bip', "sound/mp3/button.mp3");
-
         // BOARD _________________
-        
         // terrain
 	game.load.image("hexMer", "images/hexMer.png");
         game.load.image("hexTerre", "images/hexTerre.png");
         game.load.image("hexagon", "images/hexagon.png");
-
-        // menus
-        
+        // dessins regles
         game.load.image("reglesEvo", "images/reglesEVO.png");
         game.load.image("reglesManger", "images/reglesMANGER.png");
-        // TODO place sprite here
-        //        graphics
-        
+        //button
+        game.load.spritesheet('button',
+                              'images/buttons/flixel-button.png',
+                              77,18);
         //SPRITES __________________
-
-        
         game.load.image("vaisseau", "images/sprites/vaisseau.png");
-        // bebetes
-        // todo jquery look at dir ?
         var path='images/sprites/resize/';
         for(var phyl in Especes){
             for(var espece in Especes[phyl]){
                 game.load.image(espece, path+espece+".png")
             }
         };
-
-        //Menu
-        game.load.spritesheet('button',
-                              'images/buttons/flixel-button.png',
-                              77,18);
     },
     create: function() {
-
+        
         //camera
         //  Modify the world and camera bounds
-        game.world.resize(3000, 3000);
+        game.world.resize(2000, 2000);
         
         //board
-
-        createHexGrp();
+        hexagonGroup = game.add.group();
+        game.stage.backgroundColor = "#000000"
+        createHexs();
 
         // menus à droite
+        menuGroup= game.add.group();
+        menuGroup.fixedToCamera=true;
+        createMenu(menuGroup);
+        createBarres(menuGroup);
 
-        createMenu();
-        ///
-        
+        // sprites des betes        
         betesGroup=game.add.group();
         hexagonGroup.add(betesGroup);
-        joueur.create();
 
-
-        // MENU
-
-        var reduceY=1;
-        var reduceX=0.8;
-        var espacement = 120;
-        var espY=50;
-        var offX=0, offY= 450;
-
-        // loop
-        var c=0;
-        for(var i in Especes) {
-            var d=0;
-            var posX = c * espacement + offX;
-            var posY = d * espY + offY;
-            var button = game.add.button
-            // phyllum bouton
-            ( posX,posY,
-              'button', function () {
-                  
-              });
-            menuGroup.add(button);
-            var style=
-                {'font': '10px Arial',
-                 'fill': 'red'}
-            ;
-            var txt=game.add.text(posX+3,posY+5,i,style);
-            menuGroup.add(txt);
-            d += 1;
-            function addB(name) {
-                var cb=
-                    () => {
-                        highlight(joueur.pos);
-                        var niou=new marker(name);
-                        stack.push(niou);
-                        niou.create();
-                        action=true;
-                        pointeur=niou.id;
-                    };
-                for(var x = 0; x < 2; x++) {
-                    var button = game.add.button
-                    ( posX + (x*50) ,posY, name);
-                    // name, cb, this, 2, 1, 0);
-                    button.events.onInputDown.add(cb);
-                    menuGroup.add(button)
-                };
-            };
-            var labels=Object.keys(Especes[i]);
-            for(var gj = 0; gj < labels.length; gj++) {
-                var posX = c * espacement + offX;
-                var posY = d * espY + offY;
-                var button; var caca=Math.random();
-                addB(labels[gj])
-                d +=1
-            };
-            c += 1
-        };
+        joueur=new Joueur();
+//        game.add.sprite(40,40,"vaisseau")
 
         // LOGIC
-        
-        pointeur=0;
-        //        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
-        
-        //      events
         cursors = game.input.keyboard.createCursorKeys();
         game.input.addMoveCallback(this.checkHex, this);
         
         //    changing state
-        var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
-        key.onDown.add(this.goTo, this)
-        if(hl){highlight()}
-
+        // var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
+        // key.onDown.add(this.goTo, this)
+        // if(hl){highlight()}
         
     },
 
@@ -284,6 +210,22 @@ boardState.prototype={
             game.camera.y += 4;
         }  
 
+    },
+    render:function () {
+        
+        // // todo, infos plus belles
+        // game.debug.text(mvts, 0,100);
+        // game.debug.text(mvts, 0,100);
+        // game.debug.text(mvts, 0,100);
+        // game.debug.text(mvts, 0,100);
+        
+        game.debug.text("ici des textures", 680, 300)
+        if (action) {
+            game.debug.text("action", 100,150)
+        }else{
+            game.debug.text("en attente", 100,150)
+        };
+        game.debug.text("pointeur : "+pointeur, 50,50)
     },
     
     //  private
@@ -346,9 +288,7 @@ boardState.prototype={
     
 }
 
-function createHexGrp(arg) {
-    hexagonGroup = game.add.group();
-    game.stage.backgroundColor = "#000000"
+function createHexs(arg) {
     for(var i = 0; i < gridSizeX/2; i ++){
 	for(var j = 0; j < gridSizeY; j ++){
 	    if(gridSizeX%2==0 || i+1<gridSizeX/2 || j%2==0){
@@ -375,71 +315,4 @@ function createHexGrp(arg) {
     // if(gridSizeX%2==0){
     //     hexagonGroup.x-=hexagonWidth/8;
     // }
-}
-
-function createMenu() {
-
-    var reglesEvo=game.add.sprite(1400,200, "reglesEvo");
-    var reglesManger=game.add.sprite(1400,200, "reglesManger");
-    var tweenEvo=game.add.tween(reglesEvo);
-    var tweenManger=game.add.tween(reglesManger);
-    reglesEvo.fixedToCamera=true;
-    reglesManger.fixedToCamera=true;
-    
-    var onTEvo=false;
-    var onTManger=false;
-
-    var grosseBarre;
-    menuGroup= game.add.group(grosseBarre);
-    menuGroup.fixedToCamera=true;
-    
-    var do1, do2, bmd, bmd2;
-
-    var width=1200; var height=300;
-
-    //        menuGroup _________
-    // grosse barre en bas
-
-    bmd = game.add.bitmapData(width, height);
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, width,height);
-    bmd.ctx.fillStyle = '#222222';
-    bmd.ctx.fill();
-    grosseBarre = game.add.sprite(0,450, bmd);
-    menuGroup.add(grosseBarre)
-    ///
-    
-    width=200;  height=200;
-    bmd= game.add.bitmapData(width, height);
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0, 0, width,height);
-    bmd.ctx.fillStyle = '#11ffff';
-    bmd.ctx.fill();
-    do1=game.add.button(1000,0,bmd,function () {
-        if (!onTEvo) {
-            tweenEvo.to( {x:400}, 500).start()
-            onTEvo=true
-        }else{
-            tweenEvo.to( {x:1000}, 500).start()
-            onTEvo=false
-        };
-    });
-    menuGroup.add(do1)
-    width=200;  height=200;
-    bmd2 = game.add.bitmapData(width, height);
-    bmd2.ctx.beginPath();
-    bmd2.ctx.rect(0, 0, width,height);
-    bmd2.ctx.fillStyle = '#ff11ff';
-    bmd2.ctx.fill();
-    do2=game.add.button(1000,200, bmd2, function () {
-        if (!onTManger) {
-            tweenManger.to( {x:400}, 500).start()
-            onTManger=true
-        }else{
-            tweenManger.to( {x:1000}, 500).start()
-            onTManger=false
-        };
-    });
-    menuGroup.add(do2)
-
 }
