@@ -27,7 +27,7 @@ function highlight (point) {
         pos={x:point[0], y:point[1]};        
     }
 
-    hexagonGroup.setAll('alpha', 0.1);
+    hexagonGroup.setAll('alpha', 0.3);
 
     //    bon l'algo d'entourag est un peu nul, mais bon...
     var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
@@ -203,13 +203,13 @@ boardState.prototype={
         
         // grosse barre en bas
         var drawnObject;
-        var width=1000; var height=200;
+        var width=1000; var height=300;
         var bmd = game.add.bitmapData(width, height);
         bmd.ctx.beginPath();
         bmd.ctx.rect(0, 0, width,height);
         bmd.ctx.fillStyle = '#000000';
         bmd.ctx.fill();
-        drawnObject = game.add.sprite(0,500, bmd);
+        drawnObject = game.add.sprite(0,450, bmd);
         ///
         
         var drawnObject1;
@@ -219,7 +219,7 @@ boardState.prototype={
         bmd.ctx.rect(0, 0, width,height);
         bmd.ctx.fillStyle = '#11ffff';
         bmd.ctx.fill();
-        game.add.button(800,100,bmd,function () {
+        game.add.button(800,0,bmd,function () {
             if (!onTEvo) {
                 tweenEvo.to( {x:400}, 500).start()
                 onTEvo=true
@@ -235,7 +235,7 @@ boardState.prototype={
         bmd.ctx.rect(0, 0, width,height);
         bmd.ctx.fillStyle = '#ff11ff';
         bmd.ctx.fill();
-        game.add.button(800,300, bmd,function () {
+        game.add.button(800,200, bmd,function () {
             if (!onTManger) {
                 tweenManger.to( {x:400}, 500).start()
                 onTManger=true
@@ -256,14 +256,15 @@ boardState.prototype={
         var reduceY=1;
         var reduceX=0.8;
         var espacement = 100;
-        var offX=0, offY= 500;
+        var espY=50;
+        var offX=0, offY= 450;
 
         // loop
         var c=0;
         for(var i in Especes) {
             var d=0;
             var posX = c * espacement + offX;
-            var posY = d * 25 + offY;
+            var posY = d * espY + offY;
             button = game.add.button
             // phyllum bouton
             ( posX,posY,
@@ -303,7 +304,7 @@ boardState.prototype={
             var labels=Object.keys(Especes[i]);
             for(var gj = 0; gj < labels.length; gj++) {
                 var posX = c * espacement + offX;
-                var posY = d * 25 + offY;
+                var posY = d * espY + offY;
                 var button; var caca=Math.random();
                 addB(labels[gj])
                 d +=1
