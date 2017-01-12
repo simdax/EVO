@@ -61,7 +61,7 @@ function convert (x,y) {
     return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
 };
 
-var mvts=3;
+var mvts=4;
 
 marker=function (image) {
     this.image=image;
@@ -70,7 +70,7 @@ marker=function (image) {
 }; 
 marker.prototype={
     first:function () {
-//        bip.start();
+        //        bip.start();
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
         this.sprite.events.onInputDown.add(this.grab,this);
@@ -135,6 +135,9 @@ boardState.prototype={
         game.load.image("hexTerre", "images/hexTerre.png");
         game.load.image("vaisseau", "images/vaisseau.png");
         game.load.image("hexagon", "images/hexagon.png");
+
+        //sprites
+        game.load.image("tyrannosaures", 'images/sprites/t2.png')
         
         //Menu
         game.load.spritesheet('button',
@@ -166,30 +169,33 @@ boardState.prototype={
                           {'font': '10px Arial',
                            'fill': 'red'    }
                          );
-            var labels=Object.keys(Especes[i]);
             d += 1;
-            for(var j = 0; j < labels.length; j++) {
-                var posX = c * espacement + 80;
-                var posY = d * 25 + 500;
+            function addB(name) {
+                var cb=
+                    () => {
+                        highlight(joueur.pos);
+                        var niou=new marker(name);
+                        stack.push(niou);
+                        niou.create();
+                        action=true;
+                        pointeur=niou.id;
+                    };
                 button = game.add.button
-                //new LabelButton
                 ( posX,posY,
                   'button',
-                  //"salut ",
-                  function () {
-                      highlight(joueur.pos);
-                      var niou=new marker("hexagon");
-                      stack.push(niou);
-                      console.log(joueur);
-                      niou.create();
-                      action=true;
-                      pointeur=niou.id;
-                  }, this, 2, 1, 0);
+                  cb, this, 2, 1, 0);
                 button.scale.setTo(reduceX,reduceY);
-                game.add.text(posX+10,posY+5,labels[j],
+                game.add.text(posX+10,posY+5,name,
                               {'font': '10px Arial',
                                'fill': 'black'    }
                              );
+            };
+            var labels=Object.keys(Especes[i]);
+            for(var gj = 0; gj < labels.length; gj++) {
+                var posX = c * espacement + 80;
+                var posY = d * 25 + 500;
+                var button; var caca=Math.random();
+                addB(labels[gj])
                 d +=1
             };
             c += 1

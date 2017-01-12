@@ -218,6 +218,7 @@ interieur.prototype={
         game.add.text(230,60,"2");
         game.add.text(350,60,"2");
 
+        
         // trois en bas
         game.add.text(100,470,"2");
         game.add.text(230,470,"2");
