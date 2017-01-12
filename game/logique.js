@@ -167,9 +167,9 @@ Especes= {
         orques:{proies:["pieuvres","requins"],xp:7,type:"marin"}
     },
     mammiferes:{
-        rongeur:{proies:["escargots"],xp:3,type:"terrestre"},
-        hippopotame:{proies:["crocodiles"],xp:3,type:"terrestre"},
-        gorille:{proies:[],xp:2,type:"terrestre"}
+        rongeurs:{proies:["escargots"],xp:3,type:"terrestre"},
+        hippopotames:{proies:["crocodiles"],xp:3,type:"terrestre"},
+        gorilles:{proies:[],xp:2,type:"terrestre"}
     }
 };
 

@@ -159,26 +159,13 @@ boardState.prototype={
         game.load.image("vaisseau", "images/sprites/vaisseau.png");
         // bebetes
         // todo jquery look at dir ?
-        game.load.image("tyrannosaures", 'images/sprites/resize/t2.png')
-        game.load.image("annelides" , 'images/sprites/annelides.png')
-        game.load.image("arachnides", 'images/sprites/arachnides.png')
-        game.load.image( "ceolacanthes", 'images/sprites/coelacanthes.png')
-        game.load.image( "compsognathus", 'images/sprites/compsognathus.png')
-        game.load.image( "crocodiles",'images/sprites/crocodiles.png')
-        game.load.image( "escargots",'images/sprites/escargots.png')
-        game.load.image( "gorilles",'images/sprites/gorilles.png')
-        game.load.image( "grenouilles",'images/sprites/grenouilles.png')
-        game.load.image( "hippopotames",'images/sprites/hippopotames.png')
-        game.load.image( "insectes",'images/sprites/insectes.png')
-        game.load.image( "orques",'images/sprites/orques.png')
-        game.load.image( "pieuvres",'images/sprites/pieuvres.png')
-        game.load.image( "requins",'images/sprites/requins.png')
-        game.load.image( "rongeurs",'images/sprites/rongeurs.png')
-        game.load.image( "roussettes",'images/sprites/roussettes.png')
-        game.load.image( "seches",'images/sprites/seches.png')
-        game.load.image( "serpents",'images/sprites/serpents.png')
-        game.load.image( "thons",'images/sprites/thons.png')
-
+        var path='images/sprites/resize/';
+        for(var phyl in Especes){
+            for(var espece in Especes[phyl]){
+                console.log(path+espece+".png");
+                game.load.image(espece, path+espece+".png")
+            }
+        };
 
         //Menu
         game.load.spritesheet('button',
@@ -193,8 +180,8 @@ boardState.prototype={
 
         // menus à droite
 
-        var reglesEvo=game.add.sprite(1000,200, "reglesEvo");
-        var reglesManger=game.add.sprite(1000,200, "reglesManger");
+        var reglesEvo=game.add.sprite(1400,200, "reglesEvo");
+        var reglesManger=game.add.sprite(1400,200, "reglesManger");
         var tweenEvo=game.add.tween(reglesEvo);
         var tweenManger=game.add.tween(reglesManger);
         
@@ -203,11 +190,11 @@ boardState.prototype={
         
         // grosse barre en bas
         var drawnObject;
-        var width=1000; var height=300;
+        var width=1200; var height=300;
         var bmd = game.add.bitmapData(width, height);
         bmd.ctx.beginPath();
         bmd.ctx.rect(0, 0, width,height);
-        bmd.ctx.fillStyle = '#000000';
+        bmd.ctx.fillStyle = '#222222';
         bmd.ctx.fill();
         drawnObject = game.add.sprite(0,450, bmd);
         ///
@@ -219,7 +206,7 @@ boardState.prototype={
         bmd.ctx.rect(0, 0, width,height);
         bmd.ctx.fillStyle = '#11ffff';
         bmd.ctx.fill();
-        game.add.button(800,0,bmd,function () {
+        game.add.button(1000,0,bmd,function () {
             if (!onTEvo) {
                 tweenEvo.to( {x:400}, 500).start()
                 onTEvo=true
@@ -235,7 +222,7 @@ boardState.prototype={
         bmd.ctx.rect(0, 0, width,height);
         bmd.ctx.fillStyle = '#ff11ff';
         bmd.ctx.fill();
-        game.add.button(800,200, bmd,function () {
+        game.add.button(1000,200, bmd,function () {
             if (!onTManger) {
                 tweenManger.to( {x:400}, 500).start()
                 onTManger=true
@@ -255,7 +242,7 @@ boardState.prototype={
 
         var reduceY=1;
         var reduceX=0.8;
-        var espacement = 100;
+        var espacement = 120;
         var espY=50;
         var offX=0, offY= 450;
 
@@ -271,7 +258,6 @@ boardState.prototype={
               'button', function () {
                   
               });
-            //button.scale.setTo(reduceX,reduceY);
             game.add.text(posX+3,posY+5,i,
                           {'font': '10px Arial',
                            'fill': 'red'    }
@@ -293,13 +279,8 @@ boardState.prototype={
                     ( posX + (x*50) ,posY, name);
                     // name, cb, this, 2, 1, 0);
                     button.events.onInputDown.add(cb);
-                    button.scale.setTo(reduceX,reduceY);
+                    //button.scale.setTo(reduceX,reduceY);
                 };
-                
-                game.add.text(posX+10,posY+5,name,
-                              {'font': '10px Arial',
-                               'fill': 'black'    }
-                             );
             };
             var labels=Object.keys(Especes[i]);
             for(var gj = 0; gj < labels.length; gj++) {
