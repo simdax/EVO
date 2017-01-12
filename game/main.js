@@ -1,7 +1,7 @@
 
 window.onload = function() {
 
-    game = new Phaser.Game(800, 600, Phaser.CANVAS, "");
+    game = new Phaser.Game(1200, 800, Phaser.CANVAS, "");
 
     
     game.state.add("board", boardState);

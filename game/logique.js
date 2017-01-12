@@ -43,9 +43,9 @@ this.inventaire= {
         orques:false,
     },
     mammiferes:{
-        rongeur:false,
-        hippopotame:false,
-        gorille:false,
+        rongeurs:false,
+        hippopotames:false,
+        gorilles:false,
     }
 };    
     this.xps=0;

@@ -4,8 +4,8 @@ var sectorWidth = hexagonWidth/4*3;
 var sectorHeight = hexagonHeight;
 var gradient = (hexagonWidth/4)/(hexagonHeight/2);
 
-var gridSizeX = 10;
-var gridSizeY = 10;
+var gridSizeX = 20;
+var gridSizeY = 20;
 var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
 
 var moveIndex=[0,0];
@@ -70,13 +70,13 @@ marker=function (image) {
 }; 
 marker.prototype={
     first:function () {
-        //        bip.start();
+
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
         this.sprite.events.onInputDown.add(this.grab,this);
     },
     grab:function () {
-        //bip.start()
+        
         hl=true;
         pointeur=this.id;
         if (action) {
@@ -118,53 +118,159 @@ boardState= function (game) {};
 
 boardState.prototype={  
     render:function () {
+        
+        // todo, infos plus belles
+        game.debug.text(mvts, 0,100);
+        game.debug.text(mvts, 0,100);
+        game.debug.text(mvts, 0,100);
+        game.debug.text(mvts, 0,100);
+        
+        game.debug.text("ici des textures", 680, 300)
         if (action) {
             game.debug.text("action", 100,150)
         }else{
             game.debug.text("en attente", 100,150)
         };
-        game.debug.text(mvts, 0,100);
-        game.debug.text("pointeur : "+pointeur, 50,50)
+        
+        //        game.debug.text("pointeur : "+pointeur, 50,50)
     },
     preload:function () {
 
-        // audio
+        // AUDIO _________________
         game.load.audio('bip', "sound/mp3/button.mp3");
+
+        // BOARD _________________
+        
         // terrain
 	game.load.image("hexMer", "images/hexMer.png");
         game.load.image("hexTerre", "images/hexTerre.png");
-        game.load.image("vaisseau", "images/vaisseau.png");
         game.load.image("hexagon", "images/hexagon.png");
 
-        //sprites
-        game.load.image("tyrannosaures", 'images/sprites/t2.png')
+        // menus
         
+        game.load.image("reglesEvo", "images/reglesEVO.png");
+        game.load.image("reglesManger", "images/reglesMANGER.png");
+        // TODO place sprite here
+        //        graphics
+        
+        //SPRITES __________________
+
+        
+        game.load.image("vaisseau", "images/sprites/vaisseau.png");
+        // bebetes
+        // todo jquery look at dir ?
+        game.load.image("tyrannosaures", 'images/sprites/resize/t2.png')
+        game.load.image("annelides" , 'images/sprites/annelides.png')
+        game.load.image("arachnides", 'images/sprites/arachnides.png')
+        game.load.image( "ceolacanthes", 'images/sprites/coelacanthes.png')
+        game.load.image( "compsognathus", 'images/sprites/compsognathus.png')
+        game.load.image( "crocodiles",'images/sprites/crocodiles.png')
+        game.load.image( "escargots",'images/sprites/escargots.png')
+        game.load.image( "gorilles",'images/sprites/gorilles.png')
+        game.load.image( "grenouilles",'images/sprites/grenouilles.png')
+        game.load.image( "hippopotames",'images/sprites/hippopotames.png')
+        game.load.image( "insectes",'images/sprites/insectes.png')
+        game.load.image( "orques",'images/sprites/orques.png')
+        game.load.image( "pieuvres",'images/sprites/pieuvres.png')
+        game.load.image( "requins",'images/sprites/requins.png')
+        game.load.image( "rongeurs",'images/sprites/rongeurs.png')
+        game.load.image( "roussettes",'images/sprites/roussettes.png')
+        game.load.image( "seches",'images/sprites/seches.png')
+        game.load.image( "serpents",'images/sprites/serpents.png')
+        game.load.image( "thons",'images/sprites/thons.png')
+
+
         //Menu
         game.load.spritesheet('button',
                               'images/buttons/flixel-button.png',
                               77,18);
     },
     create: function() {
+
+        //board
+
         createHexGrp();
+
+        // menus à droite
+
+        var reglesEvo=game.add.sprite(1000,200, "reglesEvo");
+        var reglesManger=game.add.sprite(1000,200, "reglesManger");
+        var tweenEvo=game.add.tween(reglesEvo);
+        var tweenManger=game.add.tween(reglesManger);
+        
+        var onTEvo=false;
+        var onTManger=false;
+        
+        // grosse barre en bas
+        var drawnObject;
+        var width=1000; var height=200;
+        var bmd = game.add.bitmapData(width, height);
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, width,height);
+        bmd.ctx.fillStyle = '#000000';
+        bmd.ctx.fill();
+        drawnObject = game.add.sprite(0,500, bmd);
+        ///
+        
+        var drawnObject1;
+        width=200;  height=200;
+        bmd = game.add.bitmapData(width, height);
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, width,height);
+        bmd.ctx.fillStyle = '#11ffff';
+        bmd.ctx.fill();
+        game.add.button(800,100,bmd,function () {
+            if (!onTEvo) {
+                tweenEvo.to( {x:400}, 500).start()
+                onTEvo=true
+            }else{
+                tweenEvo.to( {x:1000}, 500).start()
+                onTEvo=false
+            };
+        });
+        var drawnObject2;
+        width=200;  height=200;
+        bmd = game.add.bitmapData(width, height);
+        bmd.ctx.beginPath();
+        bmd.ctx.rect(0, 0, width,height);
+        bmd.ctx.fillStyle = '#ff11ff';
+        bmd.ctx.fill();
+        game.add.button(800,300, bmd,function () {
+            if (!onTManger) {
+                tweenManger.to( {x:400}, 500).start()
+                onTManger=true
+            }else{
+                tweenManger.to( {x:1000}, 500).start()
+                onTManger=false
+            };
+        });
+        ///
+        
         betesGroup=game.add.group();
         hexagonGroup.add(betesGroup);
         joueur.create();
-        // menu
+
+
+        // MENU
+
         var reduceY=1;
         var reduceX=0.8;
-        var espacement = 70;
+        var espacement = 100;
+        var offX=0, offY= 500;
+
+        // loop
         var c=0;
         for(var i in Especes) {
             var d=0;
-            var posX = c * espacement + 80;
-            var posY = d * 25 + 500;
+            var posX = c * espacement + offX;
+            var posY = d * 25 + offY;
             button = game.add.button
-            //new LabelButton
+            // phyllum bouton
             ( posX,posY,
               'button', function () {
                   
               });
-            button.scale.setTo(reduceX,reduceY);
+            //button.scale.setTo(reduceX,reduceY);
             game.add.text(posX+3,posY+5,i,
                           {'font': '10px Arial',
                            'fill': 'red'    }
@@ -173,6 +279,7 @@ boardState.prototype={
             function addB(name) {
                 var cb=
                     () => {
+                        console.log("io");
                         highlight(joueur.pos);
                         var niou=new marker(name);
                         stack.push(niou);
@@ -180,11 +287,14 @@ boardState.prototype={
                         action=true;
                         pointeur=niou.id;
                     };
-                button = game.add.button
-                ( posX,posY,
-                  'button',
-                  cb, this, 2, 1, 0);
-                button.scale.setTo(reduceX,reduceY);
+                for(var x = 0; x < 2; x++) {
+                    var button = game.add.button
+                    ( posX + (x*50) ,posY, name);
+                    // name, cb, this, 2, 1, 0);
+                    button.events.onInputDown.add(cb);
+                    button.scale.setTo(reduceX,reduceY);
+                };
+                
                 game.add.text(posX+10,posY+5,name,
                               {'font': '10px Arial',
                                'fill': 'black'    }
@@ -192,8 +302,8 @@ boardState.prototype={
             };
             var labels=Object.keys(Especes[i]);
             for(var gj = 0; gj < labels.length; gj++) {
-                var posX = c * espacement + 80;
-                var posY = d * 25 + 500;
+                var posX = c * espacement + offX;
+                var posY = d * 25 + offY;
                 var button; var caca=Math.random();
                 addB(labels[gj])
                 d +=1
@@ -201,6 +311,8 @@ boardState.prototype={
             c += 1
         };
 
+        // LOGIC
+        
         pointeur=0;
         //        this.placeMarker(joueur.pos[0], joueur.pos[1]);        
         
@@ -294,12 +406,12 @@ function createHexGrp(arg) {
 	    }
 	}
     }
-    hexagonGroup.y = (game.height-hexagonHeight*Math.ceil(gridSizeY/2))/2;
-    if(gridSizeY%2==0){
-        hexagonGroup.y-=hexagonHeight/4;
-    }
-    hexagonGroup.x = (game.width-Math.ceil(gridSizeX/2)*hexagonWidth-Math.floor(gridSizeX/2)*hexagonWidth/2)/2;
-    if(gridSizeX%2==0){
-        hexagonGroup.x-=hexagonWidth/8;
-    }
+    // hexagonGroup.y = (game.height-hexagonHeight*Math.ceil(gridSizeY/2))/2;
+    // if(gridSizeY%2==0){
+    //     hexagonGroup.y-=hexagonHeight/4;
+    // }
+    // hexagonGroup.x = (game.width-Math.ceil(gridSizeX/2)*hexagonWidth-Math.floor(gridSizeX/2)*hexagonWidth/2)/2;
+    // if(gridSizeX%2==0){
+    //     hexagonGroup.x-=hexagonWidth/8;
+    // }
 }
