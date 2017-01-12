@@ -14,10 +14,10 @@ do
             convert $i -scale 5% resize/$i
             ;;
         "serpents.png")
-            convert $i -scale 6% resize/$i
+            convert $i -scale 5% resize/$i
             ;;
         "seches.png")
-            convert $i -scale 15% resize/$i
+            convert $i -scale 20% resize/$i
             ;;
         "orques.png")
             convert $i -scale 20% resize/$i
