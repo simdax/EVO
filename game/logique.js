@@ -73,6 +73,7 @@ var Joueur = function (id) {
  
 }
 
+
 Joueur.prototype={
     create:function (espece) {
         new marker(espece)
@@ -83,6 +84,10 @@ Joueur.prototype={
         // }else{
         //     console.log("pas possible d'acheter");
         // }
+    },
+    go:function(){
+	var res=autour(this.pos);
+	console.log(res);
     },
     set:function (key,val) {
         var k=Object.keys(this.inventaire);
@@ -132,23 +137,6 @@ Joueur.prototype={
     }
 }
 
-// var bebete=function (){ };
-// bebete.prototype={
-//     move:function () {
-        
-//     },
-//     attaque:function (bebete) {
-//         bebete.meurt()
-//     },
-//     meurt:function () {
-//         this.sprite.destroy()
-//     },
-// }
-
-// var Espece={
-//     nb:2,
-// }
-
 
 Especes= {
     mollusques: {
@@ -191,32 +179,6 @@ Especes= {
 };
 
 
-// var esp=function (mere,proies,xp) {
-//     this.mere=mere;
-//     this.proies=proies;
-// };
-// esp.prototype=Object.create(Phaser.Sprite.prototype, {
-//     meurt:function () {
-//         this.destroy();
-//         mere.meurt()
-//     }
-// });
-
-// var phylum=function (name,available) {
-//     this.name=name; this.nb=2;
-//     this.available=available;
-//     this.sprites=[];
-//     for(var i = 0; i < 2; i++) {
-//         sprites.add(new esp(this))
-//     }
-    
-// };
-// phylum.prototype={
-//     meurt:function () {
-//         this.nb-=1;
-//         //game.remove.sprite
-//     }
-// };
 
 // image du jeu
 

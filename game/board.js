@@ -23,18 +23,42 @@ var poserBete=false;
 stack=[]
 var pointeur=0;
 
+moveCallback=function() {
+    this.current().vaisseau.sprite.x=game.input.x
+    this.current().vaisseau.sprite.y=game.input.y    
+}
+
 
 MDJ=function () {
     this.nbJoueurs=2;
     this.joueurs=[];
     this.currentJoueur=0
+    
+    for(var i = 0; i < this.nbJoueurs; i++) {
+        this.joueurs.push(new Joueur(i))
+    };
+
+    // ce sont des fonctions pour le debut de partie, tranquillou
+    var mC=function() {	
+        var p=this.current().vaisseau;
+	p.sprite.visible=true;
+	p.place()
+    };
+    var c=this.nbJoueurs;
+    var input=function () {
+	c-=1;
+	if (c>0) {
+	    this.currentJoueur+=1
+	}else{
+	    game.input.deleteMoveCallback(mC)
+	    game.input.onDown.removeAll();	
+	}
+    };
+    game.input.addMoveCallback(mC,this);
+    game.input.onDown.add(input,this);
 }
+
 MDJ.prototype={
-    init:function () {
-        for(var i = 0; i < this.nbJoueurs; i++) {
-            this.joueurs.push(new Joueur(i))
-        }
-    },
     next:function () {
         this.currentJoueur =
             (this.currentJoueur +1) % this.nbJoueurs
@@ -45,17 +69,17 @@ MDJ.prototype={
 }
 
 
-function highlight (point) {
-    var pos;
-    if (point==undefined) {
-        pos={x:stack[pointeur].pos[0], y:stack[pointeur].pos[1]};        
-    }else{
-        pos={x:point[0], y:point[1]};        
-    }
 
-    hexagonGroup.setAll('alpha', 0.3);
+//maths
+function convert (x,y) {
+    return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
+};
 
-    //    bon l'algo d'entourag est un peu nul, mais bon...
+//    bon l'algo d'entourag est un peu nul, mais bon...
+
+function autour(point){
+
+    var pos={x:point[0], y:point[1]};        
     var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
     var indices=[];
     for(var i = 0; i < un.length; i++) {
@@ -73,6 +97,12 @@ function highlight (point) {
             }
         }
     };
+    return indices
+}
+
+function highlight (point) {
+    var indices=autour(point || stack[pointeur]);
+    hexagonGroup.setAll('alpha', 0.3);
     for(var i = 0; i < indices.length; i++) {
         hexagonGroup.getAt(indices[i]).alpha=1;
     }
@@ -82,16 +112,11 @@ function normal() {
 }
 
 
-//maths
-function convert (x,y) {
-    return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
-};
-
 mvts=1;
 
 marker=function (image,joueur) {
     // prop
-    this.joueur= joueur || mdj.currentJoueur;
+    this.joueur= joueur //|| !function() {mdj.currentJoueur}()
     this.image=image;
     this.pos=[0,0];
     this.id;
@@ -101,11 +126,65 @@ marker=function (image,joueur) {
     this.create()
 }; 
 marker.prototype={
+    checkHex: function(){
+        var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
+        var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
+        var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
+        var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight; 
+        if(candidateX%2==0){
+            if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
+                candidateX--;
+                candidateY--;
+            }
+            if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
+                candidateX--;
+            }
+        }    
+        else{
+            if(deltaY>=hexagonHeight/2){
+                if(deltaX<(hexagonWidth/2-deltaY*gradient)){
+                    candidateX--;
+                }
+            }
+            else{
+                if(deltaX<deltaY*gradient){
+                    candidateX--;
+                }
+                else{
+                    candidateY--;
+                }
+            }
+        }
+	return[candidateX, candidateY]
+        if (action || land) {
+            if(hexagonGroup.getAt(convert(candidateX,candidateY)).alpha==1)
+            {
+                this.placeMarker(candidateX,candidateY);             
+            }
+        };
+    },
+    place: function(){
+	var pos=this.checkHex();
+	var posX=pos[0]; var posY=pos[1]
+	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
+	    this.sprite.visible=false;
+	}
+	else{
+	    this.sprite.visible=true;
+	    this.sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
+	    this.sprite.y = hexagonHeight*posY;
+	    if(posX%2==0){
+		this.sprite.y += hexagonHeight/2;
+	    }
+	    else{
+		this.sprite.y += hexagonHeight;
+	    }
+	};
+    },
     first:function () {
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
         var j=this.joueur;
-        console.log(this.joueur);
         this.sprite.events.onInputDown.add(
             function () {
                 console.log(mdj.currentJoueur);
@@ -119,9 +198,10 @@ marker.prototype={
         hl=true;
         pointeur=this.id;
         if (action) {
-            game.sound.play('bip')
+            //game.sound.play('bip')
             //synth.triggerAttackRelease("B6",0.25)
-            var pos=[moveIndex.x, moveIndex.y];
+            var pos=this.checkHex();
+	    console.log(pos);
             if(pos != this.pos) {this.pos=pos; mvts -= 1};
             if (mvts==0) {
                 mdj.next();
@@ -138,9 +218,7 @@ marker.prototype={
     },
     create:function () {
         var sp; var img=this.image;
-        !function () {
-            sp=game.add.sprite(0,0,img);
-        }();
+        sp=game.add.sprite(0,0,img);
         this.id=stack.length-1;
         pointeur=this.id;
 	sp.anchor.setTo(0.5);
@@ -162,6 +240,8 @@ marker.prototype={
         this.sprite=sp
     },
 };
+
+
 
 boardState= function (game) {};
 
@@ -214,18 +294,13 @@ boardState.prototype={
         betesGroup=game.add.group();
         hexagonGroup.add(betesGroup);
 
-        mdj=new MDJ;
-        mdj.init();
-        
         // LOGIC
         cursors = game.input.keyboard.createCursorKeys();
-        game.input.addMoveCallback(this.checkHex, this);
+
+	// MDJ qui commence le jeu
+	mdj=new MDJ;
         
-        //    changing state
-        // var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
-        // key.onDown.add(this.goTo, this)
-        // if(hl){highlight()}
-        
+
     },
 
     update:function () {
@@ -271,59 +346,7 @@ boardState.prototype={
     goTo:function () {
         game.state.start("interieur")
     },
-    checkHex: function(){
-        var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
-        var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
-        var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
-        var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight; 
-        if(candidateX%2==0){
-            if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
-                candidateX--;
-                candidateY--;
-            }
-            if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
-                candidateX--;
-            }
-        }    
-        else{
-            if(deltaY>=hexagonHeight/2){
-                if(deltaX<(hexagonWidth/2-deltaY*gradient)){
-                    candidateX--;
-                }
-            }
-            else{
-                if(deltaX<deltaY*gradient){
-                    candidateX--;
-                }
-                else{
-                    candidateY--;
-                }
-            }
-        }
-        moveIndex={x:candidateX, y:candidateY};
-        if (action || land) {
-            if(hexagonGroup.getAt(convert(candidateX,candidateY)).alpha==1)
-            {
-                this.placeMarker(candidateX,candidateY);             
-            }
-        };
-    },
-    placeMarker: function(posX,posY){
-	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
-	    stack[pointeur].sprite.visible=false;
-	}
-	else{
-	    stack[pointeur].sprite.visible=true;
-	    stack[pointeur].sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
-	    stack[pointeur].sprite.y = hexagonHeight*posY;
-	    if(posX%2==0){
-		stack[pointeur].sprite.y += hexagonHeight/2;
-	    }
-	    else{
-		stack[pointeur].sprite.y += hexagonHeight;
-	    }
-	}
-    }
+ 
     
 }
 
