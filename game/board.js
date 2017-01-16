@@ -19,7 +19,11 @@ var hl=false;
 var land=false;
 var poserBete=false;
 
-
+var ids=new Array(gridSizeX)
+for(var j = 0; j < gridSizeX; j++) {
+    ids[j] = new Array(gridSizeY)
+}
+console.log(ids[0][0]);
 stack=[]
 var pointeur=0;
 
@@ -41,7 +45,6 @@ MDJ=function () {
     // ce sont des fonctions pour le debut de partie, tranquillou
     var mC=function() {	
         var p=this.current().vaisseau;
-	p.sprite.visible=true;
 	p.place()
     };
     var c=this.nbJoueurs;
@@ -50,7 +53,8 @@ MDJ=function () {
 	if (c>0) {
 	    this.currentJoueur+=1
 	}else{
-	    game.input.deleteMoveCallback(mC)
+	    // un peu harsh, mais je repère pas sa connerie de delete 
+	    game.input.moveCallbacks=[]
 	    game.input.onDown.removeAll();	
 	}
     };
@@ -65,7 +69,15 @@ MDJ.prototype={
     },
     current:function () {
         return this.joueurs[this.currentJoueur]  
-    }
+    },
+    update:function () {
+	mvts-=1;
+	if (mvts==0) {
+            mdj.next();
+            mvts=4
+        };
+    },
+
 }
 
 
@@ -155,17 +167,15 @@ marker.prototype={
                 }
             }
         }
-	return[candidateX, candidateY]
-        if (action || land) {
-            if(hexagonGroup.getAt(convert(candidateX,candidateY)).alpha==1)
-            {
-                this.placeMarker(candidateX,candidateY);             
-            }
-        };
+	return [candidateX, candidateY]
     },
     place: function(){
 	var pos=this.checkHex();
-	var posX=pos[0]; var posY=pos[1]
+	var posX=pos[0]; var posY=pos[1];
+	if (ids[posX][posY] != null) {
+	    console.log("touched");
+	    return 0
+	}
 	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
 	    this.sprite.visible=false;
 	}
@@ -178,43 +188,27 @@ marker.prototype={
 	    }
 	    else{
 		this.sprite.y += hexagonHeight;
-	    }
+	    };
+	    this.pos=[posX,posY]
 	};
     },
-    first:function () {
-        this.pos=[moveIndex.x,moveIndex.y];
-        action=false; normal();
-        var j=this.joueur;
-        this.sprite.events.onInputDown.add(
-            function () {
-                console.log(mdj.currentJoueur);
-                console.log(j);
-                if (mdj.currentJoueur == j) {
-                    this.grab()
-                }
-            },this);
-    },
-    grab:function () {
-        hl=true;
-        pointeur=this.id;
-        if (action) {
-            //game.sound.play('bip')
-            //synth.triggerAttackRelease("B6",0.25)
-            var pos=this.checkHex();
-	    console.log(pos);
-            if(pos != this.pos) {this.pos=pos; mvts -= 1};
-            if (mvts==0) {
-                mdj.next();
-                pointeur=0;
-                land=true;
-                pointeur=mdj.current().vaisseau.id;
-                mvts=4
-            };
-            normal(); action=false; 
-        }else{
-            if(hl)(highlight());
-            action=true
-        }
+    click:function() {
+	if (mdj.currentJoueur==this.joueur) {
+	    highlight(this.pos)
+	    var fantome=game.add.sprite(0,0,this.image)
+	    fantome.anchor.setTo(0.5)
+	    fantome.alpha=0.8; //fantome.tint=
+	    game.input.addMoveCallback(function() {
+		fantome.x=game.input.x
+		fantome.y=game.input.y
+	    });
+	    game.input.onDown.addOnce(function() {
+		normal(); fantome.destroy()
+		this.place();
+		mdj.update()
+	    },this)
+//	    this.grab()
+	}
     },
     create:function () {
         var sp; var img=this.image;
@@ -222,21 +216,11 @@ marker.prototype={
         this.id=stack.length-1;
         pointeur=this.id;
 	sp.anchor.setTo(0.5);
-        sp.scale.setTo(0.85);
+//        sp.scale.setTo(0.85);
 	sp.visible=false;
         sp.inputEnabled=true;
-        if (this.image=="vaisseau") {
-            sp.events.onInputDown.addOnce(
-                this.first,this
-            )
-        }else{
-            sp.events.onInputDown.addOnce(
-                this.grab,this
-            )
-        };
-        !function () {
-            betesGroup.add(sp);
-        }()
+        sp.events.onInputDown.add(this.click,this)
+        betesGroup.add(sp);
         this.sprite=sp
     },
 };
