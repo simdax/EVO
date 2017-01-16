@@ -16,12 +16,34 @@ var betesGroup;
 
 var action=true;
 var hl=false;
+var land=false;
 var poserBete=false;
 
 
 stack=[]
 var pointeur=0;
-var nb;
+
+
+MDJ=function () {
+    this.nbJoueurs=2;
+    this.joueurs=[];
+    this.currentJoueur=0
+}
+MDJ.prototype={
+    init:function () {
+        for(var i = 0; i < this.nbJoueurs; i++) {
+            this.joueurs.push(new Joueur(i))
+        }
+    },
+    next:function () {
+        this.currentJoueur =
+            (this.currentJoueur +1) % this.nbJoueurs
+    },
+    current:function () {
+        return this.joueurs[this.currentJoueur]  
+    }
+}
+
 
 function highlight (point) {
     var pos;
@@ -65,18 +87,15 @@ function convert (x,y) {
     return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
 };
 
-var mvts=4;
+mvts=1;
 
-
-var joueur// =new marker("vaisseau",game);
-
-
-marker=function (image) {
+marker=function (image,joueur) {
     // prop
+    this.joueur= joueur || mdj.currentJoueur;
     this.image=image;
     this.pos=[0,0];
     this.id;
-    this.sprite; this.mvts=4;
+    this.sprite; 
     //init
     stack.push(this)
     this.create()
@@ -85,7 +104,16 @@ marker.prototype={
     first:function () {
         this.pos=[moveIndex.x,moveIndex.y];
         action=false; normal();
-        this.sprite.events.onInputDown.add(this.grab,this);
+        var j=this.joueur;
+        console.log(this.joueur);
+        this.sprite.events.onInputDown.add(
+            function () {
+                console.log(mdj.currentJoueur);
+                console.log(j);
+                if (mdj.currentJoueur == j) {
+                    this.grab()
+                }
+            },this);
     },
     grab:function () {
         hl=true;
@@ -96,7 +124,11 @@ marker.prototype={
             var pos=[moveIndex.x, moveIndex.y];
             if(pos != this.pos) {this.pos=pos; mvts -= 1};
             if (mvts==0) {
-                mvts=3
+                mdj.next();
+                pointeur=0;
+                land=true;
+                pointeur=mdj.current().vaisseau.id;
+                mvts=4
             };
             normal(); action=false; 
         }else{
@@ -115,17 +147,21 @@ marker.prototype={
         sp.scale.setTo(0.85);
 	sp.visible=false;
         sp.inputEnabled=true;
-        sp.events.onInputDown.addOnce(
-            this.first,this
-        );
-        // !function () {
-        //     betesGroup.add(sp);
-        // }()
+        if (this.image=="vaisseau") {
+            sp.events.onInputDown.addOnce(
+                this.first,this
+            )
+        }else{
+            sp.events.onInputDown.addOnce(
+                this.grab,this
+            )
+        };
+        !function () {
+            betesGroup.add(sp);
+        }()
         this.sprite=sp
     },
 };
-
-//stack=[joueur];
 
 boardState= function (game) {};
 
@@ -178,9 +214,9 @@ boardState.prototype={
         betesGroup=game.add.group();
         hexagonGroup.add(betesGroup);
 
-        joueur=new Joueur();
-//        game.add.sprite(40,40,"vaisseau")
-
+        mdj=new MDJ;
+        mdj.init();
+        
         // LOGIC
         cursors = game.input.keyboard.createCursorKeys();
         game.input.addMoveCallback(this.checkHex, this);
@@ -209,23 +245,26 @@ boardState.prototype={
         {
             game.camera.y += 4;
         }  
-
     },
+    
     render:function () {
         
         // // todo, infos plus belles
-        // game.debug.text(mvts, 0,100);
-        // game.debug.text(mvts, 0,100);
-        // game.debug.text(mvts, 0,100);
+        //game.debug.text("current : "+mdj.current(), 0,100);
+        game.debug.text("nb fig : "+betesGroup.length, 0,400);
+        game.debug.text("joueur (via pointeur): "+stack[pointeur].joueur, 0,100);
+        game.debug.text("joueur (via mdj): "+mdj.currentJoueur, 0,200);
+        game.debug.text("fig ID : "+pointeur, 0,50)
+        game.debug.text("mvts:"+mvts, 0,300);
+        
         // game.debug.text(mvts, 0,100);
         
-        game.debug.text("ici des textures", 680, 300)
+        game.debug.text("ici des textures", 880, 300)
         if (action) {
             game.debug.text("action", 100,150)
         }else{
             game.debug.text("en attente", 100,150)
         };
-        game.debug.text("pointeur : "+pointeur, 50,50)
     },
     
     //  private
@@ -262,7 +301,7 @@ boardState.prototype={
             }
         }
         moveIndex={x:candidateX, y:candidateY};
-        if (action ) {
+        if (action || land) {
             if(hexagonGroup.getAt(convert(candidateX,candidateY)).alpha==1)
             {
                 this.placeMarker(candidateX,candidateY);             
@@ -301,18 +340,8 @@ function createHexs(arg) {
                 }else{
                     hexagon= game.add.sprite(hexagonX,hexagonY,"hexTerre");
                 };
-                // scalage bourrin
-                // hexagon.scale.setTo(0.138,0.185);
 		hexagonGroup.add(hexagon);
 	    }
 	}
     }
-    // hexagonGroup.y = (game.height-hexagonHeight*Math.ceil(gridSizeY/2))/2;
-    // if(gridSizeY%2==0){
-    //     hexagonGroup.y-=hexagonHeight/4;
-    // }
-    // hexagonGroup.x = (game.width-Math.ceil(gridSizeX/2)*hexagonWidth-Math.floor(gridSizeX/2)*hexagonWidth/2)/2;
-    // if(gridSizeX%2==0){
-    //     hexagonGroup.x-=hexagonWidth/8;
-    // }
 }

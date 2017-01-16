@@ -6,14 +6,30 @@ function check(dic,k) {
     return false
 };
 
+get=function (key,dict) {
+        var k=Object.keys(dict);
+        for(var i = 0; i < k.length; i++) {
+            if((Object.keys(dict[k[i]])).indexOf(key) >= 0){
+                return dict[k[i]][key]
+            } // exists
+        }
+        return -1; //error
+    }
 
+function allKeys() {
+    var res=[];
+    for(var ph in Especes){
+        res.push(Object.keys(Especes[ph]))
+    }
+    return res
+}
 
-var Joueur = function () {
+var Joueur = function (id) {
 
-    this.vaisseau=new marker("vaisseau")
+    this.state="land"; // peut être "rien" ou "grabbé"
+    this.vaisseau=new marker("vaisseau",id)
     this.xps=10;
     this.phylums=[];
-    this.mvts=4;
     
     this.inventaire= {
         mollusques: {
@@ -58,25 +74,30 @@ var Joueur = function () {
 }
 
 Joueur.prototype={
-    createBetes:function (name) {
-        
+    create:function (espece) {
+        new marker(espece)
+        // var nbRest=this.get(espece);
+        // if (nbRest == 1 || nbRest == 2) {
+        //     new marker(espece);
+        //     this.set(espece)=nbRest-1
+        // }else{
+        //     console.log("pas possible d'acheter");
+        // }
     },
     set:function (key,val) {
         var k=Object.keys(this.inventaire);
         for(var i = 0; i < k.length; i++) {
             if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
                 this.inventaire[k[i]][key] = val
-            } // exists
+            } 
         }
     },
     get:function (key) {
-        var k=Object.keys(this.inventaire);
-        for(var i = 0; i < k.length; i++) {
-            if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
-                return this.inventaire[k[i]][key]
-            } // exists
-        }
-        return -1; //error
+        var res=get(key,this.inventaire);
+        if (res) {
+            return res
+        }else
+        { console.log("heuuuu" +key)}
     },
     checkPhylums:function () {
         var res=0;
@@ -91,55 +112,42 @@ Joueur.prototype={
         this.xps = this.xps + 1 + this.checkPhylums()
     },
     acheter:function (espece) {
+        var phylum=get(espece,Especes);
         switch(this.get(espece)){
         case -1:
             console.log("error");
             break;
-        case true:
-            console.log("tu l'as déjà !");
-            break;
-        default:
+        case false: 
             if(phylum.xp < this.xps){
                 this.xps -= espece.xp;
                 this.set(espece, true)
             }{
                 console.log("pas assez d'argent");
             };
+            break;
+        default:
+            console.log("tu l'as déjà !");
+            break;
         }
     }
 }
 
-// //trios en haut
-// game.add.text(100,60,"2");
-// game.add.text(230,60,"2");
-// game.add.text(350,60,"2");
-
-// // trois en bas
-// game.add.text(100,470,"2");
-// game.add.text(230,470,"2");
-// game.add.text(400,420,"2");
-
-// // trois au milieu
-// game.add.text(100,270,"2");
-// game.add.text(230,300,"2");
-// game.add.text(350,200,"2");
-
-var bebete=function (){ };
-bebete.prototype={
-    move:function () {
+// var bebete=function (){ };
+// bebete.prototype={
+//     move:function () {
         
-    },
-    attaque:function (bebete) {
-        bebete.meurt()
-    },
-    meurt:function () {
-        this.sprite.destroy()
-    },
-}
+//     },
+//     attaque:function (bebete) {
+//         bebete.meurt()
+//     },
+//     meurt:function () {
+//         this.sprite.destroy()
+//     },
+// }
 
-var Espece={
-    nb:2,
-}
+// var Espece={
+//     nb:2,
+// }
 
 
 Especes= {
@@ -183,32 +191,32 @@ Especes= {
 };
 
 
-var esp=function (mere,proies,xp) {
-    this.mere=mere;
-    this.proies=proies;
-};
-esp.prototype=Object.create(Phaser.Sprite.prototype, {
-    meurt:function () {
-        this.destroy();
-        mere.meurt()
-    }
-});
+// var esp=function (mere,proies,xp) {
+//     this.mere=mere;
+//     this.proies=proies;
+// };
+// esp.prototype=Object.create(Phaser.Sprite.prototype, {
+//     meurt:function () {
+//         this.destroy();
+//         mere.meurt()
+//     }
+// });
 
-var phylum=function (name,available) {
-    this.name=name; this.nb=2;
-    this.available=available;
-    this.sprites=[];
-    for(var i = 0; i < 2; i++) {
-        sprites.add(new esp(this))
-    }
+// var phylum=function (name,available) {
+//     this.name=name; this.nb=2;
+//     this.available=available;
+//     this.sprites=[];
+//     for(var i = 0; i < 2; i++) {
+//         sprites.add(new esp(this))
+//     }
     
-};
-phylum.prototype={
-    meurt:function () {
-        this.nb-=1;
-        //game.remove.sprite
-    }
-};
+// };
+// phylum.prototype={
+//     meurt:function () {
+//         this.nb-=1;
+//         //game.remove.sprite
+//     }
+// };
 
 // image du jeu
 

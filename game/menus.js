@@ -95,12 +95,9 @@ function createMenu(menuGroup) {
         function addB(name) {
             var cb=
                 () => {
-                    highlight(joueur.pos);
-                    var niou=new marker(name);
-                    // stack.push(niou);
-                    // niou.create();
+                    highlight(mdj.current().vaisseau.pos);
+                    mdj.current().create(name)
                     action=true;
-                    //pointeur=niou.id;
                 };
             for(var x = 0; x < 2; x++) {
                 var button = game.add.button
