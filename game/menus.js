@@ -96,16 +96,12 @@ function createMenu(menuGroup) {
                 () => {
                     highlight(mdj.current().vaisseau.pos);
                     var sp=mdj.current().create(name,mdj.currentJoueur)
-		    game.input.addMoveCallback(
-			function() {
-			    sp.place();    
-			}
-		    );
-		    game.input.onDown.addOnce(function() {
-			normal();
-			console.log(sp);
-			game.input.moveCallbacks=[];
-			sp.sprite.inputEnabled=true;
+		    game.input.addMoveCallback(sp.place,sp);
+		    game.input.onDown.addOnce(() => {
+		    	normal();
+		    	game.input.moveCallbacks=[];
+		    	sp.sprite.inputEnabled=true;
+			ids.push(sp)
 		    },this)
                 };
             for(var x = 0; x < 2; x++) {

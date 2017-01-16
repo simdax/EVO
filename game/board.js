@@ -4,8 +4,8 @@ var sectorWidth = hexagonWidth/4*3;
 var sectorHeight = hexagonHeight;
 var gradient = (hexagonWidth/4)/(hexagonHeight/2);
 
-var gridSizeX = 20;
-var gridSizeY = 20;
+var gridSizeX = 10;
+var gridSizeY = 10;
 var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
 
 var moveIndex=[0,0];
@@ -19,11 +19,7 @@ var hl=false;
 var land=false;
 var poserBete=false;
 
-var ids=new Array(gridSizeX)
-for(var j = 0; j < gridSizeX; j++) {
-    ids[j] = new Array(gridSizeY)
-}
-console.log(ids[0][0]);
+var ids=[];
 stack=[]
 var pointeur=0;
 
@@ -42,33 +38,39 @@ MDJ=function () {
     for(var i = 0; i < this.nbJoueurs; i++) {
         this.joueurs.push(new Joueur(i))
     };
+
+    
     // ce sont des fonctions pour le debut de partie, tranquillou
     var mC=function() {	
         var p=this.current().vaisseau;
-	p.place()
+    	p.place()
     };
     var c=this.nbJoueurs;
     var input=function () {
-	c-=1;
-	if (c>0) {
-	    this.currentJoueur+=1
-	}else{
-	    // un peu harsh, mais je repère pas sa connerie de delete 
-	    game.input.moveCallbacks=[]
-	    game.input.onDown.removeAll();
-	    for(var i = 0; i < this.joueurs.length; i++) {
-		this.joueurs[i].vaisseau.sprite.inputEnabled=true
-	    }
-	}
+    	c-=1;
+    	if (c>0) {
+    	    this.currentJoueur+=1
+    	}else{
+    	    // un peu harsh, mais je repère pas sa connerie de delete 
+    	    game.input.moveCallbacks=[]
+    	    game.input.onDown.removeAll();
+    	    for(var i = 0; i < this.joueurs.length; i++) {
+    		var pion=this.joueurs[i].vaisseau
+    		pion.sprite.inputEnabled=true
+		ids.push(pion)
+    	    }
+    	}
     };
     game.input.addMoveCallback(mC,this);
     game.input.onDown.add(input,this);
+
+
+    
 }
 
 MDJ.prototype={
     next:function () {
-        this.currentJoueur =
-            (this.currentJoueur +1) % this.nbJoueurs
+        this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs
     },
     current:function () {
         return this.joueurs[this.currentJoueur]  
@@ -116,7 +118,7 @@ function autour(point){
 }
 
 function highlight (point) {
-    var indices=autour(point || stack[pointeur]);
+    var indices=autour(point)
     hexagonGroup.setAll('alpha', 0.3);
     for(var i = 0; i < indices.length; i++) {
         hexagonGroup.getAt(indices[i]).alpha=1;
@@ -175,9 +177,12 @@ marker.prototype={
     place: function(){
 	var pos=this.checkHex();
 	var posX=pos[0]; var posY=pos[1];
-	if (ids[posX][posY] != null) {
-	    console.log("touched");
-	    return 0
+	for(var i = 0; i < ids.length; i++) {
+	    if (arraysEqual(ids[i].pos,[posX,posY])) {
+		// sound 
+		console.log("touched");
+		return 0
+	    }
 	}
 	if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
 	    this.sprite.visible=false;
@@ -196,7 +201,6 @@ marker.prototype={
 	};
     },
     click:function() {
-	console.log("coucou");
 	if (mdj.currentJoueur==this.joueur) {
 	    highlight(this.pos)
 	    var fantome=game.add.sprite(0,0,this.image)
@@ -223,7 +227,8 @@ marker.prototype={
 	sp.anchor.setTo(0.5);
 //        sp.scale.setTo(0.85);
 	sp.visible=false;
-        sp.events.onInputDown.add(this.click,this)
+	//events
+	sp.events.onInputDown.add(this.click,this)
         betesGroup.add(sp);
         this.sprite=sp
     },
