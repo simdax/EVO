@@ -34,14 +34,14 @@ moveCallback=function() {
 
 
 MDJ=function () {
+
     this.nbJoueurs=2;
     this.joueurs=[];
     this.currentJoueur=0
-    
+
     for(var i = 0; i < this.nbJoueurs; i++) {
         this.joueurs.push(new Joueur(i))
     };
-
     // ce sont des fonctions pour le debut de partie, tranquillou
     var mC=function() {	
         var p=this.current().vaisseau;
@@ -55,7 +55,10 @@ MDJ=function () {
 	}else{
 	    // un peu harsh, mais je repère pas sa connerie de delete 
 	    game.input.moveCallbacks=[]
-	    game.input.onDown.removeAll();	
+	    game.input.onDown.removeAll();
+	    for(var i = 0; i < this.joueurs.length; i++) {
+		this.joueurs[i].vaisseau.sprite.inputEnabled=true
+	    }
 	}
     };
     game.input.addMoveCallback(mC,this);
@@ -124,7 +127,7 @@ function normal() {
 }
 
 
-mvts=1;
+mvts=4;
 
 marker=function (image,joueur) {
     // prop
@@ -203,7 +206,8 @@ marker.prototype={
 		fantome.y=game.input.y
 	    });
 	    game.input.onDown.addOnce(function() {
-		normal(); fantome.destroy()
+		normal(); fantome.destroy();
+		game.input.moveCallbacks=[]
 		this.place();
 		mdj.update()
 	    },this)
@@ -218,7 +222,9 @@ marker.prototype={
 	sp.anchor.setTo(0.5);
 //        sp.scale.setTo(0.85);
 	sp.visible=false;
-        sp.inputEnabled=true;
+        if (this.image!="vaisseau") {
+	    sp.inputEnabled=true;
+	}
         sp.events.onInputDown.add(this.click,this)
         betesGroup.add(sp);
         this.sprite=sp
