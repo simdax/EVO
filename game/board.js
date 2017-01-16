@@ -196,6 +196,7 @@ marker.prototype={
 	};
     },
     click:function() {
+	console.log("coucou");
 	if (mdj.currentJoueur==this.joueur) {
 	    highlight(this.pos)
 	    var fantome=game.add.sprite(0,0,this.image)
@@ -222,9 +223,6 @@ marker.prototype={
 	sp.anchor.setTo(0.5);
 //        sp.scale.setTo(0.85);
 	sp.visible=false;
-        if (this.image!="vaisseau") {
-	    sp.inputEnabled=true;
-	}
         sp.events.onInputDown.add(this.click,this)
         betesGroup.add(sp);
         this.sprite=sp

@@ -70,7 +70,6 @@ function createMenu(menuGroup) {
     var espacement = 120;
     var espY=50;
     var offX=0, offY= 450;
-
     
     // loop
     var c=0;
@@ -96,8 +95,18 @@ function createMenu(menuGroup) {
             var cb=
                 () => {
                     highlight(mdj.current().vaisseau.pos);
-                    mdj.current().create(name)
-                    action=true;
+                    var sp=mdj.current().create(name,mdj.currentJoueur)
+		    game.input.addMoveCallback(
+			function() {
+			    sp.place();    
+			}
+		    );
+		    game.input.onDown.addOnce(function() {
+			normal();
+			console.log(sp);
+			game.input.moveCallbacks=[];
+			sp.sprite.inputEnabled=true;
+		    },this)
                 };
             for(var x = 0; x < 2; x++) {
                 var button = game.add.button

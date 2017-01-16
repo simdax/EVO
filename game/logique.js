@@ -69,14 +69,14 @@ var Joueur = function (id) {
             hippopotames:false,
             gorilles:false,
         }
-    };    
- 
+    };   
 }
 
 
 Joueur.prototype={
-    create:function (espece) {
-        new marker(espece)
+    create:function (espece,id) {
+        var m=new marker(espece,id)
+	return m
         // var nbRest=this.get(espece);
         // if (nbRest == 1 || nbRest == 2) {
         //     new marker(espece);
