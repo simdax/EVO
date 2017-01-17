@@ -29,13 +29,16 @@ do
             convert $i -scale 6% resize/$i
             ;;
         "arachnides.png")
-            convert $i -scale 4% resize/$i
+            convert $i -scale 2.5% resize/$i
             ;;
         "crocodiles.png")
-            convert $i -scale 3% resize/$i
+            convert $i -scale 2.5% resize/$i
             ;;
         "hippopotames.png")
             convert $i -scale 5% resize/$i
+            ;;
+	"gorilles.png")
+            convert $i -scale 15% resize/$i
             ;;
         *)
             convert $i -scale 10% resize/$i

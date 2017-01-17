@@ -1,3 +1,25 @@
+couleursBouttons= {}
+//     annelides:false,
+//     escargots:false,
+//     seches:false,
+//     pieuvres:false,
+//     insectes:false,
+//     arachnides:false,
+//     roussettes:false,
+//     requins:false,
+//     thons:false,
+//     coelacanthes:false,
+//     grenouilles:false,
+//     serpents:false,
+//     crocodiles:false,
+//     compsognathus:false,
+//     tyrannosaures:false,
+//     orques:false,
+//     rongeurs:false,
+//     hippopotames:false,
+//     gorilles:false
+// };
+
 /*global functionname */
 function createBarres(menuGroup) {
 
@@ -80,11 +102,21 @@ function createMenu(menuGroup) {
     var posY = d * espY + offY;
 
     // phyllum bouton
+    var hl=false;
     var button = game.add.button
     ( posX,posY,
       'button', function () {
-                // todo highlight or what?
-              });
+                  if(hl){
+                    hexagonGroup.alpha=1
+                    hl=false
+                  }else{
+                      hexagonGroup.alpha=0.2;
+                    betesGroup.forEach(function (bete){
+                      console.log(bete)
+                    });
+                    hl=true
+                  }
+                });
     menuGroup.add(button);
     var style=
       {'font': '10px Arial',
@@ -95,13 +127,17 @@ function createMenu(menuGroup) {
 
     // especes bouton
     function buyEsp(button){
-      mdj.current().acheter(button.esp)
+      var res= mdj.current().acheter(button.esp);
     }
     var count=0;
     for(var esp in Especes[i]){
       var buton = game.add.button
       ( posX,20+posY+20*count, 'button', buyEsp );
+      buton.tint=0x000000;
       menuGroup.add(buton);
+      couleursBouttons[esp]=buton;
+      var txt=game.add.text(posX+15,22+posY+20*count,esp,style);
+      menuGroup.add(txt);
       buton.esp=esp;
       count+=1
     }
@@ -125,7 +161,7 @@ function createMenu(menuGroup) {
         ( posX + (x*50) , 30+posY, name);
         // name, cb, this, 2, 1, 0);
         button.events.onInputDown.add(cb);
-            menuGroup.add(button)
+        menuGroup.add(button)
       };
     };
     var labels=Object.keys(Especes[i]);
