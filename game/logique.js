@@ -26,11 +26,10 @@ function allKeys() {
 
 var Joueur = function (id) {
 
-    this.state="land"; // peut être "rien" ou "grabbé"
     this.vaisseau=new marker("vaisseau",id)
     this.xps=10;
-    this.phylums=[];
-    
+    // this.phylums=[];
+
     this.inventaire= {
         mollusques: {
             annelides:false,
@@ -69,40 +68,38 @@ var Joueur = function (id) {
             hippopotames:false,
             gorilles:false,
         }
-    };   
+    };
 }
 
 
 Joueur.prototype={
     create:function (espece,id) {
         var m=new marker(espece,id)
+        var nbRest=this.get(espece);
+	console.log(nbRest);
+        if (nbRest == 1 || nbRest == 2) {
+            new marker(espece);
+            this.set(espece)=nbRest-1
+        }else{
+            console.log("pas possible d'acheter");
+        };
 	return m
-        // var nbRest=this.get(espece);
-        // if (nbRest == 1 || nbRest == 2) {
-        //     new marker(espece);
-        //     this.set(espece)=nbRest-1
-        // }else{
-        //     console.log("pas possible d'acheter");
-        // }
-    },
-    go:function(){
-	var res=autour(this.pos);
-	console.log(res);
     },
     set:function (key,val) {
+// TODO add color
         var k=Object.keys(this.inventaire);
         for(var i = 0; i < k.length; i++) {
             if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
                 this.inventaire[k[i]][key] = val
-            } 
+            }
         }
     },
     get:function (key) {
-        var res=get(key,this.inventaire);
-        if (res) {
-            return res
-        }else
-        { console.log("heuuuu" +key)}
+      var res=get(key,this.inventaire);
+      if (res!=-1) {
+        return res
+      }else
+      { console.log("error sur " +key)}
     },
     checkPhylums:function () {
         var res=0;
@@ -122,7 +119,7 @@ Joueur.prototype={
         case -1:
             console.log("error");
             break;
-        case false: 
+        case false:
             if(phylum.xp < this.xps){
                 this.xps -= espece.xp;
                 this.set(espece, true)
@@ -197,7 +194,7 @@ interieur.prototype={
         game.add.text(230,60,"2");
         game.add.text(350,60,"2");
 
-        
+
         // trois en bas
         game.add.text(100,470,"2");
         game.add.text(230,470,"2");
@@ -207,7 +204,7 @@ interieur.prototype={
         game.add.text(100,270,"2");
         game.add.text(230,300,"2");
         game.add.text(350,200,"2");
-        
+
         var key=game.input.keyboard.addKey(Phaser.Keyboard.X);
         key.onDown.add(this.goTo, this)
     },
