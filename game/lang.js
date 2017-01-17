@@ -1,17 +1,6 @@
 
-function arraysEqual(a, b) {
-  if (a === b) return true;
-  if (a == null || b == null) return false;
-  if (a.length != b.length) return false;
 
-  // If you don't care about the order of the elements inside
-  // the array, you should sort both arrays here.
-
-  for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false;
-  }
-  return true;
-}
+// phaser geo
 
 function draw(w,h,color){
 
@@ -29,7 +18,8 @@ function draw(w,h,color){
 
 
 
-//maths
+//maths + hexa
+
 function convert (x,y) {
     return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
 };
@@ -68,4 +58,49 @@ function highlight (point) {
 };
 function normal() {
     hexagonGroup.setAll('alpha', 1)
+}
+
+
+//// dic manipualmtion
+
+function check(dic,k) {
+    var keys=Object.keys(dic);
+    for(var i = 0; i<keys.length ; i++) {
+        if((Object.keys(dic[keys[i]])).indexOf(k) >= 0){return true}
+    };
+    return false
+};
+
+function get(key,dict) {
+        var k=Object.keys(dict);
+        for(var i = 0; i < k.length; i++) {
+            if((Object.keys(dict[k[i]])).indexOf(key) >= 0){
+                return dict[k[i]][key]
+            } // exists
+        }
+        return -1; //error
+    }
+
+function allKeys() {
+    var res=[];
+    for(var ph in Especes){
+        res.push(Object.keys(Especes[ph]))
+    }
+    return res
+}
+
+/// equality
+
+function arraysEqual(a, b) {
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+
+  // If you don't care about the order of the elements inside
+  // the array, you should sort both arrays here.
+
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
 }

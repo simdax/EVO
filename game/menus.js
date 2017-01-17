@@ -57,7 +57,7 @@ function createMenu(menuGroup) {
   // grosse barre en bas
 
   var width=1200; var height=300;
-
+  bmd=draw(1200,300)
   bmd = game.add.bitmapData(width, height);
   bmd.ctx.beginPath();
   bmd.ctx.rect(0, 0, width,height);
@@ -95,13 +95,12 @@ function createMenu(menuGroup) {
 
     // especes bouton
     function buyEsp(button){
-      mdj.current().set(button.esp)
+      mdj.current().acheter(button.esp)
     }
     var count=0;
     for(var esp in Especes[i]){
       var buton = game.add.button
-      ( posX,20+posY+20*count,
-        'button', buyEsp );
+      ( posX,20+posY+20*count, 'button', buyEsp );
       menuGroup.add(buton);
       buton.esp=esp;
       count+=1
@@ -110,15 +109,16 @@ function createMenu(menuGroup) {
     function addB(name) {
       var cb=
         () => {
-          highlight(mdj.current().vaisseau.pos);
-          var sp=mdj.current().create(name,mdj.currentJoueur)
-	  game.input.addMoveCallback(sp.place,sp);
-	  game.input.onDown.addOnce(() => {
-	    normal();
-	    game.input.moveCallbacks=[];
-	    sp.sprite.inputEnabled=true;
-	    ids.push(sp)
-	  },this)
+          var sp=mdj.current().create(name)
+          if(sp!=-1){
+            highlight(mdj.current().vaisseau.pos);
+	    game.input.addMoveCallback(sp.place,sp);
+	    game.input.onDown.addOnce(() => {
+	      normal();
+	      game.input.moveCallbacks=[];
+	      sp.sprite.inputEnabled=true;
+	      ids.push(sp)
+	    },this)}
         };
       for(var x = 0; x < 2; x++) {
         var button = game.add.button

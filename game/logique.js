@@ -1,33 +1,9 @@
-function check(dic,k) {
-    var keys=Object.keys(dic);
-    for(var i = 0; i<keys.length ; i++) {
-        if((Object.keys(dic[keys[i]])).indexOf(k) >= 0){return true}
-    };
-    return false
-};
-
-get=function (key,dict) {
-        var k=Object.keys(dict);
-        for(var i = 0; i < k.length; i++) {
-            if((Object.keys(dict[k[i]])).indexOf(key) >= 0){
-                return dict[k[i]][key]
-            } // exists
-        }
-        return -1; //error
-    }
-
-function allKeys() {
-    var res=[];
-    for(var ph in Especes){
-        res.push(Object.keys(Especes[ph]))
-    }
-    return res
-}
 
 var Joueur = function (id) {
 
-    this.vaisseau=new marker("vaisseau",id)
-    this.xps=10;
+  this.id=id;
+  this.vaisseau=new marker("vaisseau",this.id)
+  this.xps=10;
     // this.phylums=[];
 
     this.inventaire= {
@@ -73,17 +49,17 @@ var Joueur = function (id) {
 
 
 Joueur.prototype={
-    create:function (espece,id) {
-        var m=new marker(espece,id)
-        var nbRest=this.get(espece);
+    create:function (espece) {
+      var nbRest=this.get(espece);
 	console.log(nbRest);
         if (nbRest == 1 || nbRest == 2) {
-            new marker(espece);
-            this.set(espece)=nbRest-1
+          var m=new marker(espece,this.id)
+          this.set(espece, nbRest-1)
+	  return m
         }else{
-            console.log("pas possible d'acheter");
+          console.log("pas possible d'acheter");
+          return -1
         };
-	return m
     },
     set:function (key,val) {
 // TODO add color
@@ -121,9 +97,9 @@ Joueur.prototype={
             break;
         case false:
             if(phylum.xp < this.xps){
-                this.xps -= espece.xp;
-                this.set(espece, true)
-            }{
+                this.xps -= phylum.xp;
+                this.set(espece, 2)
+            }else{
                 console.log("pas assez d'argent");
             };
             break;

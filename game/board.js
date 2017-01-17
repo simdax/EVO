@@ -273,8 +273,11 @@ boardState.prototype={
 
         // // todo, infos plus belles
         //game.debug.text("current : "+mdj.current(), 0,100);
-        game.debug.text("nb fig : "+betesGroup.length, 0,400);
-        game.debug.text("joueur (via mdj): "+mdj.currentJoueur, 0,200);
+      for(var i=0; i < mdj.nbJoueurs; i++){
+        game.debug.text("joueur : "+i+ " xp : "+ mdj.joueurs[i].xps, 0,400+i*50);
+      }
+        game.debug.text("nb fig : "+betesGroup.length, 0,350);
+        game.debug.text("joueur"+  "(via mdj): "+mdj.currentJoueur, 0,200);
         game.debug.text("fig ID : "+pointeur, 0,50)
         game.debug.text("mvts:"+mvts, 0,300);
 
