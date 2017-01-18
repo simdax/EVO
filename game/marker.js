@@ -49,15 +49,8 @@ marker.prototype={
         return [candidateX, candidateY]
     },
     checkTerrain:function () {
-        console.log("terrain");
-        for(var i = 0; i < hexagonGroup.length; i++) {
-            if (hexagonGroup.getAt(i).x == game.input.x
-                &&
-                hexagonGroup.getAt(i).y == game.input.y
-               ) {
-                console.log(hexagonGroup.getAt(i));
-            }
-        }
+        // terrain est une variabl global attaché aux sprites hexagonaux de terrain
+        return  this.esp.type==terrain
     },
     rencontre:function (autre,x,y) {
         if (autre.image=="vaisseau") {
@@ -76,15 +69,16 @@ marker.prototype={
     place: function(){
         var pos=this.checkHex();
         var posX=pos[0]; var posY=pos[1];
-        for(var i = 0; i < ids.length; i++) {
-	    if (arraysEqual(ids[i].pos,[posX,posY])) {
-	        // sound
-                this.checkTerrain()
-                this.rencontre(ids[i])
-	        return 0
-	    }
-        };
-        this.go(posX,posY)
+        if (this.checkTerrain()) {
+            for(var i = 0; i < ids.length; i++) {
+	        if (arraysEqual(ids[i].pos,[posX,posY])) {
+	            // sound
+                    this.rencontre(ids[i])
+	            return 0
+	        }
+            };
+            this.go(posX,posY)
+        }
     },
     go:function (posX,posY) {
         if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){

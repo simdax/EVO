@@ -1,24 +1,5 @@
+
 couleursBouttons= {}
-//     annelides:false,
-//     escargots:false,
-//     seches:false,
-//     pieuvres:false,
-//     insectes:false,
-//     arachnides:false,
-//     roussettes:false,
-//     requins:false,
-//     thons:false,
-//     coelacanthes:false,
-//     grenouilles:false,
-//     serpents:false,
-//     crocodiles:false,
-//     compsognathus:false,
-//     tyrannosaures:false,
-//     orques:false,
-//     rongeurs:false,
-//     hippopotames:false,
-//     gorilles:false
-// };
 
 /*global functionname */
 function createBarres(menuGroup) {
@@ -168,7 +149,7 @@ function createMenu(menuGroup) {
     for(var gj = 0; gj < labels.length; gj++) {
       var posX = c * espacement + offX;
       var posY = d * espY + offY;
-      var button; var caca=Math.random();
+      var button; 
       addB(labels[gj])
       d +=1
     };
