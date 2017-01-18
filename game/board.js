@@ -22,6 +22,7 @@ MDJ=function () {
   this.nbJoueurs=2;
   this.joueurs=[];
   this.currentJoueur=0
+    this.mvts=4;
 
   for(var i = 0; i < this.nbJoueurs; i++) {
     this.joueurs.push(new Joueur(i))
@@ -72,116 +73,15 @@ MDJ.prototype={
     return this.joueurs[this.currentJoueur]
   },
   update:function () {
-       mvts-=1;
-       if (mvts==0) {
+       this.mvts-=1;
+       if (this.mvts==0) {
          mdj.next();
-         mvts=4
+         this.mvts=4
        };
   },
 }
 
-mvts=4;
 
-var marker=function (image,joueur) {
-    // prop
-    this.joueur= joueur //|| !function() {mdj.currentJoueur}()
-    this.image=image;
-    this.pos=[0,0];
-    this.id;
-    this.sprite;
-    //init
-    stack.push(this)
-    this.create()
-  };
-marker.prototype={
-  checkHex: function(){
-     var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
-     var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
-     var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
-     var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight;
-     if(candidateX%2==0){
-       if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
-         candidateX--;
-         candidateY--;
-       }
-       if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
-         candidateX--;
-       }
-     }
-     else{
-       if(deltaY>=hexagonHeight/2){
-         if(deltaX<(hexagonWidth/2-deltaY*gradient)){
-           candidateX--;
-         }
-       }
-       else{
-         if(deltaX<deltaY*gradient){
-           candidateX--;
-         }
-         else{
-           candidateY--;
-         }
-       }
-     }
-     return [candidateX, candidateY]
-   },
-  place: function(){
-      var pos=this.checkHex();
-      var posX=pos[0]; var posY=pos[1];
-      for(var i = 0; i < ids.length; i++) {
-	if (arraysEqual(ids[i].pos,[posX,posY])) {
-	  // sound
-	      console.log("touched");
-	  return 0
-	}
-      }
-      if(posX<0 || posY<0 || posX>=gridSizeX || posY>columns[posX%2]-1){
-	this.sprite.visible=false;
-      }
-      else{
-	this.sprite.visible=true;
-	this.sprite.x = hexagonWidth/4*3*posX+hexagonWidth/2;
-	this.sprite.y = hexagonHeight*posY;
-	if(posX%2==0){
-	  this.sprite.y += hexagonHeight/2;
-	}
-	else{
-	  this.sprite.y += hexagonHeight;
-	};
-	this.pos=[posX,posY]
-      };
-    },
-  click:function() {
-       if (mdj.currentJoueur==this.joueur) {
-	 highlight(this.pos)
-	 var fantome=game.add.sprite(0,0,this.image)
-	 fantome.anchor.setTo(0.5)
-	 fantome.alpha=0.38;
-	 game.input.addMoveCallback(function() {
-		                    fantome.x=game.input.x
-		                    fantome.y=game.input.y
-	                          });
-	 game.input.onDown.addOnce(function() {
-		                   normal(); fantome.destroy();
-		                   game.input.moveCallbacks=[]
-		                   this.place();
-		                   mdj.update()
-	                         },this)
-       }
-     },
-             create:function () {
-          var sp; var img=this.image;
-                      sp=game.add.sprite(0,0,img);
-	  var rond=draw()
-	  sp.tint= (this.joueur + 0.2) * 	0xCCCCCC
-	  sp.anchor.setTo(0.5);
-	  sp.visible=false;
-	  //events
-	  sp.events.onInputDown.add(this.click,this)
-          betesGroup.add(sp);
-          this.sprite=sp
-        },
-};
 
 
 
@@ -274,7 +174,7 @@ boardState.prototype={
             game.debug.text("joueur : "+i+ " xp : "+ mdj.joueurs[i].xps, 0,400+i*50);
           }
           game.debug.text("nb fig : "+betesGroup.length, 0,350);
-          game.debug.text("mvts:"+mvts, 0,300);
+          game.debug.text("mvts:"+mdj.mvts, 0,300);
 
           // game.debug.text(mvts, 0,100);
 
@@ -290,6 +190,13 @@ boardState.prototype={
 }
 
 function createHexs(arg) {
+    function addCb(hexagon) {
+        hexagon.events.onInputDown.add(
+            function () {
+                console.log(hexagon.key);
+            }
+        )
+    };
   for(var i = 0; i < gridSizeX/2; i ++){
     for(var j = 0; j < gridSizeY; j ++){
       if(gridSizeX%2==0 || i+1<gridSizeX/2 || j%2==0){
@@ -302,8 +209,16 @@ function createHexs(arg) {
         }else{
           hexagon= game.add.sprite(hexagonX,hexagonY,"hexTerre");
         };
+          hexagon.inputEnabled=true
+          addCb(hexagon)
 	hexagonGroup.add(hexagon);
       }
     }
   }
+
+    // for(var i = 0; i < hexagonGroup.length; i++) {
+    //     console.log(hexagonGroup.getAt(i));
+    // }
+
 }
+

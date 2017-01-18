@@ -81,6 +81,18 @@ function get(key,dict) {
         return -1; //error
     }
 
+function getEvo(name) {
+    for(var phyl in Especes){
+        for(var esp in Especes[phyl]){
+            if (esp==name) {
+                return Especes[phyl][name]
+            }
+        }
+    }
+    //error
+    return -1
+}
+
 function allKeys() {
     var res=[];
     for(var ph in Especes){
