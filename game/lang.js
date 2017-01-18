@@ -51,9 +51,9 @@ function autour(point){
 
 function highlight (point) {
     var indices=autour(point)
-    hexagonGroup.setAll('alpha', 0.3);
+    hexagonGroup.setAll('alpha', 1);
     for(var i = 0; i < indices.length; i++) {
-        hexagonGroup.getAt(indices[i]).alpha=1;
+        hexagonGroup.getAt(indices[i]).alpha=0.5;
     }
 };
 function normal() {
