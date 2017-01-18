@@ -39,7 +39,7 @@ MDJ=function () {
     // ce sont des fonctions pour le debut de partie, tranquillou
     var mC=function() {
         var p=this.current().vaisseau;
-    	p.place()
+    	  p.place()
     };
     var c=this.nbJoueurs;
     var input=function () {
@@ -195,14 +195,6 @@ var terrain;
 
 
 function createHexs(arg) {
-    function addCb(hexagon) {
-        hexagon.events.onInputDown.add(
-            function () {
-                console.log(hexagon.key);
-                terrain=hexagon.key
-            }
-        )
-    };
     for(var i = 0; i < gridSizeX/2; i ++){
         for(var j = 0; j < gridSizeY; j ++){
             if(gridSizeX%2==0 || i+1<gridSizeX/2 || j%2==0){
@@ -215,11 +207,8 @@ function createHexs(arg) {
                 }else{
                     hexagon= game.add.sprite(hexagonX,hexagonY,"hexTerre");
                 };
-                hexagon.inputEnabled=true
-                addCb(hexagon)
-	        hexagonGroup.add(hexagon);
+	              hexagonGroup.add(hexagon);
             }
         }
     }
 }
-

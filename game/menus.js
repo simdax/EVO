@@ -112,8 +112,7 @@ function createMenu(menuGroup) {
     }
     var count=0;
     for(var esp in Especes[i]){
-      var buton = game.add.button
-      ( posX,20+posY+20*count, 'button', buyEsp );
+      var buton = game.add.button( posX,20+posY+20*count, 'button', buyEsp );
       buton.tint=0x000000;
       menuGroup.add(buton);
       couleursBouttons[esp]=buton;
@@ -129,18 +128,11 @@ function createMenu(menuGroup) {
           var sp=mdj.current().create(name)
           if(sp!=-1){
             highlight(mdj.current().vaisseau.pos);
-	    game.input.addMoveCallback(sp.place,sp);
-	    game.input.onDown.addOnce(() => {
-	      normal();
-	      game.input.moveCallbacks=[];
-	      sp.sprite.inputEnabled=true;
-	      ids.push(sp)
-	    },this)}
+            sp.land()
+          }
         };
       for(var x = 0; x < 2; x++) {
-        var button = game.add.button
-        ( posX + (x*50) , 30+posY, name);
-        // name, cb, this, 2, 1, 0);
+        var button = game.add.button( posX + (x*50) , 30+posY, name);
         button.events.onInputDown.add(cb);
         menuGroup.add(button)
       };
@@ -149,7 +141,7 @@ function createMenu(menuGroup) {
     for(var gj = 0; gj < labels.length; gj++) {
       var posX = c * espacement + offX;
       var posY = d * espY + offY;
-      var button; 
+      var button;
       addB(labels[gj])
       d +=1
     };

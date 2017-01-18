@@ -121,7 +121,7 @@ Joueur.prototype={
           };
           break;
           default:
-          console.log("tu as déjà : "+ espece);
+          console.log("tu as déjà un(e): "+ espece);
           // game.time.events.add(2000, function() {
           //   myText= "tu as déjà : "+ espece;
           //   game.debug.text(myText,100,100);
@@ -177,6 +177,3 @@ Especes= {
     gorilles:{ancetre:"rongeurs",proies:[],xp:2,type:"hexTerre"}
   }
 };
-
-
-
