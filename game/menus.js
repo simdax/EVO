@@ -45,8 +45,8 @@ function createBarres(menuGroup) {
   menuGroup.add(do2)
 
   // les regles qu popent
-  var reglesEvo=game.add.sprite(1600,200, "reglesEvo");
-  var reglesManger=game.add.sprite(1600,200, "reglesManger");
+  var reglesEvo=game.add.sprite(1600,0, "reglesEvo");
+  var reglesManger=game.add.sprite(1600,0, "reglesManger");
   var tweenEvo=game.add.tween(reglesEvo);
   var tweenManger=game.add.tween(reglesManger);
   menuGroup.add(reglesEvo)

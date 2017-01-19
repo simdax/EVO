@@ -3,7 +3,7 @@ var Joueur = function (id) {
 
   this.id=id;
   this.vaisseau=new marker("vaisseau",this.id)
-  this.xps=10;
+  this.xps=1;
   // this.phylums=[];
 
   this.inventaire= {
@@ -49,39 +49,53 @@ var Joueur = function (id) {
 
 
 Joueur.prototype={
+  // a chaque tour on update le menu
   update:function (){
-        var i=this.inventaire;
-        // colorize menus buttons
-        for(var phyl in i){ for (var esp in i[phyl]){
-          if(this.get(esp)!=false){
-            couleursBouttons[esp].tint=0x410055
-          }else{
-            couleursBouttons[esp].tint=0x000000
-          }
-        }};
-        this.gagnerXP()
-      },
+    var i=this.inventaire;
+    // colorize menus buttons
+    for(var phyl in i){ for (var esp in i[phyl]){
+      if(this.get(esp)!=false){
+        couleursBouttons[esp].tint=0x410055
+      }else{
+        couleursBouttons[esp].tint=0x000000
+      }
+    }};
+    this.gagnerXP()
+  },
+  hasParent:function (espece) {
+    var bete=getEvo(espece);
+    if (bete.ancetre==null) {
+      return true // you can always create this kind of bete
+    }else
+    { if (this.get(bete.ancetre)) {
+        return true
+    }else{
+      console.log("tu dois créer son ancetre avant");
+      return false
+    }
+  }
+} ,
   create:function (espece) {
-     var nbRest=this.get(espece);
-     console.log(nbRest);
-     if (nbRest == 1 || nbRest == 2) {
-       var m=new marker(espece,this.id)
-       this.set(espece, nbRest-1)
-       return m
-     }else{
-       console.log("pas possible d'acheter");
-       return -1
-     };
-   },
+    var nbRest=this.get(espece);
+    console.log("il reste :" +nbRest);
+    if (nbRest == 1 || nbRest == 2) {
+      var m=new marker(espece,this.id)
+      this.set(espece, nbRest-1)
+            return m
+    }else{
+      console.log("pas possible d'acheter");
+      return -1
+    };
+  },
   set:function (key,val) {
-   // TODO add color
-   var k=Object.keys(this.inventaire);
-   for(var i = 0; i < k.length; i++) {
-     if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
-       this.inventaire[k[i]][key] = val
-     }
-   }
- },
+    // TODO add color
+    var k=Object.keys(this.inventaire);
+    for(var i = 0; i < k.length; i++) {
+      if((Object.keys(this.inventaire[k[i]])).indexOf(key) >= 0){
+        this.inventaire[k[i]][key] = val
+      }
+    }
+  },
   get:function (key) {
     var res=get(key,this.inventaire);
     if (res!=-1) {
@@ -105,42 +119,47 @@ Joueur.prototype={
   gagnerXP:function () {
     this.xps = this.xps + 1 + this.checkPhylums()
   },
-  acheter:function (espece) {
-        var phylum=get(espece,Especes);
-        switch(this.get(espece)){
-          case -1:
-          console.log("error");
-          break;
-          case false:
-          if(phylum.xp < this.xps){
-            this.xps -= phylum.xp;
-            this.set(espece, 2)
-            couleursBouttons[espece].tint=0x410055
-          }else{
-            console.log("pas assez d'argent");
-          };
-          break;
-          default:
-          console.log("tu as déjà un(e): "+ espece);
-          // game.time.events.add(2000, function() {
-          //   myText= "tu as déjà : "+ espece;
-          //   game.debug.text(myText,100,100);
-          //   game.add.tween(myText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
-          //   game.add.tween(myText).to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);},
-          //                      this);
-          break;
-        }
+  assezdargent:function (phylum) {
+      if(phylum.xp < this.xps){return true}else{
+        console.log("pas assez d'argent"); return false
+      }
   },
-    rentrerBete:function (bete) {
-        console.log("rentrage de bete");
-        this.set(bete) = this.get(bete) + 1
+  acheter:function (espece) {
+    var phylum=get(espece,Especes);
+    switch(this.get(espece)){
+      case -1:
+      console.log("error");
+      break;
+      case false:
+      if(this.assezdargent(phylum) && this.hasParent(espece)){
+        this.xps -= phylum.xp;
+        this.set(espece, 2)
+        couleursBouttons[espece].tint=0x410055
+      }else{
+        // rien
+      };
+      break;
+      default:
+      console.log("tu as déjà un(e): "+ espece);
+      // game.time.events.add(2000, function() {
+      //   myText= "tu as déjà : "+ espece;
+      //   game.debug.text(myText,100,100);
+      //   game.add.tween(myText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+      //   game.add.tween(myText).to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);},
+      //                      this);
+      break;
     }
+  },
+  rentrerBete:function (bete) {
+    console.log("rentrage de bete");
+    this.set(bete, this.get(bete) + 1)
+  }
 }
 
 
 Especes= {
   mollusques: {
-    annelides:{ancetre:null,proies:[],xp:1,type:"hexMer"},
+    annelides:{ancetre:null,proies:[],xp:0,type:"hexMer"},
     escargots:{ancetre:"annelides",proies:[],xp:2,type:"hexTerre"}
   },
   cephalopodes:{
@@ -156,7 +175,7 @@ Especes= {
     requins:{ancetre:"roussettes",proies:["coelacanthes"],xp:3,type:"hexMer"}
   },
   osteoichtyens:{
-    thons:{ancetre:null,proies:["annelides"],xp:3,type:"hexMer"},
+    thons:{ancetre:null,proies:["annelides"],xp:0,type:"hexMer"},
     coelacanthes:{ancetre:"thons",proies:["thons"],xp:3,type:"hexMer"}
   },
   anapasides:{

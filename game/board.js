@@ -37,6 +37,9 @@ MDJ=function () {
 
 
     // ce sont des fonctions pour le debut de partie, tranquillou
+    // on désactive tout
+    //menuGroup.setAll('inputEnabled',false)
+    hexagonGroup.setAll('alpha', 0.9)
     var mC=function() {
         var p=this.current().vaisseau;
     	  p.place()
@@ -53,12 +56,19 @@ MDJ=function () {
     	    for(var i = 0; i < this.joueurs.length; i++) {
     	        var pion=this.joueurs[i].vaisseau
     	        pion.sprite.inputEnabled=true
-	        ids.push(pion)
+	            ids.push(pion)
+
+              //menuGroup.setAll('inputEnabled',true)
+              hexagonGroup.setAll('alpha', 1)
+
+              this.next() // et go !
+
     	    }
     	}
     };
     game.input.addMoveCallback(mC,this);
     game.input.onDown.add(input,this);
+
 
 }
 
@@ -138,7 +148,19 @@ boardState.prototype={
 
         // LOGIC
         cursors = game.input.keyboard.createCursorKeys();
-
+        // add cancelor right mouseClicked
+        // var cb=function (e) {
+        //   if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
+        //     console.log("cancel");
+        //
+        //     normal()
+        //     game.input.moveCallbacks=[];
+        //     if (fantome) {
+        //       fantome.delete()
+        //     }
+        //   }
+        // }
+        // game.input.keyboard.addkey=cb;
 
 	// MDJ qui commence le jeu
 	mdj=new MDJ;
@@ -169,11 +191,11 @@ boardState.prototype={
     render:function () {
 
         // // todo, infos plus belles
-        //game.debug.text("current : "+mdj.current(), 0,100);
+        game.debug.text(console.txt, 0,100);
         for(var i=0; i < mdj.nbJoueurs; i++){
             game.debug.text("joueur : "+i+ " xp : "+ mdj.joueurs[i].xps, 0,400+i*50);
         }
-        game.debug.text("nb fig : "+betesGroup.length, 0,350);
+  //    game.debug.text("nb fig : "+betesGroup.length, 0,350);
         game.debug.text("mvts:"+mdj.mvts, 0,300);
 
         // game.debug.text(mvts, 0,100);

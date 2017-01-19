@@ -17,7 +17,6 @@ function draw(w,h,color){
 }
 
 
-
 //maths + hexa
 
 function convert (x,y) {

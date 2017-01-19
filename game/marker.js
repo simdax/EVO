@@ -57,11 +57,15 @@ marker.prototype={
     },this)
   },
   checkTerrain:function (x,y) {
+
+    var terrain=  hexagonGroup.getAt(convert(x,y));
+    var terrainOK;
     if (this.image == "vaisseau") {
-      return true // le vaisseau va partout
+        terrainOK=true // le vaisseau va partout
+    }else{
+      terrainOK= this.esp.type==terrain.key
     }
-    var terrain=  hexagonGroup.getAt(convert(x,y)).key;
-    return  this.esp.type==terrain
+    return  terrainOK && (terrain.alpha != 1)
   },
   rencontre:function (autre,x,y) {
     if (autre.image=="vaisseau") {
@@ -118,21 +122,29 @@ marker.prototype={
     console.log('click sur '+ this.image+ "de "+ this.joueur);
     if (mdj.currentJoueur==this.joueur) {
       highlight(this.pos)
-      var fantome=new marker(this.image)
+      fantome=new marker(this.image)
       fantome.sprite.alpha=0.38;
       game.input.addMoveCallback(function() {
         fantome.place()
       },this);
       game.input.onDown.addOnce(function() {
-        normal();
-        fantome.delete()
-        game.input.moveCallbacks=[]
+        // cancel
+        if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
+          console.log("cancel");
+        }
+        else
         if (this.place()) {
           mdj.update()
         }
+        // clear
+        game.input.moveCallbacks=[]
+        normal();
+        fantome.delete()
       },this)
     }
     console.log('click sur '+ this.image+ "de "+ this.joueur);
+  },
+  cancel:function () {
 
   },
   create:function () {
