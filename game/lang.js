@@ -17,39 +17,10 @@ function draw(w,h,color){
 }
 
 
-//maths + hexa
-
-function convert (x,y) {
-    return x%2 + Math.floor(x/2) * gridSizeY + 2*y;
-};
-
-//    bon l'algo d'entourag est un peu nul, mais bon...
-
-function autour(point){
-
-    var pos={x:point[0], y:point[1]};
-    var un = [[0,0],[-1,-1],[-1,0],[0,-1],[0,1],[1,1],[1,0]]
-    var indices=[];
-    for(var i = 0; i < un.length; i++) {
-        if (un[i]!==undefined) {
-            var x= un[i][0]+pos.x;
-            var y= un[i][1]+pos.y;
-            //              nawak...
-            if (pos.x%2==1) {
-                if(un[i][0]==(-1)){y+=1 }
-            }else{
-                if(un[i][0]==(1)){y-=1 }
-            };
-            if (x>=0 && y>=0 && x<=(gridSizeX)  && y<(gridSizeY/2)) {
-                indices.push ( convert(x,y) )
-            }
-        }
-    };
-    return indices
-}
+//alpha
 
 function highlight (point) {
-    var indices=autour(point)
+    var indices=autour(point)[0]
     hexagonGroup.setAll('alpha', 1);
     for(var i = 0; i < indices.length; i++) {
         hexagonGroup.getAt(indices[i]).alpha=0.5;
@@ -92,16 +63,22 @@ function getEvo(name) {
     return -1
 }
 
-function calcBounds (nbX,nbY,tailleX,tailleY) {
-  return [nbX * tailleX, nbY * tailleY]
+//count occurences
+function (arr) {
+var counts = {};
+for(var i = 0; i< arr.length; i++) {
+    var num = arr[i];
+    counts[num] = counts[num] ? counts[num]+1 : 1;
 }
-function allKeys() {
-    var res=[];
-    for(var ph in Especes){
-        res.push(Object.keys(Especes[ph]))
-    }
-    return res
-}
+return counts}
+
+// function allKeys() {
+//     var res=[];
+//     for(var ph in Especes){
+//         res.push(Object.keys(Especes[ph]))
+//     }
+//     return res
+// }
 
 /// equality
 

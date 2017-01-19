@@ -45,12 +45,11 @@ MDJ=function () {
 
               this.next() // et go !
     	    }
+          this.next()
     	}
     };
     game.input.addMoveCallback(mC,this);
     game.input.onDown.add(input,this);
-
-
 }
 
 MDJ.prototype={

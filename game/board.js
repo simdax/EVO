@@ -15,8 +15,9 @@ var betesGroup;
 var ids=[];
 stack=[]
 
-
-
+function calcBounds (nbX,nbY,tailleX,tailleY) {
+  return [nbX * tailleX, nbY * tailleY]
+}
 
 
 
@@ -55,7 +56,7 @@ boardState.prototype={
         //camera
         //  Modify the world and camera bounds
         var size=calcBounds(gridSizeX, gridSizeY/2, hexagonWidth*9/8, hexagonHeight*10/8)
-        game.world.resize(size[0],size[1]);
+        game.world.resize(size[0],size[1]+50); // un petit pitchouille de plus ça fait pas de mal
         // en 20x20 => game.world.resize(1800,900);
 
         //board
@@ -74,29 +75,23 @@ boardState.prototype={
         hexagonGroup.add(betesGroup);
 
         // LOGIC
+        zoomKey=game.input.keyboard.addKey(Phaser.Keyboard.P)
+        dezoomKey=game.input.keyboard.addKey(Phaser.Keyboard.L)
         cursors = game.input.keyboard.createCursorKeys();
-        // add cancelor right mouseClicked
-        // var cb=function (e) {
-        //   if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
-        //     console.log("cancel");
-        //
-        //     normal()
-        //     game.input.moveCallbacks=[];
-        //     if (fantome) {
-        //       fantome.delete()
-        //     }
-        //   }
-        // }
-        // game.input.keyboard.addkey=cb;
-
+        //createZoom(game)
+//        game.input.keyboard.onDownCallback = this.keyUpdate
 	// MDJ qui commence le jeu
 	mdj=new MDJ;
-console = new Console;
+consol  = new Console;
 
 
     },
 
     update:function () {
+
+      // startZoom(zoomKey,dezoomKey)
+      // updateZoom()
+
         if (cursors.left.isDown)
         {
             game.camera.x -= 4;
@@ -137,28 +132,4 @@ console = new Console;
     },
 
 
-}
-
-
-// global pour le terrain
-var terrain;
-
-
-function createHexs(arg) {
-    for(var i = 0; i < gridSizeX/2; i ++){
-        for(var j = 0; j < gridSizeY; j ++){
-            if(gridSizeX%2==0 || i+1<gridSizeX/2 || j%2==0){
-	        var hexagonX = hexagonWidth*i*1.5+(hexagonWidth/4*3)*(j%2);
-	        var hexagonY = hexagonHeight*j/2;
-	        var hexagon;
-                var x = (Math.floor(Math.random() * 2) == 0);
-                if(x){
-                    hexagon= game.add.sprite(hexagonX,hexagonY,"hexMer");
-                }else{
-                    hexagon= game.add.sprite(hexagonX,hexagonY,"hexTerre");
-                };
-	              hexagonGroup.add(hexagon);
-            }
-        }
-    }
 }

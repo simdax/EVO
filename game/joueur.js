@@ -3,7 +3,7 @@ var Joueur = function (id) {
 
   this.id=id;
   this.vaisseau=new marker("vaisseau",this.id)
-  this.xps=0;
+  this.xps=-1;
   // this.phylums=[];
 
   this.inventaire= {
