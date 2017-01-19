@@ -92,6 +92,9 @@ function getEvo(name) {
     return -1
 }
 
+function calcBounds (nbX,nbY,tailleX,tailleY) {
+  return [nbX * tailleX, nbY * tailleY]
+}
 function allKeys() {
     var res=[];
     for(var ph in Especes){

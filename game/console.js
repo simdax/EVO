@@ -1,5 +1,5 @@
 var Console=function () {
-    this.txt=""
+    this.txt="plaçage de vaisseau"
 }
 
 Console.prototype={
@@ -10,5 +10,3 @@ Console.prototype={
     return "bienvenu dans EVO ! "
   }
 }
-
-console = new Console;

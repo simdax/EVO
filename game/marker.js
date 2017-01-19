@@ -17,10 +17,10 @@ marker.prototype={
   // 3. check pour voir les regeles de deplacement
   // 4. go pour y aller
   checkHex: function(){
-    var candidateX = Math.floor((game.input.x-hexagonGroup.x)/sectorWidth);
-    var candidateY = Math.floor((game.input.y-hexagonGroup.y)/sectorHeight);
-    var deltaX = (game.input.x-hexagonGroup.x)%sectorWidth;
-    var deltaY = (game.input.y-hexagonGroup.y)%sectorHeight;
+    var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
+    var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
+    var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
+    var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight;
     if(candidateX%2==0){
       if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
         candidateX--;

@@ -3,7 +3,7 @@ var Joueur = function (id) {
 
   this.id=id;
   this.vaisseau=new marker("vaisseau",this.id)
-  this.xps=1;
+  this.xps=0;
   // this.phylums=[];
 
   this.inventaire= {
@@ -70,7 +70,7 @@ Joueur.prototype={
     { if (this.get(bete.ancetre)) {
         return true
     }else{
-      console.log("tu dois créer son ancetre avant");
+      console.log("tu dois créer son ancetre avant, cad : "+ bete.ancetre);
       return false
     }
   }
@@ -83,7 +83,7 @@ Joueur.prototype={
       this.set(espece, nbRest-1)
             return m
     }else{
-      console.log("pas possible d'acheter");
+      //console.log("pas possible d'acheter");
       return -1
     };
   },
@@ -120,7 +120,7 @@ Joueur.prototype={
     this.xps = this.xps + 1 + this.checkPhylums()
   },
   assezdargent:function (phylum) {
-      if(phylum.xp < this.xps){return true}else{
+      if(phylum.xp <= this.xps){return true}else{
         console.log("pas assez d'argent"); return false
       }
   },
@@ -131,10 +131,11 @@ Joueur.prototype={
       console.log("error");
       break;
       case false:
-      if(this.assezdargent(phylum) && this.hasParent(espece)){
+      if(this.hasParent(espece) && this.assezdargent(phylum) ){
         this.xps -= phylum.xp;
         this.set(espece, 2)
         couleursBouttons[espece].tint=0x410055
+        console.log("acheté : "+ espece);
       }else{
         // rien
       };
@@ -159,7 +160,7 @@ Joueur.prototype={
 
 Especes= {
   mollusques: {
-    annelides:{ancetre:null,proies:[],xp:0,type:"hexMer"},
+    annelides:{ancetre:null,proies:[],xp:1,type:"hexMer"},
     escargots:{ancetre:"annelides",proies:[],xp:2,type:"hexTerre"}
   },
   cephalopodes:{
@@ -175,7 +176,7 @@ Especes= {
     requins:{ancetre:"roussettes",proies:["coelacanthes"],xp:3,type:"hexMer"}
   },
   osteoichtyens:{
-    thons:{ancetre:null,proies:["annelides"],xp:0,type:"hexMer"},
+    thons:{ancetre:null,proies:["annelides"],xp:3,type:"hexMer"},
     coelacanthes:{ancetre:"thons",proies:["thons"],xp:3,type:"hexMer"}
   },
   anapasides:{
