@@ -19,7 +19,14 @@ function calcBounds (nbX,nbY,tailleX,tailleY) {
   return [nbX * tailleX, nbY * tailleY]
 }
 
+var mdj; var consol;
 
+function go () {
+
+	// MDJ qui commence le jeu
+	mdj=new MDJ;
+  consol  = new Console;
+}
 
 boardState= function (game) {};
 
@@ -56,7 +63,7 @@ boardState.prototype={
         //camera
         //  Modify the world and camera bounds
         var size=calcBounds(gridSizeX, gridSizeY/2, hexagonWidth*9/8, hexagonHeight*10/8)
-        game.world.resize(size[0],size[1]+50); // un petit pitchouille de plus ça fait pas de mal
+        game.world.resize(size[0],size[1]+150); // un petit pitchouille de plus ça fait pas de mal
         // en 20x20 => game.world.resize(1800,900);
 
         //board
@@ -80,9 +87,6 @@ boardState.prototype={
         cursors = game.input.keyboard.createCursorKeys();
         //createZoom(game)
 //        game.input.keyboard.onDownCallback = this.keyUpdate
-	// MDJ qui commence le jeu
-	mdj=new MDJ;
-consol  = new Console;
 
 
     },
@@ -113,6 +117,8 @@ consol  = new Console;
 
     render:function () {
 
+if (mdj) {
+
         // // todo, infos plus belles
         game.debug.text(console.txt, 0,100);
         for(var i=0; i < mdj.nbJoueurs; i++){
@@ -123,7 +129,8 @@ consol  = new Console;
 
         // game.debug.text(mvts, 0,100);
 
-        game.debug.text("ici des textures", 880, 300)
+        game.debug.text("ici des textures", 1100, 300)
+}
     },
 
     //  private

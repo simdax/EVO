@@ -11,15 +11,15 @@ function createBarres(menuGroup) {
   var width, height;
 
   /// petits carrés à côté
-  width=200;  height=200;
+  width=200;  height=400;
   bmd= game.add.bitmapData(width, height);
   bmd.ctx.beginPath();
   bmd.ctx.rect(0, 0, width,height);
   bmd.ctx.fillStyle = '#11ffff';
   bmd.ctx.fill();
-  do1=game.add.button(1000,0,bmd,function () {
+  do1=game.add.button(1200,0,bmd,function () {
         if (!onTEvo) {
-          tweenEvo.to( {x:800}, 500).start()
+          tweenEvo.to( {x:710}, 500).start()
           onTEvo=true
         }else{
           tweenEvo.to( {x:1600}, 500).start()
@@ -27,15 +27,15 @@ function createBarres(menuGroup) {
         };
       });
   menuGroup.add(do1)
-  width=200;  height=200;
+  width=200;  height=400;
   bmd2 = game.add.bitmapData(width, height);
   bmd2.ctx.beginPath();
   bmd2.ctx.rect(0, 0, width,height);
   bmd2.ctx.fillStyle = '#ff11ff';
   bmd2.ctx.fill();
-  do2=game.add.button(1000,200, bmd2, function () {
+  do2=game.add.button(1200,400, bmd2, function () {
         if (!onTManger) {
-          tweenManger.to( {x:800}, 500).start()
+          tweenManger.to( {x:710}, 500).start()
           onTManger=true
         }else{
           tweenManger.to( {x:1600}, 500).start()
@@ -60,20 +60,20 @@ function createMenu(menuGroup) {
   // grosse barre en bas
 
   var width=1200; var height=300;
-  bmd=draw(1200,300)
+//  bmd=draw(1200,300)
   bmd = game.add.bitmapData(width, height);
   bmd.ctx.beginPath();
   bmd.ctx.rect(0, 0, width,height);
   bmd.ctx.fillStyle = '#222222';
   bmd.ctx.fill();
-  grosseBarre = game.add.sprite(0,450, bmd);
+  grosseBarre = game.add.sprite(0,400, bmd);
   menuGroup.add(grosseBarre)
 
   var reduceY=1;
   var reduceX=0.8;
   var espacement = 120;
   var espY=50;
-  var offX=0, offY= 450;
+  var offX=0, offY= 400;
 
   // loop
   var c=0;

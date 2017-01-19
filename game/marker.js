@@ -16,37 +16,7 @@ marker.prototype={
   // 2. place pour savoir si tu peux y aller
   // 3. check pour voir les regeles de deplacement
   // 4. go pour y aller
-  checkHex: function(){
-    var candidateX = Math.floor((game.input.worldX-hexagonGroup.x)/sectorWidth);
-    var candidateY = Math.floor((game.input.worldY-hexagonGroup.y)/sectorHeight);
-    var deltaX = (game.input.worldX-hexagonGroup.x)%sectorWidth;
-    var deltaY = (game.input.worldY-hexagonGroup.y)%sectorHeight;
-    if(candidateX%2==0){
-      if(deltaX<((hexagonWidth/4)-deltaY*gradient)){
-        candidateX--;
-        candidateY--;
-      }
-      if(deltaX<((-hexagonWidth/4)+deltaY*gradient)){
-        candidateX--;
-      }
-    }
-    else{
-      if(deltaY>=hexagonHeight/2){
-        if(deltaX<(hexagonWidth/2-deltaY*gradient)){
-          candidateX--;
-        }
-      }
-      else{
-        if(deltaX<deltaY*gradient){
-          candidateX--;
-        }
-        else{
-          candidateY--;
-        }
-      }
-    }
-    return [candidateX, candidateY]
-  },
+
   land:function () {
     game.input.addMoveCallback(this.place,this);
     game.input.onDown.addOnce(() => {
@@ -88,7 +58,7 @@ marker.prototype={
   },
   place: function(){
     // the bool value is for does it should be considered as a move ?
-    var pos=this.checkHex();
+    var pos=checkHex();
     var posX=pos[0]; var posY=pos[1];
     if (this.checkTerrain(posX,posY)) {
       for(var i = 0; i < ids.length; i++) {

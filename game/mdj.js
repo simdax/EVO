@@ -21,7 +21,7 @@ MDJ=function () {
     // ce sont des fonctions pour le debut de partie, tranquillou
     // on désactive tout
     //menuGroup.setAll('inputEnabled',false)
-    hexagonGroup.setAll('alpha', 0.9)
+    hexagonGroup.setAll('alpha', 0.65)
     var mC=function() {
         var p=this.current().vaisseau;
     	  p.place()
@@ -54,8 +54,9 @@ MDJ=function () {
 
 MDJ.prototype={
     next:function () {
-        this.current().update();
+      //  this.current().end();
         this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
+        this.current().update();
         synth.triggerAttackRelease("B5");
         console.log("au tour de "+this.currentJoueur);
         this.txt.setText("joueur" + this.currentJoueur);

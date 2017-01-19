@@ -114,8 +114,10 @@ function generer(c,nb) {
   for (var i = 0; i < hexagonGroup.length; i++) {
     if(hexagonGroup.getAt(i).key=="hexagon"){
       hexagonGroup.getAt(i).loadTexture("hexMer")
-      normal()
     }
   }
+  // et gogogo
+        normal();
+      go()
 }
 }
