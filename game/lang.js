@@ -64,7 +64,7 @@ function getEvo(name) {
 }
 
 //count occurences
-function (arr) {
+function countOcc(arr) {
 var counts = {};
 for(var i = 0; i< arr.length; i++) {
     var num = arr[i];
@@ -72,13 +72,13 @@ for(var i = 0; i< arr.length; i++) {
 }
 return counts}
 
-// function allKeys() {
-//     var res=[];
-//     for(var ph in Especes){
-//         res.push(Object.keys(Especes[ph]))
-//     }
-//     return res
-// }
+function values(dict) {
+    var res=[];
+    for(var val in dict){
+        res.push(dict[val])
+    }
+    return res
+}
 
 /// equality
 

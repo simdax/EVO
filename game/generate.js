@@ -31,6 +31,17 @@ function createHexs() {
 }
 
 
+function nbTerres () {
+  var res=0
+    for (var i = 0; i < hexagonGroup.length; i++) {
+      if(hexagonGroup.getAt(i).key=='hexTerre'){
+        res += 1
+      }
+    }
+    return res
+}
+
+
 // les fonction de choix. le premier est choisi au milieu de la map
 function takeFirst() {
   // var x= Math.floor(Math.random() * gridSizeX)
@@ -43,13 +54,8 @@ function takeFirst() {
     return[x,y]
   }
 function chooseAutour(cells) {
-  for (var i = 0; i < cells.length; i++) {
-    if (Math.random()>0.5) {
-      return cells[i]
-    }
-  }
-  // sinon
-      return cells[0]
+  var i=Math.floor(Math.random() * cells.length)
+  return (cells[i])
 }
 
 // juste les fonctions pour changer la texture des hexa jaunes en hexa de terre ou mer
@@ -58,7 +64,7 @@ changeText=function (pos,texture) {
 }
 // je retourne un boolean pour savoir si la piece pourra être un nouveau pt de depart
 function chooseText(hex) {
-  if (Math.random() > 0.5) {
+  if (Math.random()  > 1/(200/nbTerres()) ) {
     changeText(hex,"hexTerre")
     return true
   }else{
@@ -74,17 +80,17 @@ var cb=function (casesAutour,n) {
 }
 
 var already=[] // les cases déja choisies
-var iter=100;
+var iter=300;
 function generer(c,nb) {
   var cell= c || takeFirst();
   already.push(cell)
   var n=nb || 0;
   var tmp=autour(cell); // fonction pour choper les cases d'a côté
   var indices=tmp[1];   var casesAutour=tmp[0];
-  console.log("casesAutour"+casesAutour);
+  normal();
+  highlight(cell)
   var goodcells=[];
   for (var i = 0; i < casesAutour.length; i++) {
-    console.log(hexagonGroup.getAt(casesAutour[i]).key);
     // si la case est neutre, colorie-la, et met la dans les next candidats si elle est "terre"
     if (hexagonGroup.getAt(casesAutour[i]).key=='hexagon') {
       if (chooseText(casesAutour[i]) ){
@@ -96,23 +102,19 @@ function generer(c,nb) {
     }
   };
   if (n<iter) {
-      if (goodcells.length==0) {
-            // choisit une nouvelle terre
+      if (n != 0 && n % 100 == 0) {                      // on génère un autre continent
             console.log("choisit une nouvelle terre");
-        for (var i = 0; i < hexagonGroup.length; i++) {
-            console.log(hexagonGroup.getAt(i));
-          if(hexagonGroup.getAt(i).key=="hexTerre"){
-            generer(checkHex(hexagonGroup.getAt().x,hexagonGroup.getAt(i).y),n+1) // on redémarre depuis une autre terre
-            return 0
-          }
-        }
-  }else // sinon continue pépouze
-  {  cb(goodcells,n)}
-}else{
-  // colorie le reste des hexagons en "mer"
+            var y=Math.floor(Math.random()*gridSizeY/2)
+            var x=Math.floor(Math.random()*gridSizeX)
+            generer(checkHex(hexagonGroup.getAt(x).x,hexagonGroup.getAt(y).y),n+1) // on redémarre depuis une autre terre
+          }else // sinon continue pépouze
+          {  cb(goodcells,n)}
+        }else{ // quand on a fini les hgénérations
+               // on colorie le reste des hexagons en "mer"
   for (var i = 0; i < hexagonGroup.length; i++) {
     if(hexagonGroup.getAt(i).key=="hexagon"){
       hexagonGroup.getAt(i).loadTexture("hexMer")
+      normal()
     }
   }
 }
