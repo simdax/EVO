@@ -12,28 +12,38 @@
 // => lettre signifie successif "aaba"
 // => nb signifie les poids ? "9999"
 
-var Part= function (dict,set,forme,depart) {
+var Part= function (dict,set,forme,depart=0) {
   this.count=-1;
   this.dict=dict;
-  this.set=set || makeForme(Object.keys(dict).length)
-  this.forme= new Tone.CtrlPattern(this.set,forme);
-  this.mel=this.dict[depart||0]
-  // recursive callback function
-  // play a mel, and trigger next mel after the first is finished
-  this.cb=function (time) {
-    console.log("gogo");
-       this.mel.stop()
-       this.mel=this.next();
-       this.mel.start(0);
-       this.id=Tone.Transport.schedule(this.cb,Tone.Time().addNow().add(this.mel.dur()))
-  }.bind(this)
+  if (set=="all") {
+    this.cb=function () {
+      for(var mel in this.dict){
+        this.dict[mel].start()
+      }
+    }.bind(this)
+  }else
+  {
+    this.set=set || makeForme(Object.keys(dict).length)
+    this.forme= new Tone.CtrlPattern(this.set,forme);
+    var cb=function (time) {
+      // console.log("gogo");
+      this.mel.stop()
+      this.mel=this.next();
+      this.mel.start(0);
+      this.id=Tone.Transport.schedule(cb,Tone.Time().addNow().add(this.mel.dur()))
+    }.bind(this);
+  }
+  this.mel=this.dict[depart]
 }
 Part.prototype={
   start:function () {
     // lets play callback
-      Tone.Transport.schedule(this.cb)
+    // recursive callback function
+    // play a mel, and trigger next mel after the first is finished
+    Tone.Transport.schedule(this.cb)
   },
   stop:function () {
+    console.log(this.mel);
     this.mel.stop();
     if (this.id) {
       Tone.Transport.clear(this.id)
@@ -46,11 +56,12 @@ Part.prototype={
     if (part < this.dict.length) {
       return this.dict[this.forme[part]]
     }else{
-    // returns the mel in dict at index according to forme pattern...
-    var res=this.dict[this.forme.value]
-    //  ... that we increment
-    this.forme.next()
-    return res
+      console.log(this.forme.value);
+      // returns the mel in dict at index according to forme pattern...
+      var res=this.dict[this.forme.value]
+      //  ... that we increment
+      this.forme.next()
+      return res
+    }
   }
-}
 }

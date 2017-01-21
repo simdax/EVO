@@ -22,7 +22,6 @@ l=[]
 for(var instrs in b.voix) {
   var f =[]
   // transform each token in midi notes
-  console.log(instrs);
   b.voix[instrs].forEach(function (token,i,arr) {
     console.log(token);
     f.push(c.convert(token))
