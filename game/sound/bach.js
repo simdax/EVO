@@ -1,7 +1,7 @@
 ConvertMel=function(root,scale) {
     this.root=root || 60;
     this.scale=scale || [0,2,4,5,9,11,12]
-}; 
+};
 ConvertMel.prototype={
     convert:function (m) {
         var mel=[];
@@ -13,7 +13,7 @@ ConvertMel.prototype={
                 var index=m[i];
                 if (index>=this.scale.length) {
                     octave=Math.floor(index/this.scale.length);
-                    index=index%this.scale.length; 
+                    index=index%this.scale.length;
                 };
                 mel.push(Tone.Frequency(
                     this.root+(this.scale[index])+(12*octave),"midi").toNote()
@@ -37,7 +37,7 @@ bob=function (mels, forme, timbre) {
         "a": ["a","b","c"],
         "b": ["a","b","c"],
         "c": ["a","b","c"],
-    }); 
+    });
     //setup
     for(var mel in this.mels){
         this.mm[mel]=this.converter.convert(this.mels[mel])
@@ -60,5 +60,3 @@ bob.prototype={
         this.seq.start(0)
     }
 }
-
-

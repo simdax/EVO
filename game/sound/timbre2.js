@@ -2,9 +2,8 @@
 //     "url" : "./sound/mp3/button.mp3"
 // }).toMaster()
 
-
-
-accords=new Tone.PolySynth(3,Tone.Synth, {
+Timbres={
+accords:new Tone.PolySynth(3,Tone.Synth, {
     "volume":-10,
     "oscillator":{
         "type":"sine",
@@ -16,11 +15,10 @@ accords=new Tone.PolySynth(3,Tone.Synth, {
         "sustain":  1,
         "release": 0.2,
     }
-}).toMaster();
-metal=new Tone.MetalSynth({volume:-30}).toMaster();
-snare=new Tone.NoiseSynth({volume:10}).toMaster();
-
-synthBasse2=new Tone.Synth( {
+}).toMaster(),
+metal:new Tone.MetalSynth({volume:-30}).toMaster(),
+snare:new Tone.NoiseSynth({volume:10}).toMaster(),
+synthBasse:new Tone.Synth({
     "volume":-10,
     "oscillator":{
         "type":"sawtooth"
@@ -31,21 +29,8 @@ synthBasse2=new Tone.Synth( {
         "sustain":  1,
         "release": 0.2,
     }
-}).toMaster();
-synthBasse=new Tone.Synth({
-    "volume":-10,
-    "oscillator":{
-        "type":"sawtooth"
-    },
-    "envelope":{
-        "attack": 0.1,
-        "decay":  0.1,
-        "sustain":  1,
-        "release": 0.2,
-    }
-}).toMaster();
-
-synth = new Tone.Synth({
+}).toMaster(),
+synth: new Tone.Synth({
     "volume":-15,
     "oscillator" : {
 	"type" : "sawtooth8"
@@ -56,15 +41,13 @@ synth = new Tone.Synth({
 	"sustain" : 0.2,
 	"release" : 0.2,
     }
-}).toMaster();
-
-snare= new Tone.MembraneSynth({
+}).toMaster(),
+snare: new Tone.MembraneSynth({
     volume:-5,
     octaves:3,
     pitchDecay:0.5
-}).toMaster();
-
-fmSynth= new Tone.FMSynth({
+}).toMaster(),
+fmSynth: new Tone.FMSynth({
     "volume":-7,
     "oscillator": {
         "type": "sine"
@@ -78,10 +61,8 @@ fmSynth= new Tone.FMSynth({
         "sustain":1,
         "release":0.2
     }
-}).toMaster();
-
-
-duoSynth= new Tone.DuoSynth({
+}).toMaster(),
+duoSynth: new Tone.DuoSynth({
     volume:-10,
     vibratoAmount:0.5,
     vibratoRate:5,
@@ -125,3 +106,4 @@ duoSynth= new Tone.DuoSynth({
         }
     }
 }).toMaster()
+}
