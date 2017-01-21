@@ -5,6 +5,12 @@
 
 // its like TONE pattern, except it waits for the end of a melody
 // to go up
+//
+// pour la forme
+// le set est un array
+// la string peut être de deux natures
+// => lettre signifie successif "aaba"
+// => nb signifie les poids ? "9999"
 
 var Part= function (dict,set,forme,depart) {
   this.count=-1;

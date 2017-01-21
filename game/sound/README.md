@@ -1,24 +1,25 @@
 TODO
+===
+
+|| JISON
+implement de manière propre un gros parser surpuissant avec jison
 
 || Parser
 
-still bugs with spaces parsing
-
+* still bugs with spaces parsing
+* implementer les trucs cools de simul/succ etc.
 
 || mel behaviour
 
-implement special word (like harmonize x mel etc.)
+*implement special word (like harmonize x mel etc.)
+* implement generation timbre
 
 || partition
 
-cut tree organization in partition writing
-separate headers and melodies
-
-
-add mel as dictionary => copy another mel
-first letter sentence
-first letter group
+*cut tree organization in partition writing
+*separate headers and melodies
 
 || converter
 
-implement strictness
+* implement strictness
+* mode/tona ambiguité

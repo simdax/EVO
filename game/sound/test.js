@@ -12,27 +12,27 @@
 b=new Parser(a)
 if (b) {
   console.log("ok");
-  console.log(b.header);
-  console.log(b.dict);
+  console.log(b);
+  console.log(b.voix);
 }
 
 // todo root....
 c=new Converter()
 l=[]
-for(var instrs in b.dict) {
+for(var instrs in b.voix) {
   var f =[]
   // transform each token in midi notes
-  b.dict[instrs].forEach(function (token,i,arr) {
+  console.log(instrs);
+  b.voix[instrs].forEach(function (token,i,arr) {
+    console.log(token);
     f.push(c.convert(token))
     })
   // regroup each token in one phrase
       instrs.split(",").forEach(function (instr) {
-           l.push(new Melodie(f,b.header.tempus,instr))
+           l.push(new Melodie(f,b.tempus,instr))
     })
  }
 
 console.log(l);
-d= new Part(l)
+d= new Part(l,b.forme)
 console.log(d);
-
-""
