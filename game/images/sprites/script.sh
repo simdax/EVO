@@ -1,6 +1,24 @@
 for i in *.png
 do
     case $i in
+      "ipad.png")
+      convert $i -scale 280% resize/$i
+      ;;
+      "reglesMANGER.png")
+      convert $i -scale 80% resize/$i
+      ;;
+      "reglesEVO.png")
+      convert $i -scale 80% resize/$i
+      ;;
+      "ICONEARBREEVOLUTION.png")
+                    convert $i -scale 5% resize/$i
+            ;;
+      "ICONEmanger.png")
+                    convert $i -scale 30% resize/$i
+            ;;
+      "vaisseau.png")
+            convert $i -scale 6.5% resize/$i
+            ;;
         "requins.png")
             convert $i -scale 2% resize/$i
             ;;
@@ -43,4 +61,4 @@ do
         *)
             convert $i -scale 10% resize/$i
     esac
-done         
+done

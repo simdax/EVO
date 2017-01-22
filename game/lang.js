@@ -2,18 +2,13 @@
 
 // phaser geo
 
-function draw(w,h,color){
-
-  var width = 100 || w // example;
-  var height = 100 || h // example;
-  var bmd = game.add.bitmapData(width, height);
-
+function draw(x,y,w,h,color){
+  var bmd=  game.add.bitmapData(w, h);
   bmd.ctx.beginPath();
-  bmd.ctx.rect(0, 0, width, height);
-  bmd.ctx.fillStyle = '#ffffff' || color;
+  bmd.ctx.rect(0,0, w,h);
+  bmd.ctx.fillStyle = color
   bmd.ctx.fill();
-  return  game.add.sprite(game.world.centerX, game.world.centerY, bmd);
-
+  return game.add.sprite(x,y,bmd)
 }
 
 

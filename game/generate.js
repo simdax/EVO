@@ -53,7 +53,7 @@ function nbTerres () {
 /**
  * Genere la seed pour l'ago de génération de carte
  */
-function takeFirst() 
+function takeFirst()
 {
   // var x= Math.floor(Math.random() * gridSizeX)
   // var y= Math.floor(Math.random() * gridSizeY/2)
@@ -68,7 +68,7 @@ function takeFirst()
 /**
  * Fonction qui choisit une cell aléatoire autour de la cell courante
  */
-function chooseAutour(cells) 
+function chooseAutour(cells)
 {
   var i=Math.floor(Math.random() * cells.length)
   return (cells[i])
@@ -100,23 +100,25 @@ function chooseText(hex) {
 /**
  * Fonction de callback qui génère les cases une par une pour voir le déroulé de l'algo
  */
-var cb=function (casesAutour,n) 
+var cb=function (casesAutour,n)
 {
   setTimeout( () => {generer(chooseAutour(casesAutour),n+1)}, 0 )
 }
 
 
-// variables globales ????
-var already=[] // les cases déja choisies
+// variables globales ???? =====> elles servent à rien je pense
+//var already=[] // les cases déja choisies
+
+// iter est juste là pour le nb d'iterations pour générer la map
 var iter=300;
 
 /**
  * Fonction principale de génération de la map
  */
-function generer(c,nb) 
+function generer(c,nb)
 {
     var cell= c || takeFirst();
-    already.push(cell)
+    //already.push(cell)
     var n=nb || 0;
     var tmp=autour(cell); // fonction pour choper les cases d'a côté
     var indices=tmp[1];   var casesAutour=tmp[0];
@@ -137,20 +139,20 @@ function generer(c,nb)
     };
     if (n<iter) {
         if (n != 0 && n % 100 == 0) // on génère un autre continent
-        {                      
-            console.log("choisit une nouvelle terre");
+        {
+//            console.log("choisit une nouvelle terre");
             var y=Math.floor(Math.random()*gridSizeY/2)
             var x=Math.floor(Math.random()*gridSizeX)
             generer(checkHex(hexagonGroup.getAt(x).x,hexagonGroup.getAt(y).y),n+1) // on redémarre depuis une autre terre
          }
          else // sinon continue pépouze
-         {  
+         {
             cb(goodcells,n)
          }
     }
     else{ // quand on a fini les hgénérations
                // on colorie le reste des hexagons en "mer"
-        for (var i = 0; i < hexagonGroup.length; i++) 
+        for (var i = 0; i < hexagonGroup.length; i++)
         {
             if(hexagonGroup.getAt(i).key=="hexagon")
             {

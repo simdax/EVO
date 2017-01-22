@@ -22,7 +22,6 @@ function calcBounds (nbX,nbY,tailleX,tailleY) {
 var mdj; var consol;
 
 function go () {
-
 	// MDJ qui commence le jeu
 	mdj=new MDJ;
   consol  = new Console;
@@ -35,6 +34,10 @@ boardState.prototype={
 
     preload:function () {
 
+// rien ...
+game.load.image("b","images/sprites/boutonAbsurde.png");
+
+
         // AUDIO _________________
         game.load.audio('bip', "sound/mp3/button.mp3");
         // BOARD _________________
@@ -43,14 +46,17 @@ boardState.prototype={
         game.load.image("hexTerre", "images/hexTerre.png");
         game.load.image("hexagon", "images/hexagon.png");
         // dessins regles
-        game.load.image("reglesEvo", "images/reglesEVO.png");
-        game.load.image("reglesManger", "images/reglesMANGER.png");
+        game.load.image("reglesEvo", "images/sprites/resize/reglesEVO.png");
+        game.load.image("reglesManger", "images/sprites/resize/reglesMANGER.png");
+        // icones regles
+        game.load.image("iconeManger", "images/sprites/resize/ICONEmanger.png");
+        game.load.image("iconeEvo", "images/sprites/resize/ICONEARBREEVOLUTION.png");
+        // l'ipad en-dessous
+        game.load.image("ipad", "images/sprites/resize/ipad.png")
         //button
-        game.load.spritesheet('button',
-                              'images/buttons/flixel-button.png',
-                              77,18);
+        game.load.spritesheet('button','images/buttons/flixel-button.png',  77,18);
         //SPRITES __________________
-        game.load.image("vaisseau", "images/sprites/vaisseau.png");
+        game.load.image("vaisseau", "images/sprites/resize/vaisseau.png");
         var path='images/sprites/resize/';
         for(var phyl in Especes){
             for(var espece in Especes[phyl]){
@@ -124,13 +130,9 @@ if (mdj) {
         for(var i=0; i < mdj.nbJoueurs; i++){
             game.debug.text("joueur : "+i+ " xp : "+ mdj.joueurs[i].xps, 0,400+i*50);
         }
-  //    game.debug.text("nb fig : "+betesGroup.length, 0,350);
         game.debug.text("mvts:"+mdj.mvts, 0,300);
 
-        // game.debug.text(mvts, 0,100);
-
-        game.debug.text("ici des textures", 1100, 300)
-}
+        }
     },
 
     //  private

@@ -53,6 +53,14 @@ MDJ=function () {
 }
 
 MDJ.prototype={
+  endofturn:function () {
+    if (mvts>0) {
+      alert("t'es sur man?")
+    }else{
+        mdj.next();
+        this.mvts=4
+    }
+  },
     next:function () {
       //  this.current().end();
         this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
@@ -67,8 +75,6 @@ MDJ.prototype={
     update:function () {
         this.mvts-=1;
         if (this.mvts==0) {
-            mdj.next();
-            this.mvts=4
         };
     },
 }
