@@ -88,8 +88,21 @@ marker.prototype={
       this.pos=[posX,posY]
     };
   },
+  tween:function () {
+    var onTEvo=false;
+        if (!onTEvo) {
+          tweenBarreBas.to({y:0},400).start();
+          onTEvo=true
+        }else{
+         tweenBarreBas.to({y:400},500).start();
+          onTEvo=false
+        }
+  },
   click:function() {
     console.log('click sur '+ this.image+ "de "+ this.joueur);
+    // on tweene les barres du bas
+    if (this.image=="vaisseau") {this.tween()};
+
     if (mdj.currentJoueur==this.joueur) {
       highlight(this.pos)
       fantome=new marker(this.image)

@@ -5,7 +5,7 @@ do
       convert $i -scale 280% resize/$i
       ;;
       "reglesMANGER.png")
-      convert $i -scale 80% resize/$i
+      convert $i -scale 70% resize/$i
       ;;
       "reglesEVO.png")
       convert $i -scale 80% resize/$i

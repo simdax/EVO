@@ -1,8 +1,10 @@
-couleursBouttons={}
 
-var tweenBarreBas;
 
 function createMenu(menuGroup) {
+
+// ça c'est pour faire les boutons de l'ipad
+gosp()
+
 
   // grosse barre en bas
 // on la place dans un groupe
@@ -37,6 +39,7 @@ grosseBarre.y = 400;
     var posY = d * espY + offY;
 
     // phyllum bouton
+    //
     var hl=false;
     var button = game.add.button
     ( posX,posY,

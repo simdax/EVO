@@ -8,61 +8,56 @@ function createBarres(menuGroup) {
 // aux règle et au Manger
 
 
-function popButton(x,y,w,h,texture,color) {
+function popButton(x,y,w,h,texture,color,offX,offY,group) {
 
 
   // les sprites
+  // on commence par faire un groupe pour dire que tous ces sprites sont
+  //reliés
+  var ipadGroup=group||game.add.group()
 
   // on commence par l'ipad, qui sert à soutenir l'image
-  // le offset sert à le faire "sortir de l'écran"
-  var ipadGroup=game.add.group()
+  // le menu groupe est juste un truc qui reste fixedToCamera
   menuGroup.add(ipadGroup)
-
+  // le offset sert à le faire "sortir de l'écran"
   var offset=100
+  // le offX et offY servent aux images à l'intérieur
   var ipad=game.add.sprite(x+offset,y,"ipad")
-  var regle=game.add.sprite(x+offset+155,y+100, "regles"+texture);
+  var regle=game.add.sprite(x+offset+offX,y+offY, "regles"+texture);
   ipadGroup.add(ipad); ipadGroup.add(regle);
 
-// après on met un offset pour le manger
+// après on met un offset offset pour le "manger" qui est plus bas
 if (texture=="Manger") {y=y+400}
 
+//on met la texture
 var icone=game.add.sprite(x,y,"icone"+texture)
 
 // la regle est cachée et on va la "tweener"
 // on fait un groupe qui va réagir au click
-// ici on se met un petit groupe histoire de se mettre bien
-// le menu groupe est juste un truc qui reste fixedToCamera
-
-//tween
-var onTEvo=false;
+// var de merde pour déclencher le bon tween (j'imagine que c'est mieux géré en interne par phaser ?)
+  var onTEvo=false;
   var tween=game.add.tween(ipadGroup);
-//  if (texture=="Manger") {  y=y+400}
-  var b=game.add.button(x,y,"b",function () {
+  var bouton=game.add.button(x,y,"b",function () {
     if (! tween.isRunning) {
         if (!onTEvo) {
-          tweenBarreBas.to({y:0},400).start();
           tween.to( {x:-700}, 400).start()
           onTEvo=true
         }else{
-          tweenBarreBas.to({y:400},500).start();
           tween.to( {x:0}, 500).start()
           onTEvo=false
         }
       }
   });
-
-//     add to group IN THE GOOD ORDER !
-      menuGroup.add(b)
+//     add to group IN THE GOOD ORDER for Z apperea !
+      menuGroup.add(bouton)
       menuGroup.add(icone)
       ipadGroup.add(regle)
 };
 
-popButton(1100,0,200,200,"Manger","#ff2257")
-popButton(1100,0,200,200,"Evo","#22ff57")
+popButton(1100,0,200,200,"Manger","#ff2257",155,90)
+popButton(1100,0,200,200,"Evo","#22ff57",155,100,regleGroup)
 
-
-
-  // bouton général en-dessous
+  // bouton général en-dessous que pour l'instant on poutre pas
 
 //  var rose=draw(300,300,300,'#ff11ff')
   // game.add.button(1100,400,rose,function () {

@@ -1,2 +1,2 @@
 http-server&
-chromium localhost:8080
+chromium-browser localhost:8080
