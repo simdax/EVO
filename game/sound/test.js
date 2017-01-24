@@ -8,30 +8,43 @@
 // lib support
 //eval(fs.readFileSync("../lib/Tone.min.js").toString())
 
-
-b=new Parser(a)
-if (b) {
+// this step transforms your part in dic whit "forme and voix" values
+var z=new Part(b)
+if (z) {
   console.log("ok");
-  console.log(b);
-  console.log(b.voix);
+  console.log(z);
 }
 
-// todo root....
-c=new Converter()
-l=[]
-for(var instrs in b.voix) {
-  var f =[]
-  // transform each token in midi notes
-  b.voix[instrs].forEach(function (token,i,arr) {
-    console.log(token);
-    f.push(c.convert(token))
-    })
-  // regroup each token in one phrase
-      instrs.split(",").forEach(function (instr) {
-           l.push(new Melodie(f,b.tempus,instr))
-    })
- }
 
-console.log(l);
-d= new Part(l,b.forme)
-console.log(d);
+// this step transforms your dict-voix dictionaries with notes in them
+//
+// c=new Converter()
+// l=[]
+//
+// ! function parser() {
+//
+//   for(var key in morceau) {
+//     switch (key) {
+//       case "voix":
+//       break;
+//       case "forme": // nothing
+//       break;
+//       default:
+//       parser(morceau[key])
+//
+//       var f =[]
+//       // transform each token in midi notes
+//       morceau[key].voix.forEach(function (token,i,arr) {
+//         console.log(token);
+//         f.push(c.convert(token))
+//       })
+//       // regroup each token in one phrase
+//       instrs.split(",").forEach(function (instr) {
+//         l.push(new Melodie(f,morceau.tempus,instr))
+//         console.log(l);
+//         d= new Forme(l,forme)
+//         console.log(d);
+//       })
+//     }
+//   }
+// }()

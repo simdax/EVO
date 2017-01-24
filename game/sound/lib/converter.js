@@ -1,3 +1,9 @@
+// a converter is something that takes some numbers and transform them in
+// notes.
+
+// it has functions to adapt notes with harmony, and can somewhat improvise
+// with finding notes function.
+
 // dic for converting non numeric information in the partition
 var dictionary={
     s:function () {
@@ -10,7 +16,7 @@ Converter= function (root,octave,detune,scale,strict) {
   this.root = root || 0;
   this.octave = octave || 5;
   this.detune = detune || 0;
-  this.scale = scale ||  [0,2,4,5,9,11,12];
+  this.scale = scale ||  [0,2,4,5,7,9,11];
   // ok, ça c'est juste pour dire la quinte est "sol" et pas "la"
   this.strict=strict || 1
   this.lexer= dictionary

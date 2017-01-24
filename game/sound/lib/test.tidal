@@ -1,0 +1,25 @@
+
+d1 $  sound "bd*8 bd:3"
+d2 $ sound
+d1 silence
+
+
+d1 $ every 2 (rev (sound "[arpy*5 bd*7 [sn:1 [sn sn:4] sn]] / 2")) #
+
+d1 $ sound "arpy*4" # speed "[1 0.5 2 1.5]*3"
+
+d3 $ sound "arpy*80" # speed "[1 1 1]"
+
+d2 $ sound "sn:2 sn:2" # delay "0.5"
+
+d1 silence
+
+d1 $ sound "{arpy bass2 drum notes can, bd hh sn cp bd
+
+  d1 $ sound "{~ ~ ~ ~, arpy bass2 drum notes can}"
+
+  d1 $ const (sound "arpy*3") $ sound "bd sn cp hh"
+
+
+
+hush

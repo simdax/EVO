@@ -70,43 +70,70 @@ defaultEvent=function(){
   this.transpo=0;
   this.key="c";
   this.scale="major";
+  this.octave=5;
+  this.forme="up";
 //  this.voix={"synth":"0"}        //  you better have to populate the two last !
 }
 
-Parser = function (JSON, timbre, forme="all") {
-    this.voix={};
-    this.forme=forme;
-    this.init(JSON,timbre)
+// mots réservés
+var reservedWords=Object.keys(new defaultEvent),
+
+Part = function (JSON) {
+    // les mots réservés
+    this.init(JSON)
 }
 
-Parser.prototype={
-  init: function (JSON, timbre){
-    // les mots réservés
-    var keys=Object.keys(new defaultEvent)
-    // take header
-    for(var i = 0; i < keys.length; i++) {
-      if (JSON[keys[i]]) {
-        this[keys[i]]=JSON[keys[i]];
+Part.prototype={
+  do:function (cb) {
+    var thisKeys=Object.keys(this);
+    thisKeys.forEach(function(k){
+      if(!reservedWords.includes(k) && k!="forme")
+      {cb.call(this,this[k])}
+    }.bind(this))
+  },
+  init: function (JSON){
+    // this header will be used when parsing with Converter
+    var header={};
+    for(var i = 0; i < reservedWords.length; i++) {
+      if (JSON[reservedWords[i]]) {
+        header[reservedWords[i]]=JSON[reservedWords[i]];
         // we delete to not reparse these keys
-        delete JSON[keys[i]]
+        delete JSON[reservedWords[i]]
       }
     }
     for(key in JSON) {
       if (typeof JSON[key] == 'string') {
-        // here, we populate our "voix"
-        var k; if (key=="voix") {k=timbre}else{k=key}
-        this.voix[k]=this.parse(JSON[key]);
-      }else{ // we go on another leaf
-        this.voix[key]=new Parser(JSON[key],key)
+        // 'string' here means
+        // it's a form or a mel
+          this[key]=this.parse(JSON[key],header); // we put info in "voix"
+          // and then we convert into mel
+          // we split for ', separated' keys
+          key.split(",").forEach(function (instr) {
+              this[instr]=new Melodie(this[key],instr,JSON.forme,header.tempus)
+            }.bind(this))
+            // and if it is the case, we destroy the primitive ","separated key
+            if (key.match(/,/)) { delete this[key]  }
+      }else{
+         // else, means another parser object
+        //we populate its header with ancien header
+        var json=JSON[key];
+        for(var k in header){
+          if (!json[k]) {
+              json[k]=header[k]
+          }
+        };
+        // and go for parsing
+        this[key]=new Part(json)
       }
     }
   },
-  parse:function (string) {
+  parse:function (string,header={}) {
     // TODO if string ==> forme
     var mots=[]
     // get each lines and remove empty lines
-    var lignes=string.split("\n").filter(Boolean)
-    lignes.forEach(function (ligne) {
+    string.split("\n").filter(Boolean)
+    // and for each
+    .forEach(function (ligne) {
       // découpe la ligne en mots
       var l=ligne.split(/\s+/).filter(Boolean)
       l.forEach(function (mot) {
@@ -117,6 +144,24 @@ Parser.prototype={
         mots.push(match)
       })
     });
-    return mots
-  }
+// ensuite on convertit les tokens
+    var res=[];
+    // here we do with header
+    var c=new Converter(header.root,header.octave,Number(header.key),header.scale);
+        mots.forEach(function (token) {
+            res.push(c.convert(token))
+        })
+    return res
+  },
+// overriding play and stop allows to have a part the same behaviour as a melodie
+play:function (start,dur) {
+    this.do(function (voix) {
+      voix.play()
+    })
+},
+stop:function () {
+  this.do(function (voix) {
+    voix.stop()
+  })
+}
 }
