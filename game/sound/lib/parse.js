@@ -77,8 +77,8 @@
 defaultEvent=function(){
   this.tempus="1m";
   this.transpo=0;
-  this.key="c";
-  this.scale="major";
+  this.key=0;
+  this.scale=[0,2,4,5,7,9,11];
   this.octave=5;
   this.forme="up";
   //  this.voix={"synth":"0"}        //  you better have to populate the two last !
@@ -159,13 +159,18 @@ Part.prototype={
     });
     // ensuite on convertit les tokens
     var res=[];
-    // here we do with header
-    var c=new Converter(header.root,header.octave,Number(header.key),header.scale);
-    mots.forEach(function (token) {
-      res.push(c.convert(token))
-    })
-    return res
-  },
+
+    // do not forget the cast !!!
+    var c=new Converter(
+      Number(header.key),
+      Number(header.octave),
+      Number(header.key),
+      header.scale);
+      mots.forEach(function (token) {
+        res.push(c.convert(token))
+      })
+      return res
+    },
   next:function () {
       if (this.forme) {
         this.forme.next()

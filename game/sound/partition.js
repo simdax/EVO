@@ -7,10 +7,11 @@ function overrideXwithY (d1,d2) {
 
 a={
   scale:[0,2,3,5,7,8,10],
-  key:"-1",
-  tempus:"1m",
+  key:"2",
+  tempus:"4n",
+  octave:3,
   "bob":{
-    key:"2",
+    key:2,
     "fmsawtooth6[1,2,3,2,3,1]:[0.1,0.1]": "000 ~~~123 000"
   },
   "synthBasse":`

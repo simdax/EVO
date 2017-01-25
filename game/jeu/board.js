@@ -12,6 +12,7 @@ var columns = [Math.ceil(gridSizeY/2),Math.floor(gridSizeY/2)];
 var hexagonGroup;
 var betesGroup;
 var ipadGroup;
+var regleGroup;
 
 var ids=[];
 stack=[]
@@ -82,9 +83,9 @@ game.load.image("b","images/sprites/boutonAbsurde.png");
         menuGroup= game.add.group();
         menuGroup.fixedToCamera=true;
         regleGroup=game.add.group()
+
         createMenu(menuGroup);
         createBarres(menuGroup);
-        gosp();
 
         // sprites des betes
         betesGroup=game.add.group();

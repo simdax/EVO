@@ -65,7 +65,8 @@ MDJ.prototype={
       //  this.current().end();
         this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
         this.current().update();
-        synth.triggerAttackRelease("B5");
+        console.log("ta mere");
+        Timbres.synth.triggerAttackRelease("B5");
         console.log("au tour de "+this.currentJoueur);
         this.txt.setText("joueur" + this.currentJoueur);
     },

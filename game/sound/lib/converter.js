@@ -69,8 +69,9 @@ Converter.prototype={
           Tone.Frequency(
             this.root+(this.scale[index+transpo]+this.detune)+(12*octave)
             ,"midi").toNote()
-          )}
+          )
+        }
         }
         return mel
       }
-    } ;
+    };
