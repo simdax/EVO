@@ -30,6 +30,7 @@ part2=function () {
     }, ["F#5","A5","C#6","F#6","A6"],"upDown")
         .start(0)
 };
+// marche pas ??
 part3=function () {
   console.log("hello beach");
   arpeg.stop()
@@ -37,9 +38,9 @@ part3=function () {
   musique.play()
 }
 
-// 
-// /// main loop
-// new Tone.Part(function (t,f) {
-//   console.log("beuh ?");
-//     f.call()
-// },[[0,part1],["2m",part2],["4m",part3]]).start(0)
+
+/// original loop
+var originalLoop=new Tone.Part(function (t,f) {
+  console.log("beuh ?");
+    f.call()
+},[[0,part1],["32m",part2]])
