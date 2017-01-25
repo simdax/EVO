@@ -40,6 +40,6 @@ for (var i = 0; i < posIPAD.length; i++) {
       sp.scale.setTo(0.5)
       sp.alpha=0.22
       sp.tint='#517865';
-      regleGroup.add(sp)
+      regleGrou.padd(sp)
 }
 }

@@ -18,10 +18,3 @@ function range(start, count) {
           return index + start;
       });
     }
-convertStringToAscii=function (str) {
-  var res=[];
-  for (var i = 0; i < str.length; i++) {
-    res.push(str[i].charCodeAt(0) - 97)
-  }
-return res
-}

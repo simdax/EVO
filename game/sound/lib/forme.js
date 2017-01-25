@@ -1,18 +1,27 @@
+/*
+███████  ██████  ██████  ███    ███ ███████
+██      ██    ██ ██   ██ ████  ████ ██
+█████   ██    ██ ██████  ██ ████ ██ █████
+██      ██    ██ ██   ██ ██  ██  ██ ██
+██       ██████  ██   ██ ██      ██ ███████
+*/
 
-// A form take a string, an array
+//  take a string,
 // and return an array of indices
+
+convertStringToAscii=function (str) {
+  var res=[];
+  for (var i = 0; i < str.length; i++) {
+    res.push(str[i].charCodeAt(0) - 97)
+  }
+return res
+}
 
 // some static functions
 Forme.choose=function (forme) {
-      switch (forme) {
-        case 'string':
-          // something like randomWalk or randomOnce
-          return new Tone.CtrlPattern(this.set,forme)
-          break;
-        default:
-          // if its a dict
-          return new Tone.CtrlMarkov(this.set,forme)
-      }
+// TODO:
+          return new Tone.CtrlPattern(forme)
+
   };
 // function used to transform sumthing like "aaba" into indices (0010)
 // 5 => 0,1,2,3,4
@@ -23,7 +32,8 @@ Forme.makeForme= function  (val) {
     return range(0,val-1)
     break;
     case 'string':
-    return convertStringToAscii(val)
+    return val
+    // return convertStringToAscii(val)
     break;
     default:
     break;
@@ -32,5 +42,5 @@ Forme.makeForme= function  (val) {
 
 
 function Forme(forme) {
-  return Forme.choose(Forme.makeForme(forme))
+  return Forme.choose(Forme.makeForme(forme));
 }

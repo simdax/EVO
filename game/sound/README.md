@@ -4,6 +4,8 @@ TODO
 || JISON
 implement de manière propre un gros parser surpuissant avec jison
 
+|| timbre
+implement type of env
 
 || mel behaviour
 
@@ -11,8 +13,6 @@ implement de manière propre un gros parser surpuissant avec jison
 * implement generation timbre
 
 || partition
-
-* cut tree organization in partition writing
 * implement markovs (ABA VS aabb)
 
 || converter

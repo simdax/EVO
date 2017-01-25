@@ -1,3 +1,11 @@
+/*
+ ██████  ██████  ███    ██ ██    ██ ███████ ██████  ████████ ███████ ██████
+██      ██    ██ ████   ██ ██    ██ ██      ██   ██    ██    ██      ██   ██
+██      ██    ██ ██ ██  ██ ██    ██ █████   ██████     ██    █████   ██████
+██      ██    ██ ██  ██ ██  ██  ██  ██      ██   ██    ██    ██      ██   ██
+ ██████  ██████  ██   ████   ████   ███████ ██   ██    ██    ███████ ██   ██
+*/
+
 // a converter is something that takes some numbers and transform them in
 // notes.
 
@@ -6,11 +14,11 @@
 
 // dic for converting non numeric information in the partition
 var dictionary={
-    s:function () {
-      console.log("salut les loulous");
-    },
-    x:40
-  }
+  s:function () {
+    console.log("salut les loulous");
+  },
+  x:40
+}
 
 Converter= function (root,octave,detune,scale,strict) {
   this.root = root || 0;
@@ -60,9 +68,9 @@ Converter.prototype={
         mel.push(
           Tone.Frequency(
             this.root+(this.scale[index+transpo]+this.detune)+(12*octave)
-          ,"midi").toNote()
-        )}
+            ,"midi").toNote()
+          )}
+        }
+        return mel
       }
-      return mel
-    }
-  } ;
+    } ;

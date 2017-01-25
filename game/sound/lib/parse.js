@@ -1,3 +1,12 @@
+/*
+██████   █████  ██████  ███████ ███████
+██   ██ ██   ██ ██   ██ ██      ██
+██████  ███████ ██████  ███████ █████
+██      ██   ██ ██   ██      ██ ██
+██      ██   ██ ██   ██ ███████ ███████
+*/
+
+
 // conceptus :
 
 // une melodie est un dictionnaire dont la seule clef vraiment importante
@@ -72,27 +81,29 @@ defaultEvent=function(){
   this.scale="major";
   this.octave=5;
   this.forme="up";
-//  this.voix={"synth":"0"}        //  you better have to populate the two last !
+  //  this.voix={"synth":"0"}        //  you better have to populate the two last !
 }
 
 // mots réservés
 var reservedWords=Object.keys(new defaultEvent),
 
 Part = function (JSON) {
-    // les mots réservés
-    this.init(JSON)
+  // les mots réservés
+  this.init(JSON)
 }
 
 Part.prototype={
-  do:function (cb) {
-    var thisKeys=Object.keys(this);
+  do:function (cb,minus=[],dict=this) { // => all minus
+    var thisKeys=Object.keys(dict);
     thisKeys.forEach(function(k){
-      if(!reservedWords.includes(k) && k!="forme")
-      {cb.call(this,this[k])}
-    }.bind(this))
+      if(!reservedWords.includes(k) && !minus.includes(k) && k!="forme")
+      {cb.call(dict,dict[k])}
+    }.bind(dict))
   },
   init: function (JSON){
     // this header will be used when parsing with Converter
+    if(JSON.forme){this.forme=Forme(JSON.forme)};
+
     var header={};
     for(var i = 0; i < reservedWords.length; i++) {
       if (JSON[reservedWords[i]]) {
@@ -105,21 +116,22 @@ Part.prototype={
       if (typeof JSON[key] == 'string') {
         // 'string' here means
         // it's a form or a mel
-          this[key]=this.parse(JSON[key],header); // we put info in "voix"
-          // and then we convert into mel
-          // we split for ', separated' keys
-          key.split(",").forEach(function (instr) {
-              this[instr]=new Melodie(this[key],instr,JSON.forme,header.tempus)
-            }.bind(this))
-            // and if it is the case, we destroy the primitive ","separated key
-            if (key.match(/,/)) { delete this[key]  }
+        this[key]=this.parse(JSON[key],header); // we put info in "voix"
+        // and then we convert into mel
+        // we split for ', separated' keys
+        key.split(";").forEach(function (instr) {
+          this[instr]=new Melodie(this[key],instr,JSON.forme,header.tempus)
+        }.bind(this))
+        // and if it is the case, we destroy the primitive ","separated key
+        if (key.match(/;/)) { delete this[key]  }
       }else{
-         // else, means another parser object
+        // else, means another parser object
         //we populate its header with ancien header
         var json=JSON[key];
+        delete header.forme;
         for(var k in header){
           if (!json[k]) {
-              json[k]=header[k]
+            json[k]=header[k]
           }
         };
         // and go for parsing
@@ -140,28 +152,47 @@ Part.prototype={
         // decoupe le mot en
         // nombres ou signe ~ ou x
         // avec optionellement plusieurs + ou -
+        // avec optionellement plusieurs + ou -
         var match=mot.match(/[\d~x]([-+]+)?/g)
         mots.push(match)
       })
     });
-// ensuite on convertit les tokens
+    // ensuite on convertit les tokens
     var res=[];
     // here we do with header
     var c=new Converter(header.root,header.octave,Number(header.key),header.scale);
-        mots.forEach(function (token) {
-            res.push(c.convert(token))
-        })
+    mots.forEach(function (token) {
+      res.push(c.convert(token))
+    })
     return res
   },
-// overriding play and stop allows to have a part the same behaviour as a melodie
-play:function (start,dur) {
+  next:function () {
+      if (this.forme) {
+        this.forme.next()
+      };
+      this.stop()
+      this.play()
+  },
+  // overriding play and stop allows to have a part the same behaviour as a melodie
+  play:function (start,dur) {
+    if (this.forme) {
+     Tone.Transport.schedule(function (t,element) {
+       if (this[this.forme.value]) {
+         this[this.forme.value].play()
+       }else{
+         console.log("ya pas ta forme !!");
+       }
+        }.bind(this))
+    }else{
+      this.do(function (voix) {
+        console.log(voix);
+        voix.play()
+      })
+    }
+  },
+  stop:function () {
     this.do(function (voix) {
-      voix.play()
+      voix.stop()
     })
-},
-stop:function () {
-  this.do(function (voix) {
-    voix.stop()
-  })
-}
+  }
 }

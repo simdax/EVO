@@ -15,6 +15,12 @@ if (z) {
   console.log(z);
 }
 
+inter=new Tone.CtrlPattern(["2n", "1m", "16n","16n"]);
+z=new Tone.Pattern(function (t,n) {
+console.log(n);
+   z.interval=inter.next()
+    console.log(z.interval);
+},["C2", "D4", "E5", "A6"])
 
 // this step transforms your dict-voix dictionaries with notes in them
 //

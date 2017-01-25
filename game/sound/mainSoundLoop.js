@@ -1,15 +1,15 @@
-globConverter= new ConvertMel();
+// globConverter= new ConvertMel();
 
 Tone.Transport.start("+1")
 
 
-
-bach= new bob(null, null, synth);
-new Tone.Loop(function () {
-    var n=bach.formes.next();
-    bach.setForme(n)   
-},"2m")//.start(0)
-//bach.play()
+//
+// bach= new bob(null, null, synth);
+// new Tone.Loop(function () {
+//     var n=bach.formes.next();
+//     bach.setForme(n)
+// },"2m")//.start(0)
+// //bach.play()
 
 
 part1=function () {
@@ -44,28 +44,27 @@ part2=function () {
 };
 
 new Tone.Part(function (t,f) {
-
     f.call()
 },[[0,part1],["32m",part2]]).start(0)
 
-
-test = new Mel;
-function loopAI(){
-    test.loop();
-    if (test.phrases.length>0) {
-        var res=[];
-        for(var i = 0; i < test.phrases[0].length; i++) {
-            var t=test.phrases[0][i]+bach.mels[bach.forme][i];
-            res.push(t)
-        }
-        var ii=globConverter.convert(res)
-        var io=new Tone.Sequence(function (t,n) {
-            synth.triggerAttackRelease(n,0.5)
-        } ,ii, "4n");
-        //        io.loop=false
-        io.start(0)
-    }else{
-        setTimeout(loopAI,100)
-    }
-}
-//loopAI()
+//
+// test = new Mel;
+// function loopAI(){
+//     test.loop();
+//     if (test.phrases.length>0) {
+//         var res=[];
+//         for(var i = 0; i < test.phrases[0].length; i++) {
+//             var t=test.phrases[0][i]+bach.mels[bach.forme][i];
+//             res.push(t)
+//         }
+//         var ii=globConverter.convert(res)
+//         var io=new Tone.Sequence(function (t,n) {
+//             synth.triggerAttackRelease(n,0.5)
+//         } ,ii, "4n");
+//         //        io.loop=false
+//         io.start(0)
+//     }else{
+//         setTimeout(loopAI,100)
+//     }
+// }
+// //loopAI()
