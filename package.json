@@ -11,6 +11,9 @@
     "type": "git",
     "url": "git+ssh://git@github.com/simdax/EVO.git"
   },
+  "engines": {
+    "node": "6.3.1"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
