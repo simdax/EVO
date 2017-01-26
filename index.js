@@ -4,7 +4,7 @@
   'use strict';
 
   var Hexagon = require('./src/game/Hexagon');
-  var tools = require('./src/game/tools');
+  var tools = require('./src/game/Tools');
 
   var express, app, http, io;
 
