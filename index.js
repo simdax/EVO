@@ -10,13 +10,29 @@
 
   function Game() {
     this.map = {};
+    this.players = {};
+
   }
 
+
+  Game.prototype.registerPlayer = function(socket, player) {
+    // player.socket = socket;
+    this.players[socket.id] = player;
+  };
+
+  Game.prototype.removePlayer = function(socket) {
+    delete this.players[socket.id];
+  };
+
+  Game.prototype.broadcastPlayersList = function() {
+    var pId;
+    for (pId in this.players) {
+      // this.players[pId].socket.emit('players-list', this.players);
+    }
+  };
+
+
   Game.prototype.initMap = function() {
-
-
-    // var gen = require('src/game/gen/generate');
-    // gen.createHexs();
     this.map = [new Hexagon(0, 0), new Hexagon(1, 0), new Hexagon(2, 0)];
   };
 
@@ -38,12 +54,22 @@
 
     var game = new Game();
     game.initMap();
-    console.log(game.map);  
+    console.log(game.map);
 
-    // console.log(tools.add(1, 3));
 
     io.on('connection', function(socket) {
-      console.log('user connecter');
+      console.log('user connected', socket.id);
+
+      socket.on('disconnect', function() {
+        console.log('user disconnect');
+        game.removePlayer(socket);
+      });
+
+      socket.on('register-player', function(player, callback) {
+        game.registerPlayer(socket, player);
+        return callback && callback(null, game.players);
+      });
+
       socket.on('get-game', function(callback) {
         return callback && callback(game);
       });

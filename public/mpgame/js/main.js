@@ -5,14 +5,14 @@
   var app, socket;
   app = angular.module('evoApp', []);
 
-  // socket = io({
-  //   transports: ['websocket'],
-  //   upgrade: true,
-  //   log: true
-  // });
+  socket = io({
+    transports: ['websocket'],
+    upgrade: true,
+    log: true
+  });
 
 
-  function getConf() {
+  function getPlayerFromLocalStorage() {
     var player = {};
     if (localStorage.player) {
       player = JSON.parse(localStorage.player);
@@ -23,29 +23,39 @@
 
 
   app.controller('MainController', function($scope) {
-    // var $on, $emit;
+    var $on, $emit;
+
+    $emit = function(key, data, callback) {
+      socket.emit(key, data, function(a, b, c) {
+        $scope.$apply(function() {
+          return callback && callback(a, b, c);
+        });
+      });
+    };
+
+    $on = function(key, callback) {
+      socket.on(key, function(res) {
+        $scope.$apply(function() {
+          return callback(res);
+        });
+      });
+    };
+
     // $scope.logs = [];
-    $scope.player = getConf();
+    $scope.player = getPlayerFromLocalStorage();
 
     // $scope.myname = 'simon';
     $scope.updateConf = function() {
       localStorage.player = JSON.stringify($scope.player);
     };
 
-    // $on = function(key, callback) {
-    //   socket.on(key, function(res) {
-    //     $scope.$apply(function() {
-    //       return callback(res);
-    //     });
-    //   });
-    // };
-    // $emit = function(key, data, callback) {
-    //   socket.emit(key, data, function(res) {
-    //     $scope.$apply(function() {
-    //       return callback && callback(res);
-    //     });
-    //   });
-    // };
+    $emit('register-player', $scope.player, function(err, players) {
+      $scope.players = players;
+    });
+
+    $on('players-list', function(players) {
+      $scope.players = players;
+    });
 
     // $scope.scapi = function(cmd, args) {
     //   $emit('cmd', {
