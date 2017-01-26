@@ -49,7 +49,9 @@ var Joueur = function (id) {
 
 
 Joueur.prototype={
+
   // a chaque tour on update le menu
+  // + on rend les input aux pieces
   update:function (){
     var i=this.inventaire;
     // colorize menus buttons
@@ -142,12 +144,6 @@ Joueur.prototype={
       break;
       default:
       console.log("tu as déjà un(e): "+ espece);
-      // game.time.events.add(2000, function() {
-      //   myText= "tu as déjà : "+ espece;
-      //   game.debug.text(myText,100,100);
-      //   game.add.tween(myText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
-      //   game.add.tween(myText).to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);},
-      //                      this);
       break;
     }
   },

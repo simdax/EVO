@@ -14,8 +14,7 @@ var betesGroup;
 var ipadGroup;
 var regleGroup;
 
-var ids=[];
-stack=[]
+var ids=[]
 
 function calcBounds (nbX,nbY,tailleX,tailleY) {
   return [nbX * tailleX, nbY * tailleY]
@@ -108,7 +107,6 @@ boardState.prototype={
     // startZoom(zoomKey,dezoomKey)
     // updateZoom()
     if (EOTkey.isDown) {
-      console.log("scaexs");
       mdj.endofturn()
     }
 

@@ -1,12 +1,11 @@
 var marker=function (image,joueur) {
   // prop
-  this.joueur= joueur //|| !function() {mdj.currentJoueur}()
+  this.joueur= joueur
   this.image=image;
-  this.pos=[0,0];
-  this.id;
+  this.pos=[-1,-1];
+//  this.id;
   this.sprite;
   this.isTweened=false; // it will change only for vaisseau
-
   this.esp=getEvo(image)
   //init
   this.create()
@@ -20,38 +19,41 @@ marker.prototype={
   // 4. go pour y aller
 
   land:function () {
-    var fantome=this.createFantome()
+    highlight(this.pos)
+    this.createFantome()
     game.input.addMoveCallback(function(){
-      fantome.placeIf()
+      marker.fantome.placeIf()
       if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
-        console.log("cancel");
-        this.clean(fantome)
+        this.clean()
       }
       else if (game.input.mouse.button===Phaser.Mouse.LEFT_BUTTON){
         if (this.placeIf()) {
-          mdj.update()
+          if (this.landing) {
+            // it means it appears on the board so its not a move,
+            this.landing=false//but its no more landings
+          }else{mdj.update()}
+          this.clean()
         };
-        this.clean(fantome)
       }
     },this)
   },
   createFantome:function () {
+    if (marker.fantome){
+      marker.fantome.meurt()
+    };
     this.sprite.inputEnabled=false;
-    highlight(this.pos)
-    var fantome=new marker(this.image, -1) // a joueur of -1
-    fantome.sprite.alpha=0.38;
+    marker.fantome=new marker(this.image, -1) // a joueur of -1
+    marker.fantome.sprite.alpha=0.38;
     this.tween();
-    return fantome
   },
-  clean:function (fantome) {
+  clean:function () {
     this.tween()
     game.input.moveCallbacks=[]
     normal();
-    fantome.delete();
+    marker.fantome.meurt();
     this.sprite.inputEnabled=true
   },
   checkTerrain:function (x,y) {
-
     var terrain=  hexagonGroup.getAt(convert(x,y));
     var terrainOK;
     if (this.image == "vaisseau") {
@@ -62,7 +64,7 @@ marker.prototype={
     return  terrainOK && (terrain.alpha != 1)
   },
   rencontre:function (autre,x,y) {
-    if (this.image=="vaisseau") {
+    if (this.image=="vaisseau") { // le vaisseau est totalement inoffensif
       return false
     }
     if (autre.image=="vaisseau") {
@@ -119,11 +121,9 @@ marker.prototype={
   tween:function () {
     if(this.image=="vaisseau") {
       if (!this.tweened) {
-        console.log("up");
         tweenBarreBas.haut.start()
         this.tweened=true
       }else{
-        console.log("down");
         tweenBarreBas.bas.start()
         this.tweened=false
       }
@@ -139,20 +139,20 @@ marker.prototype={
 
 // marker properties
 
-
     //events
-    if (this.joueur==-1) { // means fantome and do not trigger click
-         }
-    else {sp.events.onInputDown.add(this.land,this)}
+    if (this.joueur==-1) {} // means fantome and do not trigger click
+    else {sp.events.onInputDown.add(()=>{
+        console.log(this.image+this.joueur);
+              if (mdj.currentJoueur==this.joueur) {
+                this.land()
+              }
+            },this)
+    }
     betesGroup.add(sp);
     this.sprite=sp
   },
-  meurt:function   () {
-    this.delete()
-    console.log("aaaaaaarggh");
-  },
-  delete:function () {
+  meurt:function () {
     this.sprite.destroy();
-    delete fantome
+    // delete this ??
   }
 };

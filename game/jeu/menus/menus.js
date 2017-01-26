@@ -67,7 +67,7 @@ grosseBarre.y = 400;
     // especes bouton
     function buyEsp(button){
       var res= mdj.current().acheter(button.esp);
-    }
+    };
     var count=0;
     for(var esp in Especes[i]){
       var buton = game.add.button( posX,20+posY+20*count, 'button', buyEsp );
@@ -85,8 +85,13 @@ grosseBarre.y = 400;
         () => {
           var sp=mdj.current().create(name)
           if(sp!=-1){
-            highlight(mdj.current().vaisseau.pos);
-            sp.land()
+            sp.landing=true; // c'est pour indiquer que ce n'est pas un mouvement !
+            sp.pos=mdj.current().vaisseau.pos
+            sp.land();
+
+            // ça c'est une petite feinte, l'input est disabled quand on saisit pour éviter les
+            // effets de "regrabbing"
+            mdj.current().vaisseau.sprite.inputEnabled=true
           }
         };
       for(var x = 0; x < 2; x++) {
