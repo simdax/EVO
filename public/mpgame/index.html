@@ -10,10 +10,10 @@
   </head>
   <body ng-app="evoApp">
     <div ng-controller="MainController">
-      Put your name : <input type="text" ng-model="player.name" ng-change="updateConf()">
+      Put your name : <input type="text" ng-model="player.name" ng-change="updatePlayer()">
       <h2>Players List</h2>
       <ul>
-        <li ng-repeat="p in players">{{p.name}}</li>
+        <li ng-repeat="name in players">{{name}}</li>
       </ul>
     </div>
   </body>

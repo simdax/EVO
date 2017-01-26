@@ -20,8 +20,6 @@
     return player;
   }
 
-
-
   app.controller('MainController', function($scope) {
     var $on, $emit;
 
@@ -45,13 +43,12 @@
     $scope.player = getPlayerFromLocalStorage();
 
     // $scope.myname = 'simon';
-    $scope.updateConf = function() {
+    $scope.updatePlayer = function() {
       localStorage.player = JSON.stringify($scope.player);
+      $emit('register-player', $scope.player);
     };
 
-    $emit('register-player', $scope.player, function(err, players) {
-      $scope.players = players;
-    });
+    $emit('register-player', $scope.player);
 
     $on('players-list', function(players) {
       $scope.players = players;

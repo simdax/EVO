@@ -16,7 +16,7 @@
 
 
   Game.prototype.registerPlayer = function(socket, player) {
-    // player.socket = socket;
+    player.socket = socket;
     this.players[socket.id] = player;
   };
 
@@ -25,9 +25,13 @@
   };
 
   Game.prototype.broadcastPlayersList = function() {
-    var pId;
+    var pId, playersName = [];
     for (pId in this.players) {
-      // this.players[pId].socket.emit('players-list', this.players);
+      playersName.push(this.players[pId].name);
+    }
+
+    for (pId in this.players) {
+      this.players[pId].socket.emit('players-list', playersName);
     }
   };
 
@@ -67,7 +71,8 @@
 
       socket.on('register-player', function(player, callback) {
         game.registerPlayer(socket, player);
-        return callback && callback(null, game.players);
+        game.broadcastPlayersList();
+        return callback && callback(null);
       });
 
       socket.on('get-game', function(callback) {
