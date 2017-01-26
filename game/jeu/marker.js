@@ -20,13 +20,35 @@ marker.prototype={
   // 4. go pour y aller
 
   land:function () {
-    game.input.addMoveCallback(this.place,this);
-    game.input.onDown.addOnce(() => {
-      normal();
-      game.input.moveCallbacks=[];
-      this.sprite.inputEnabled=true;
-      ids.push(this)
+    var fantome=this.createFantome()
+    game.input.addMoveCallback(function(){
+      fantome.placeIf()
+      if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
+        console.log("cancel");
+        this.clean(fantome)
+      }
+      else if (game.input.mouse.button===Phaser.Mouse.LEFT_BUTTON){
+        if (this.placeIf()) {
+          mdj.update()
+        };
+        this.clean(fantome)
+      }
     },this)
+  },
+  createFantome:function () {
+    this.sprite.inputEnabled=false;
+    highlight(this.pos)
+    var fantome=new marker(this.image, -1) // a joueur of -1
+    fantome.sprite.alpha=0.38;
+    this.tween();
+    return fantome
+  },
+  clean:function (fantome) {
+    this.tween()
+    game.input.moveCallbacks=[]
+    normal();
+    fantome.delete();
+    this.sprite.inputEnabled=true
   },
   checkTerrain:function (x,y) {
 
@@ -40,6 +62,9 @@ marker.prototype={
     return  terrainOK && (terrain.alpha != 1)
   },
   rencontre:function (autre,x,y) {
+    if (this.image=="vaisseau") {
+      return false
+    }
     if (autre.image=="vaisseau") {
       if (autre.joueur==this.joueur) {
         mdj.current().rentrerBete()
@@ -58,7 +83,7 @@ marker.prototype={
       return false
     }
   },
-  place: function(){
+  placeIf: function(){
     if(mdj.mvts == 0){return false}
     // the bool value is for does it should be considered as a move ?
     var pos=checkHex();
@@ -104,41 +129,6 @@ marker.prototype={
       }
     }
   },
-  click:function() {
-    console.log('click sur '+ this.image+ "de "+ this.joueur);
-    // on tweene les barres du bas
-
-
-    if (mdj.currentJoueur==this.joueur) {
-      highlight(this.pos)
-      fantome=new marker(this.image, -1) // a joueur of -1
-      fantome.sprite.alpha=0.38;
-      game.input.addMoveCallback(function() {
-        fantome.place()
-      },this);
-      console.log("rajoutage de callback click");
-      game.input.onDown.addOnce(function() {
-        console.log("release func");
-        // cancel
-        if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
-          console.log("cancel");
-        }
-        else
-        if (this.place()) {
-          mdj.update()
-        }
-        // clear
-        this.tween()
-        game.input.moveCallbacks=[]
-        normal();
-        fantome.delete()
-      },this)
-      this.tween()
-    }
-  },
-  cancel:function () {
-
-  },
   create:function () {
     var sp; var img=this.image;
     sp=game.add.sprite(0,0,img);
@@ -153,7 +143,7 @@ marker.prototype={
     //events
     if (this.joueur==-1) { // means fantome and do not trigger click
          }
-    else {sp.events.onInputDown.add(this.click,this)}
+    else {sp.events.onInputDown.add(this.land,this)}
     betesGroup.add(sp);
     this.sprite=sp
   },

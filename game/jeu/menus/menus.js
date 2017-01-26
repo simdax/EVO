@@ -3,8 +3,6 @@ var tweenBarreBas={}
 
 function createMenu(menuGroup) {
 
-// ça c'est pour faire les boutons de l'ipad
-gosp()
 
 
   // grosse barre en bas

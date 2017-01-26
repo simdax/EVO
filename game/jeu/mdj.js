@@ -24,7 +24,7 @@ MDJ=function () {
     hexagonGroup.setAll('alpha', 0.65)
     var mC=function() {
         var p=this.current().vaisseau;
-    	  p.place()
+    	  p.placeIf()
     };
     var c=this.nbJoueurs;
     var input=function () {

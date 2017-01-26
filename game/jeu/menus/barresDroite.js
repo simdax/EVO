@@ -57,6 +57,10 @@ var icone=game.add.sprite(x,y,"icone"+texture)
 popButton(1100,0,200,200,"Manger","#ff2257",155,90)
 popButton(1100,0,200,200,"Evo","#22ff57",155,100,regleGroup)
 
+// ça c'est pour faire les boutons de l'ipad
+// et c'est dans le fichier paths.js
+gosp()
+
   // bouton général en-dessous que pour l'instant on poutre pas
 
 //  var rose=draw(300,300,300,'#ff11ff')
