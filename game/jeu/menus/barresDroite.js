@@ -36,14 +36,16 @@ var icone=game.add.sprite(x,y,"icone"+texture)
 // on fait un groupe qui va réagir au click
 // var de merde pour déclencher le bon tween (j'imagine que c'est mieux géré en interne par phaser ?)
   var onTEvo=false;
-  var tween=game.add.tween(ipadGroup);
+  var tween={};
+  tween.up=game.add.tween(ipadGroup).to( {x:-700}, 400);
+  tween.down=game.add.tween(ipadGroup).to( {x:0}, 400);
   var bouton=game.add.button(x,y,"b",function () {
     if (! tween.isRunning) {
         if (!onTEvo) {
-          tween.to( {x:-700}, 400).start()
+          tween.up.start()
           onTEvo=true
         }else{
-          tween.to( {x:0}, 500).start()
+          tween.down.start()
           onTEvo=false
         }
       }
