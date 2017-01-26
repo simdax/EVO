@@ -67,6 +67,7 @@
       socket.on('disconnect', function() {
         console.log('user disconnect');
         game.removePlayer(socket);
+        game.broadcastPlayersList();
       });
 
       socket.on('register-player', function(player, callback) {

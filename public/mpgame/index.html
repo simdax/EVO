@@ -13,7 +13,7 @@
       Put your name : <input type="text" ng-model="player.name" ng-change="updatePlayer()">
       <h2>Players List</h2>
       <ul>
-        <li ng-repeat="name in players">{{name}}</li>
+        <li ng-repeat="name in players track by $index">{{name}}</li>
       </ul>
     </div>
   </body>
