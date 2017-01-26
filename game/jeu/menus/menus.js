@@ -1,4 +1,5 @@
 
+var tweenBarreBas={}
 
 function createMenu(menuGroup) {
 
@@ -10,7 +11,9 @@ gosp()
 // on la place dans un groupe
 // et on lui met un tween qui permettra de réagir au bouton à droite
 var grosseBarre=game.add.group()
-tweenBarreBas=game.add.tween(grosseBarre)
+tweenBarreBas.haut=game.add.tween(grosseBarre).to({y:0},100)
+tweenBarreBas.bas=game.add.tween(grosseBarre).to({y:400},100)
+
 menuGroup.add(grosseBarre)
 grosseBarre.y = 400;
 

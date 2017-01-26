@@ -5,6 +5,8 @@ var marker=function (image,joueur) {
   this.pos=[0,0];
   this.id;
   this.sprite;
+  this.isTweened=false; // it will change only for vaisseau
+
   this.esp=getEvo(image)
   //init
   this.create()
@@ -57,6 +59,7 @@ marker.prototype={
     }
   },
   place: function(){
+    if(mdj.mvts == 0){return false}
     // the bool value is for does it should be considered as a move ?
     var pos=checkHex();
     var posX=pos[0]; var posY=pos[1];
@@ -89,28 +92,33 @@ marker.prototype={
     };
   },
   tween:function () {
-    var onTEvo=false;
-        if (!onTEvo) {
-          tweenBarreBas.to({y:0},400).start();
-          onTEvo=true
-        }else{
-         tweenBarreBas.to({y:400},500).start();
-          onTEvo=false
-        }
+    if(this.image=="vaisseau") {
+      if (!this.tweened) {
+        console.log("up");
+        tweenBarreBas.haut.start()
+        this.tweened=true
+      }else{
+        console.log("down");
+        tweenBarreBas.bas.start()
+        this.tweened=false
+      }
+    }
   },
   click:function() {
     console.log('click sur '+ this.image+ "de "+ this.joueur);
     // on tweene les barres du bas
-    if (this.image=="vaisseau") {this.tween()};
+
 
     if (mdj.currentJoueur==this.joueur) {
       highlight(this.pos)
-      fantome=new marker(this.image)
+      fantome=new marker(this.image, -1) // a joueur of -1
       fantome.sprite.alpha=0.38;
       game.input.addMoveCallback(function() {
         fantome.place()
       },this);
+      console.log("rajoutage de callback click");
       game.input.onDown.addOnce(function() {
+        console.log("release func");
         // cancel
         if (game.input.mouse.button===Phaser.Mouse.RIGHT_BUTTON) {
           console.log("cancel");
@@ -120,12 +128,13 @@ marker.prototype={
           mdj.update()
         }
         // clear
+        this.tween()
         game.input.moveCallbacks=[]
         normal();
         fantome.delete()
       },this)
+      this.tween()
     }
-    console.log('click sur '+ this.image+ "de "+ this.joueur);
   },
   cancel:function () {
 
@@ -137,8 +146,14 @@ marker.prototype={
     sp.tint= (this.joueur + 0.2) * 	0xCCCCCC
     sp.anchor.setTo(0.5);
     sp.visible=false;
+
+// marker properties
+
+
     //events
-    sp.events.onInputDown.add(this.click,this)
+    if (this.joueur==-1) { // means fantome and do not trigger click
+         }
+    else {sp.events.onInputDown.add(this.click,this)}
     betesGroup.add(sp);
     this.sprite=sp
   },

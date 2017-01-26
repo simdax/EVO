@@ -54,7 +54,7 @@ MDJ=function () {
 
 MDJ.prototype={
   endofturn:function () {
-    if (mvts>0) {
+    if (this.mvts>0) {
       alert("t'es sur man?")
     }else{
         mdj.next();
@@ -65,8 +65,7 @@ MDJ.prototype={
       //  this.current().end();
         this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
         this.current().update();
-        console.log("ta mere");
-        Timbres.synth.triggerAttackRelease("B5");
+        Timbres.synth.triggerAttackRelease("B5",0.2);
         console.log("au tour de "+this.currentJoueur);
         this.txt.setText("joueur" + this.currentJoueur);
     },
@@ -74,8 +73,8 @@ MDJ.prototype={
         return this.joueurs[this.currentJoueur];
     },
     update:function () {
-        this.mvts-=1;
-        if (this.mvts==0) {
+        if (this.mvts!=0) {
+          this.mvts-=1;
         };
     },
 }
