@@ -42,41 +42,25 @@
 
 
   app.controller('MainController', function($scope) {
+
+    // fdsf
     tools.addOnAndEmit($scope, socket);
-    // var $on, $emit;
 
-    // $emit = function(key, data, callback) {
-    //   socket.emit(key, data, function(a, b, c) {
-    //     $scope.$apply(function() {
-    //       return callback && callback(a, b, c);
-    //     });
-    //   });
-    // };
-
-    // $on = function(key, callback) {
-    //   socket.on(key, function(res) {
-    //     $scope.$apply(function() {
-    //       return callback(res);
-    //     });
-    //   });
-    // };
-
-    // $scope.logs = [];
+    // get memorised data
     $scope.player = getPlayerFromLocalStorage();
-<<<<<<< Updated upstream
 
-    // $scope.myname = 'simon';
-    $scope.updatePlayer = function() {
-=======
     // stringify helper
-    $scope.updateConf = function() {
->>>>>>> Stashed changes
+    $scope.updatePlayer = function() {
       localStorage.player = JSON.stringify($scope.player);
       $scope.$emit('register-player', $scope.player);
     };
 
+    // callbacks
+
+    // emit directly a register demand
     $scope.$emit('register-player', $scope.player);
 
+    // listeners
     $scope.$on('players-list', function(players) {
       $scope.players = players;
     });

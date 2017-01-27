@@ -3,45 +3,19 @@
 (function() {
   'use strict';
 
-  var Hexagon = require('./src/game/Hexagon');
+// here is all require
   var tools = require('./src/game/Tools');
+  var PlayerRegister = require('./src/game/PlayerRegister');
+  var Game= require('./src/game/Game');
 
   var express, app, http, io;
 
-  function Game() {
-    this.map = {};
-    this.players = {};
 
-  }
-
-
-  Game.prototype.registerPlayer = function(socket, player) {
-    player.socket = socket;
-    this.players[socket.id] = player;
-  };
-
-  Game.prototype.removePlayer = function(socket) {
-    delete this.players[socket.id];
-  };
-
-  Game.prototype.broadcastPlayersList = function() {
-    var pId, playersName = [];
-    for (pId in this.players) {
-      playersName.push(this.players[pId].name);
-    }
-
-    for (pId in this.players) {
-      this.players[pId].socket.emit('players-list', playersName);
-    }
-  };
-
-
-  Game.prototype.initMap = function() {
-    this.map = [new Hexagon(0, 0), new Hexagon(1, 0), new Hexagon(2, 0)];
-  };
+  //  global object that creates our server
 
 
 
+/*setup express*/
   function setupExpress() {
     express = require('express');
     app = express();
@@ -49,6 +23,7 @@
     io = require('socket.io')(http);
     io.set('transports', ['websocket']);
 
+    /*is that necessary ?*/
     app.use(express.static('public'));
 
     http.listen(process.env.PORT || 3000, function() {
@@ -56,23 +31,25 @@
     });
 
 
-    var game = new Game();
+/*init a map */
+    var playerRegister = new PlayerRegister();
+    var game=new Game();
     game.initMap();
     console.log(game.map);
 
-
+/*on connect */
     io.on('connection', function(socket) {
       console.log('user connected', socket.id);
 
       socket.on('disconnect', function() {
         console.log('user disconnect');
-        game.removePlayer(socket);
-        game.broadcastPlayersList();
+        playerRegister.removePlayer(socket);
+        playerRegister.broadcastPlayersList();
       });
 
       socket.on('register-player', function(player, callback) {
-        game.registerPlayer(socket, player);
-        game.broadcastPlayersList();
+        playerRegister.registerPlayer(socket, player);
+        playerRegister.broadcastPlayersList();
         return callback && callback(null);
       });
 
