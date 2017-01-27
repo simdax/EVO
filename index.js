@@ -4,15 +4,10 @@
   'use strict';
 
 // here is all require
-  var tools = require('./src/game/Tools');
-  var PlayerRegister = require('./src/game/PlayerRegister');
-  var Game= require('./src/game/Game');
+  var tools = require('./src/Tools');
+  var Main = require('./src/Server/Main');
 
   var express, app, http, io;
-
-
-  //  global object that creates our server
-
 
 
 /*setup express*/
@@ -31,32 +26,11 @@
     });
 
 
-/*init a map */
-    var playerRegister = new PlayerRegister();
-    var game=new Game();
-    game.initMap();
-    console.log(game.map);
+    /*this init all On Function of our incoming socket */
 
-/*on connect */
-    io.on('connection', function(socket) {
-      console.log('user connected', socket.id);
-
-      socket.on('disconnect', function() {
-        console.log('user disconnect');
-        playerRegister.removePlayer(socket);
-        playerRegister.broadcastPlayersList();
-      });
-
-      socket.on('register-player', function(player, callback) {
-        playerRegister.registerPlayer(socket, player);
-        playerRegister.broadcastPlayersList();
-        return callback && callback(null);
-      });
-
-      socket.on('get-game', function(callback) {
-        return callback && callback(game);
-      });
-    });
+    io.on('connection', function (socket) {
+        new Main(socket);
+    })
 
   }
 
