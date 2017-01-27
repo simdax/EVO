@@ -5,13 +5,15 @@
   var app, socket;
   app = angular.module('evoApp', []);
 
+// init angular
+
   socket = io({
     transports: ['websocket'],
     upgrade: true,
     log: true
   });
 
-
+//static
   function getPlayerFromLocalStorage() {
     var player = {};
     if (localStorage.player) {
@@ -61,9 +63,14 @@
 
     // $scope.logs = [];
     $scope.player = getPlayerFromLocalStorage();
+<<<<<<< Updated upstream
 
     // $scope.myname = 'simon';
     $scope.updatePlayer = function() {
+=======
+    // stringify helper
+    $scope.updateConf = function() {
+>>>>>>> Stashed changes
       localStorage.player = JSON.stringify($scope.player);
       $scope.$emit('register-player', $scope.player);
     };
@@ -74,22 +81,6 @@
       $scope.players = players;
     });
 
-    // $scope.scapi = function(cmd, args) {
-    //   $emit('cmd', {
-    //     cmd: cmd,
-    //     args: args || []
-    //   }, function(res) {
-    //     $scope.logs.push(res);
-    //   });
-    // };
-
-    // $scope.tf = function(cmd, args) {
-    //   return $scope.scapi('trucouf.' + cmd, args);
-    // };
-
-    // socket.on('connect', function() {
-    //   console.log('connected');
-    // });
 
 
   });
