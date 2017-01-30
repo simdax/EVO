@@ -29,6 +29,7 @@
     /*this init all On Function of our incoming socket */
 
     io.on('connection', function (socket) {
+      console.log('new connection');
         new Main(socket);
     })
 

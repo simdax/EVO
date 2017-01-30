@@ -18,29 +18,39 @@
 
   evo.app.controller('Salon', function($scope) {
 
-  /*here initialize the on and emit for the rests*/
-  evo.tools.addOnAndEmit($scope, evo.socket);
+    /*here initialize the on and emit for the rests*/
+    evo.tools.addOnAndEmit($scope, evo.socket);
 
-  // get memorised name
-  $scope.player = getPlayerFromLocalStorage();
+      /*
+      INIT
+      */
+    // get memorised name
+    $scope.player = getPlayerFromLocalStorage();
 
-  // update name if changed
-  $scope.updatePlayer = function() {
-    localStorage.player = JSON.stringify($scope.player);
+    /*   and init gogogo
+    emit directly a register demand
+    */
     $scope.$emit('register-player', $scope.player);
-  };
 
-  // listeners
-  $scope.$on('players-list', function(players) {
-    $scope.players = players;
+
+    /* listeners */
+
+    $scope.$on('players-list', function(players) {
+      $scope.players = players;
+    });
+
+
+    /*
+     update name if changed
+    */
+    $scope.updatePlayer = function() {
+      localStorage.player = JSON.stringify($scope.player);
+      $scope.$emit('register-player', $scope.player);
+    };
+
+
+
+
   });
-
-  /*   and init gogogo
-     emit directly a register demand
-  */
-  $scope.$emit('register-player', $scope.player);
-
-
-});
 
 }())

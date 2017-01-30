@@ -42,5 +42,7 @@ var evo={};
     };
   };
 
+// global variable for game management !
+evo.yourTurn=false
 
 }());

@@ -11,27 +11,33 @@
 (function(){
   'use strict'
 
-  var Game=function () {
-    this.id= Math.random() // temp ID
-  }// io
+  var Game=function (id,name,owner) {
+    this.id= id;
+    this.name= name;
+    this.owner= owner;
+    // for map generation
+    this.seed=0;
+    //nb joueurs 
+    this.players=-1;
+  }
 
   function GameManager (){
-      this.games=[]
+      this.games={}
   }
   GameManager.prototype={
-    searchID:function (id) {
-      this.games.forEach((game)=>{if(game.id==id){return game} })
+    getGames:function () {
+        var res=[];
+        for(var id in this.games){res.push(this.games[id])}
+          //console.log(res);
+        return res;
     },
-    assignGame:function (id,player,role) {
-      player.game=this.searchID(id);
-      player.role=role
+    createGame:function (playerID,name,playerName) {
+      var game=new Game(playerID,name,playerName)
+      this.games[playerID]=game;
+      return game;
     },
-    createGame:function (player) {
-      var game=new Game(player)
-      this.games.push(game);
-      // yes using id for refinding game with it is absurd, but more explicit ?
-      //this.assignGame(game.id,player,"master")
-      return game.id
+    deleteGame:function (playerID) {
+      delete this.games[playerID]
     },
   }
   module.exports = GameManager

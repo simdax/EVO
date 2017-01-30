@@ -6,17 +6,39 @@ var PlayerRegister= function() {
     this.players = {};
 }
 
- /*receveive a player*/
+/*Mains functions ==> add/delete and change Status*/
+
+ /*receive a player*/
   PlayerRegister.prototype.registerPlayer = function(socket, player) {
     player.socket = socket;
-    player.status = "invité"
+    player.status = "squatteur"
     this.players[socket.id] = player;
   };
 
-  /* kill a player*/
+  /* delete a player*/
   PlayerRegister.prototype.removePlayer = function(socket) {
     delete this.players[socket.id];
   };
+
+  /* change status of player */
+  // PlayerRegister.prototype.changeStatus = function (id,role) {
+  //     this.findPlayerForID(id).status=role
+  // };
+
+// utilities for "player data manipulation"
+
+PlayerRegister.prototype.findPlayerForID = function(id) {
+    var res;
+    for(var i in this.players){
+    if (this.players[id]) {
+      res=this.players[id]
+    }
+  }
+    if (res) { return res} else{
+      console.log("joueur inconnu !! ==> id : " + id)
+    }
+};
+
 
     /*why this dont work ??*/
   //  var caca = Object.keys(this.players).map((player)=>{return player.name});
@@ -28,11 +50,7 @@ var PlayerRegister= function() {
     }
     return res
   };
-  PlayerRegister.prototype.broadcast=function (key,arg) {
-    for (var pId in this.players) {
-      this.players[pId].socket.emit(key,arg);
-    }
-  };
+
 
   module.exports = PlayerRegister
 }())

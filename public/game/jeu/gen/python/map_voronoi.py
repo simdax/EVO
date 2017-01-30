@@ -1,3 +1,6 @@
+
+import argparse
+
 import numpy as np
 import numpy.random as random
 import cv2
@@ -23,21 +26,31 @@ def compute_prob(map, n, threshold=0.1):
 	return np.abs(random.normal(0,sigma)*np.sqrt(n+1))<threshold
 
 
+#properties
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('h', metavar='N', type=int, default=100)
+parser.add_argument('w', metavar='N', type=int, default=100)
+
+args = parser.parse_args()
+
+w = args.w
+h = args.h
+
+
 #===========
 # main loop
 #===========
 
 random.seed()
-w = 150
-h = 150
 
 map = np.zeros((w,h))
-walked_places = np.zeros((w,h)) 
+walked_places = np.zeros((w,h))
 
 nbCells = random.randint(0,5) #0-indexed, 0 means 1 cell
 
 #dice-like patterns with n+1 points as starting seeds
-divisions = np.asarray([ 
+divisions = np.asarray([
     [[w/2,h/2]],
     [[w/4,h/4],[3*w/4,3*h/4]],
     [[w/4,h/4],[3*w/4,3*h/4],[w/2,h/2]],
@@ -48,7 +61,7 @@ seeds = np.asarray(divisions[nbCells])
 
 points = Queue.Queue()
 
-maxSize = 0.5*w*h
+maxSize = 1*w*h
 
 for seed in seeds:
     map[seed[0], seed[1]] = 1
@@ -80,6 +93,9 @@ while earthSize<maxSize and not points.empty():
 
 	earthSize = np.count_nonzero(map)
 
+#======
+#image
+#======
 
 
 kernel = np.ones((5,5),np.uint8)
