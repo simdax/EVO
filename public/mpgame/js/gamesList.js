@@ -62,14 +62,6 @@ et enfin 'watcher', regarde une game déja commencée
       }
     });
 
-    $scope.$on('get-ID',function (id) {
-      evo.id=id
-    });
-
-    $scope.$on('get-seed',function (seed) {
-      evo.seed=seed
-    });
-
 
     /*   USED BY HTML
     */
@@ -101,7 +93,6 @@ et enfin 'watcher', regarde une game déja commencée
 //        $scope.$emit('change-status',"createur");
         $scope.status="createur"
         $scope.started=true;
-        evo.id=0
       }
     };
 

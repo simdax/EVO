@@ -17,8 +17,8 @@
     this.owner= owner;
     // for map generation
     this.seed=0;
-    //nb joueurs 
-    this.players=-1;
+    //nb joueurs
+    this.players=0;
   }
 
   function GameManager (){

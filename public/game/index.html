@@ -1,56 +1,64 @@
 <!DOCTYPE html> <html> <head> <style type="text/css"> body{ background: #000000;
-padding:0px; margin:0px; } </style>
+	padding:0px; margin:0px; } </style>
 
-        <!-- sound -->
-				<link rel="import" href="sound/index.html">
+	<!-- sound -->
+	<link rel="import" href="sound/index.html">
 
-			 	<!-- <script src="lib/Tone.min.js" type="text/javascript"></script>
-				<script src="sound/prob/prob.js" type="text/javascript"></script>
-        <script src="sound/timbre.js" type="text/javascript"></script>
-        <script src="sound/bach.js" type="text/javascript"></script> -->
-
-
-         <script src="sound/mainSoundLoop.js" type="text/javascript"></script>
-        <!-- phaser -->
-	    <script src="lib/phaser.min.js"></script>
-	    <script src="lib/seedrandom/simpleRandomSeed.js"></script>
-
-      
+	<!-- <script src="lib/Tone.min.js" type="text/javascript"></script>
+	<script src="sound/prob/prob.js" type="text/javascript"></script>
+	<script src="sound/timbre.js" type="text/javascript"></script>
+	<script src="sound/bach.js" type="text/javascript"></script> -->
 
 
-				<script src="jeu/features/math.js"></script>
-        <script src="jeu/features/lang.js"></script>
-				<script src="jeu/features/light.js"></script>
-				<script src="jeu/features/zoom.js"></script>
+	<script src="sound/mainSoundLoop.js" type="text/javascript"></script>
+	<!-- phaser -->
+	<script src="lib/phaser.min.js"></script>
+	<script src="lib/seedrandom/simpleRandomSeed.js"></script>
 
-        <!-- math libraries -->
 
-        <!-- <script type="text/javascript" src="lib/ss.js"></script>
-        <script type="text/javascript" src="lib/Numpy.js"></script>
-        <script type="text/javascript" src="lib/PolySolve.js"></script>
-        <script type="text/javascript" src="lib/Scipy.js"></script> -->
+	<script src="jeu/features/math.js"></script>
+	<script src="jeu/features/lang.js"></script>
+	<script src="jeu/features/light.js"></script>
+	<script src="jeu/features/zoom.js"></script>
 
-        <!-- jeu -->
-        <script src="jeu/features/console.js"></script>
-        <script src="jeu/core/marker.js"></script>
-        <script src="jeu/core/joueur.js"></script>
+	<!-- math libraries -->
 
-				 <!-- menus -->
-				<script src="jeu/features/menus/paths.js"></script>
-        <script src="jeu/features/menus/barresDroite.js"></script>
-				<script src="jeu/features/menus/menus.js"></script>
+	<!-- <script type="text/javascript" src="lib/ss.js"></script>
+	<script type="text/javascript" src="lib/Numpy.js"></script>
+	<script type="text/javascript" src="lib/PolySolve.js"></script>
+	<script type="text/javascript" src="lib/Scipy.js"></script> -->
 
-				<!-- board -->
-				<script src="jeu/core/collisions.js"></script>
-				<script src="jeu/core/mdj.js"></script>
-        <script src="jeu/core/board.js"></script>
-				<script src="jeu/core/gen/generate.js"></script>
+	<!-- jeu -->
+	<script src="jeu/features/console.js"></script>
+	<script src="jeu/core/marker.js"></script>
+	<script src="jeu/core/joueur.js"></script>
 
-				<script src="jeu/start.js"></script>
-			  <script src="main.js"></script>
+	<!-- menus -->
+	<script src="jeu/features/menus/paths.js"></script>
+	<script src="jeu/features/menus/barresDroite.js"></script>
+	<script src="jeu/features/menus/menus.js"></script>
 
-	</head>
-	<body>
+	<!-- board -->
+	<script src="jeu/core/collisions.js"></script>
+	<script src="jeu/core/mdj.js"></script>
+	<script src="jeu/core/board.js"></script>
+	<script src="jeu/core/gen/generate.js"></script>
 
-	</body>
+	<script src="jeu/main.js"></script>
+	<script type="text/javascript">
+
+	var evo={id:0, socket:{on:function () {}, emit:function () {}}};
+	///// GOOOOO
+	var game = new Phaser.Game(1400, 1000, Phaser.AUTO);
+	go = new Game(game,0,0,2);
+	setTimeout(function () {
+		go.start()
+	},4000
+)
+</script>
+
+</head>
+<body>
+
+</body>
 </html>

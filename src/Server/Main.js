@@ -85,8 +85,8 @@
       me:function () {
         return playerRegister.findPlayerForID(this.socket.id);
       },
-      joueur:function () {
-        return playerRegister.findPlayerForID(this.socket.id);
+      joueur:function (id) {
+        return playerRegister.findPlayerForID(id);
       },
 
       // broadcasting
@@ -97,6 +97,7 @@
 
         // since its managed by PlayerRegister
         // we have to update ourselves games names
+        // too
         gameManager.getGames().forEach((game,i)=>{
           // console.log(game);
           game.owner=names[i]
@@ -120,6 +121,7 @@
         var game=gameManager.createGame(this.socket.id,name,this.me().name);
         this.broadcastGamelist();
         // like you were joigning your own game
+        // (stupid but ok)
         this.joinGame(game.id);
         return callback && callback(null)
       },
@@ -130,16 +132,15 @@
         return callback && callback(null)
       },
       joinGame:function (id) {
-        console.log("lets join the party !!");
+        console.log("u join");
         var game=gameManager.games[id];
         // increase count
+        this.socket.emit('getID',game.players);
         game.players+=1;
-                // you get an ID and a seed7
-        this.id=game.players;
-        this.socket.emit('get-ID',game.players);
-        if (game.players>=1) {
-          console.log("oui");
-          this.broadcast('createGame',game.seed);
+        if (game.players>0) {
+          this.broadcast('createGame',
+          // i cant send a object ,??
+          [game.seed,game.players]);
         }
       },
       unjoinGame:function (id) {

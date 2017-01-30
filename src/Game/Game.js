@@ -21,16 +21,13 @@
 
       // MARKER managment
 
-      "place-marker-at":function (id,image,joueur,pos) {
-        if (this.ids[id]) {
-          this.broadcastMinus(this.socket.id,'movePion',id,pos)
-        }else{
-          this.ids[id]=pos;
-          this.broadcastMinus(this.socket.id,'newMarkerAt',
-          {image:image,joueur:joueur,pos:pos}
-        )
-        }
-        console.log(this.ids);
+      "place-marker-at":function (pion) {
+        console.log("new marker");
+          this.broadcastMinus(this.socket.id,'newMarkerAt',pion)
+      },
+      "move-marker-at":function (pion) {
+        console.log("move marker");
+        this.broadcastMinus(this.socket.id,'movePion',pion)
       },
       "delete-marker":function (id) {
           console.log("delete marker");
