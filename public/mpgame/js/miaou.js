@@ -9,7 +9,6 @@
 
     evo.caca=function(event) {
       if (event.keyCode==13) {
-        console.log($scope.blabla);
           $scope.sendPhrase($scope.blabla)
       }
   }
@@ -21,7 +20,6 @@
     };
     // et on reçoit
     $scope.$on('updateChat',function (phrases) {
-      console.log(phrases);
         $scope.phrases=phrases;
     });
 

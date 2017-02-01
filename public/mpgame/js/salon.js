@@ -38,6 +38,10 @@
     $scope.$on('players-list', function(players) {
       $scope.players = players;
     });
+    $scope.$on("welcome",function () {
+        Timbres.snare.triggerAttackRelease(440,0.25);
+//        Timbres.snare.triggerAttackRelease(660,0.5,0.5)
+    })
 
 
     /*

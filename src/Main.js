@@ -49,8 +49,13 @@
     })
 
     // add a broadcaster object
-    this.br =  broadcaster
-    this.chat= chat
+    this.br =  broadcaster;
+    this.chat= chat;
+
+// petite musique de bienvenue
+
+    this.socket.broadcast.emit("welcome")
+
   };
 
 

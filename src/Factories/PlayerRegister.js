@@ -36,6 +36,7 @@ PlayerRegister.prototype.findPlayerForID = function(id) {
   }
     if (res) { return res} else{
       console.log("joueur inconnu !! ==> id : " + id)
+      return {name:"un mec inconnu"}
     }
 };
 
