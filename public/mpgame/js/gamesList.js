@@ -25,7 +25,7 @@ et enfin 'watcher', regarde une game déja commencée
     //  $scope.musique=false
 
     //askgamelist demande la liste des parties. c'est à l'arrivée
-    // du joueur vu que ça peut pas être mis dans un local storage
+    // du joueur vu que ça peut pas être mis dans un local storage ?
     $scope.$emit('askGameList',function () {})
 
     // qui répond automatiquement
@@ -43,11 +43,6 @@ et enfin 'watcher', regarde une game déja commencée
     // status
     $scope.$on('my-status', function(status) {
       $scope.status = status;
-    });
-
-    // player number
-    $scope.$on('takeNumber', function (number) {
-        evo.number=number
     });
 
     // game list
@@ -89,10 +84,12 @@ et enfin 'watcher', regarde une game déja commencée
     $scope.newGame=function () {
       var name = prompt("Please enter game name", "game de ouf");
       if(name){
-        $scope.$emit('new-game',name);
-//        $scope.$emit('change-status',"createur");
+        var nb = prompt("combien de joueurs sanguinaires ?", "0");
+        if ((parseInt(nb))) {
+        $scope.$emit('new-game',name,nb);
         $scope.status="createur"
         $scope.started=true;
+      }
       }
     };
 

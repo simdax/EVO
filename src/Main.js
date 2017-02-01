@@ -14,31 +14,43 @@
 (function(){
   'use strict'
 
+
   /*require our managers*/
 
-  var GM=require('./GameManager');
-  var PR=require('./PlayerRegister');
+  var GM=require('./Factories/GameManager');
+  var PR=require('./Factories/PlayerRegister');
 
   /*instantiate them*/
 
   var gameManager=new GM;
   var playerRegister=new PR;
 
-// Games is just an extension with marker managment functions added
-  var Game=require('../Game/Game')
+  var BR=require('./Factories/Broadcaster')
+  var broadcaster=new BR(playerRegister,gameManager);
 
-  /*get the bouzin*/
+// Games is just an extension with marker managment functions added
+// we dont need to manage anything ON the server with game
+// its really pure communication server/client
+  var Game=require('./Game')
+  var Chat=require('./Chat')
+
+  var chat=new Chat;
 
   function User (socket){
 
-    //game juste extends User prototype
+    // so we instantiante with a new User
+    // it just extends User prototype
     new Game(User.prototype);
-    this.ids={};
+    new Chat(User.prototype);
 
     this.socket=socket;
     Object.keys(User.prototype).forEach((func)=>{
       socket.on(func, this[func].bind(this))
     })
+
+    // add a broadcaster object
+    this.br =  broadcaster
+    this.chat= chat
   };
 
 
@@ -48,22 +60,6 @@
 
   /*helper for broadcasting */
 
-      broadcast: function (key,arg) {
-    //    console.log(Object.keys(this.players).length);
-       for (var pId in playerRegister.players) {
-        playerRegister.players[pId].socket.emit(key,arg);
-       }
-     },
-     broadcastMinus:function (id,key,arg) {
-      //    console.log(Object.keys(this.players).length);
-      this.socket.broadcast.emit(key,arg)
-      //  for (var pId in playerRegister.players) {
-      //    if (pId!=id) {
-      //    playerRegister.players[pId].socket.emit(key,arg);
-      //  }
-      //  }
-     },
-
 
       // players management
 
@@ -71,13 +67,16 @@
         console.log('user disconnect');
         playerRegister.removePlayer(this.socket);
         gameManager.deleteGame(this.socket.id)
-        this.broadcastPlayersList();
+        this.br.broadcastPlayersList();
         // no callback return ?
       },
 
       "register-player": function(player, callback) {
         playerRegister.registerPlayer(this.socket, player);
-        this.broadcastPlayersList();
+        this.br.broadcastPlayersList();
+        // ouuuuh yeah very ugly updating chat
+        console.log(    User.prototype['new-phrase']);
+        User.prototype['new-phrase'].call(this);
         return callback && callback(null);
       },
 
@@ -89,27 +88,22 @@
         return playerRegister.findPlayerForID(id);
       },
 
-      // broadcasting
-      broadcastPlayersList:function () {
 
-        var names=playerRegister.names();
-        this.broadcast('players-list', names);
+      'new-phrase':function (phrase) {
+        // or update whitout arg
+        // internallye, we add the id and not the name, and we put the name after
+          if(phrase){this.chat.add(phrase, this.socket.id)};
 
-        // since its managed by PlayerRegister
-        // we have to update ourselves games names
-        // too
-        gameManager.getGames().forEach((game,i)=>{
-          // console.log(game);
-          game.owner=names[i]
-        })
-        this.broadcastGamelist()
-        //return callback && callback(null)
-      },
-
-
-      broadcastGamelist: function () {
-        this.broadcast('games-list', gameManager.getGames())
-        //return callback && callback(null)
+          // braodcast with your name
+          var phrases=this.chat.getPhrases();
+          for (var i = 0; i < phrases.length; i++) {
+            console.log(phrases);
+            phrases[i]=phrases[i].replace(this.socket.id,this.me().name);
+            console.log(this.me().name);
+            console.log(phrases);
+          }
+          // broadcast the final 5 el
+          this.br.broadcastAll('updateChat',phrases)
       },
 
       /*
@@ -119,7 +113,7 @@
       // game managment
       "new-game": function (name,callback) {
         var game=gameManager.createGame(this.socket.id,name,this.me().name);
-        this.broadcastGamelist();
+        this.br.broadcastGamelist();
         // like you were joigning your own game
         // (stupid but ok)
         this.joinGame(game.id);
@@ -128,19 +122,27 @@
       "cancel-game": function (undefined, callback) {
         console.log("game cancelled");
         gameManager.deleteGame(this.socket.id);
-        this.broadcastGamelist();
+        this.br.broadcastGamelist();
         return callback && callback(null)
       },
       joinGame:function (id) {
         console.log("u join");
+
+        // we join a game that our gameManager
+        // already created
         var game=gameManager.games[id];
-        // increase count
+
+        // we increase count and give player its id
         this.socket.emit('getID',game.players);
-        game.players+=1;
-        if (game.players>0) {
-          this.broadcast('createGame',
+
+        // we increase the count
+        game.players-=1;
+        // and if its ok
+        if (game.players==0) {
+          // boum
+          this.br.broadcastAll('createGame',
           // i cant send a object ,??
-          [game.seed,game.players]);
+          [game.seed,game.nb]);
         }
       },
       unjoinGame:function (id) {

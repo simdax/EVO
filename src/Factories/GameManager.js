@@ -11,14 +11,20 @@
 (function(){
   'use strict'
 
-  var Game=function (id,name,owner) {
+  var Game=function (id,name,owner,nb) {
+
+    // general informations
     this.id= id;
     this.name= name;
     this.owner= owner;
+
     // for map generation
     this.seed=0;
+
     //nb joueurs
-    this.players=0;
+    // with compte a rebours
+    this.nb=nb
+    this.players=nb;
   }
 
   function GameManager (){

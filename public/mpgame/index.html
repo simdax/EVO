@@ -18,6 +18,7 @@
     <script type="text/javascript" src="js/salon.js"></script>
     <script type="text/javascript" src="js/gamesList.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/miaou.js"></script>
 
   </head>
 
@@ -32,6 +33,12 @@
       <ul>
         <li ng-repeat="name in players track by $index">{{name}}</li>
       </ul>
+    </div>
+
+    <div ng-controller="miaou">
+      qui parle et qui parle...
+      <li ng-repeat="phrase in phrases track by $index">{{phrase}}</li>
+      <input id="chat" type="text" ng-model="blabla" onkeypress="evo.caca(event)">
     </div>
 
       <div ng-controller="gamesList">

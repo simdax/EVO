@@ -1,6 +1,4 @@
 
-// GROS GLOBAL DE TROP PAS BIIIIIENNN !
-
 (function(){
   'use strict'
 
@@ -20,9 +18,9 @@
           if($scope.status=="createur"||$scope.status=="player")
           {
             var phaser=new Phaser.Game(1500,630,Phaser.AUTO,'phaser');
-            var game=new Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
+            evo.game=new Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
             // we have only one state
-            new GameCallbacks(evo.socket,game).init("board");
+            new GameCallbacks(evo.socket,evo.game).init("board");
           }
         }
       )

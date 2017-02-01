@@ -3,14 +3,13 @@
 (function() {
   'use strict';
 
-// here is all require
-  var tools = require('./src/Tools');
-  var User = require('./src/Server/Main');
+  // here is all require
+  var User = require('./src/Main');
 
   var express, app, http, io;
 
 
-/*setup express*/
+  /*setup express*/
   function setupExpress() {
     express = require('express');
     app = express();
@@ -30,10 +29,10 @@
 
     io.on('connection', function (socket) {
       console.log('new connection');
-        new User(socket,io);
+      new User(socket,io);
     })
 
-// test ??
+    // test ??
 
 
   }

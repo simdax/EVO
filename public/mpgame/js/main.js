@@ -16,7 +16,9 @@ var evo={};
 
 //init angular
 
-  evo.app = angular.module('evoApp', []);
+  evo.app = angular.module('evoApp', []
+  //['cfp.hotkeys'] dont work
+);
 
 // init socket io
 
@@ -44,6 +46,22 @@ var evo={};
     };
   };
 
+// enter pressed directive
+  // evo.app.directive('myEnter', function () {
+  //     return function (scope, element, attrs) {
+  //         element.bind("keydown keypress", function (event) {
+  //             if(event.which === 13) {
+  //                 scope.$apply(function (){
+  //                     scope.$eval(attrs.myEnter);
+  //                 });
+  //
+  //                 event.preventDefault();
+  //             }
+  //         });
+  //     };
+  // });
+
+  // oio (for debug)
 evo.io = io
 
 }());
