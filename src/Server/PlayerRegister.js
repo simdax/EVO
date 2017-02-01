@@ -6,7 +6,7 @@ var PlayerRegister= function() {
     this.players = {};
 }
 
-/*Mains functions ==> add/delete and change Status*/
+/*Users functions ==> add/delete and change Status*/
 
  /*receive a player*/
   PlayerRegister.prototype.registerPlayer = function(socket, player) {

@@ -45,16 +45,18 @@
 	<script src="jeu/core/gen/generate.js"></script>
 
 	<script src="jeu/main.js"></script>
+	<script src="jeu/server.js"></script>
+
 	<script type="text/javascript">
 
-	var evo={id:0, socket:{on:function () {}, emit:function () {}}};
+	//Fvar evo={id:0, socket:{on:function () {}, emit:function () {}}};
 	///// GOOOOO
 	var game = new Phaser.Game(1400, 1000, Phaser.AUTO);
 	go = new Game(game,0,0,2);
 	setTimeout(function () {
-		go.start()
-	},4000
-)
+		go.start();
+		ga=new GameCallbacks(evo.socket,go.board)
+	},4000);
 </script>
 
 </head>

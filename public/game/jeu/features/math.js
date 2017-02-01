@@ -3,11 +3,13 @@ var HexagonTools=function(game,map) {
 this.game=game;
 this.map=map;
 
-  this.checkHex=function (){
-    var candidateX = Math.floor((this.game.input.worldX)/map.sectorWidth);
-    var candidateY = Math.floor((this.game.input.worldY)/map.sectorHeight);
-    var deltaX = (this.game.input.worldX)%map.sectorWidth;
-    var deltaY = (this.game.input.worldY)%map.sectorHeight;
+  this.checkHex=function (x=this.game.input.worldX,
+    y=this.game.input.worldY)
+  {
+    var candidateX = Math.floor(x/map.sectorWidth);
+    var candidateY = Math.floor(y/map.sectorHeight);
+    var deltaX = x%map.sectorWidth;
+    var deltaY = y%map.sectorHeight;
     if(candidateX%2==0){
       if(deltaX<((map.hexagonWidth/4)-deltaY*map.gradient)){
         candidateX--;

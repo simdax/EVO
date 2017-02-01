@@ -3,24 +3,31 @@ var Groupes=function (game,otherPlayers){
   // these are layers
   // i don't understand everything with their organisation...
 
+// this is the main group for all hexagons
 this.hexagon=game.add.group();
 
-this.toi=game.add.group();
+this.hover=function (hexagon) {
+  this.hexagon.forEach(function (hexagon) {
 
-this.others=game.add.group();
-for (var i = 0; i < otherPlayers; i++) {
-    this.others.add(game.add.group())
-};
+  hexagon.inputEnabled=true;
 
+  hexagon.events.onInputOver.add(function(){
+    if(hexagon.on){hexagon.tint=0xCCCCCC}
+  }, this);
+  hexagon.events.onInputOut.add(function(){
+     hexagon.tint=0xffffff
+  }, this);
+})
+},
 // this.ipad=game.add.group();
 // this.regle=game.add.group();
 // this.menu=game.add.group();
 // this.grosseBarre=game.add.group()
 
+// this is the group of all sprites
+//on the board
 this.betes=game.add.group();
 
-this.betes.add(this.toi);
-this.betes.add(this.others);
 // this.hexagon.add(this.betes);
 
 // this.menu.fixedToCamera = true;
@@ -121,6 +128,9 @@ Board.prototype = {
 
   this.groupes=new Groupes(this.game,this.nb-1);
   this.gen=new Gen(this.game,this.seed,this.mapSettings,this.groupes);
+
+  this.groupes.hover();
+
   Light.hexagons=this.groupes.hexagon;
   Light.tools=new HexagonTools(this.game,this.mapSettings);
 
@@ -141,7 +151,9 @@ Board.prototype = {
     this.EOTkey =this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.cursors =this.game.input.keyboard.createCursorKeys();
 
-    this.mdj=new MDJ(this.id,this.groupes,this.nbJoueurs,this.game);
+    console.log(this.game.input);
+
+    this.mdj=new MDJ(this.id,this.nbJoueurs,this.game,this.groupes);
 
   },
 

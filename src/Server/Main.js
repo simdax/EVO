@@ -29,15 +29,14 @@
 
   /*get the bouzin*/
 
-  function Main (socket){
+  function User (socket){
 
-    //game juste extends Main prototype
-    new Game(Main.prototype);
+    //game juste extends User prototype
+    new Game(User.prototype);
     this.ids={};
 
-
     this.socket=socket;
-    Object.keys(Main.prototype).forEach((func)=>{
+    Object.keys(User.prototype).forEach((func)=>{
       socket.on(func, this[func].bind(this))
     })
   };
@@ -45,7 +44,7 @@
 
     /*define the functions*/
 
-    Main.prototype={
+    User.prototype={
 
   /*helper for broadcasting */
 
@@ -56,12 +55,13 @@
        }
      },
      broadcastMinus:function (id,key,arg) {
-            //    console.log(Object.keys(this.players).length);
-       for (var pId in playerRegister.players) {
-         if (pId!=id) {
-         playerRegister.players[pId].socket.emit(key,arg);
-       }
-       }
+      //    console.log(Object.keys(this.players).length);
+      this.socket.broadcast.emit(key,arg)
+      //  for (var pId in playerRegister.players) {
+      //    if (pId!=id) {
+      //    playerRegister.players[pId].socket.emit(key,arg);
+      //  }
+      //  }
      },
 
 
@@ -156,7 +156,7 @@
     };
 
 
-  module.exports = Main
+  module.exports = User
 
 }()
 )

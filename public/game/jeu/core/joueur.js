@@ -1,13 +1,14 @@
 
-var Joueur = function (id,groupe,collider,game) {
+var Joueur = function (id,game,groupes) {
 
   this.id=id;
-  this.groupe=groupe;
+  this.groupe=game.add.group();
+  groupes.betes.add(this.groupe)
+
+  this.grp=[];
 
   this.game=game;
-
-  this.collider=collider;
-  collider.joueur=this;
+  this.groupes=groupes;
 
   this.xps=10;
 
@@ -52,21 +53,11 @@ var Joueur = function (id,groupe,collider,game) {
   };
 }
 
-var ioio;
 Joueur.prototype={
 
   // a chaque tour on update le menu
   // + on rend les input aux pieces
   update:function (){
-    var i=this.inventaire;
-    // colorize menus buttons
-    for(var phyl in i){ for (var esp in i[phyl]){
-      if(this.get(esp)!=false){
-        couleursBouttons[esp].tint=0x410055
-      }else{
-        couleursBouttons[esp].tint=0x000000
-      }
-    }};
     this.gagnerXP()
   },
   hasParent:function (espece) {
@@ -81,12 +72,15 @@ Joueur.prototype={
       return false
     }
   }
-} ,
+},
+newMarker:function (espece) {
+  return marker(espece,this)
+},
 create:function (espece) {
   var nbRest=this.get(espece);
   console.log("il reste :" +nbRest);
   if (nbRest == 1 || nbRest == 2) {
-    var m=marker(espece,this)
+    var m=this.newMarker();
     this.set(espece, nbRest-1)
     return m
   }else{

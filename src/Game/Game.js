@@ -5,12 +5,12 @@
 //var marker;
 
   /*constructor*/
-  var Game = function (mainProto,m) {
+  var Game = function (UserProto,m) {
 
   //  marker =m
-    // extends Main
+    // extends User
     for(var func in Game.prototype){
-      mainProto[func]=this[func]
+      UserProto[func]=this[func]
     }
 
   };
@@ -21,17 +21,17 @@
 
       // MARKER managment
 
-      "place-marker-at":function (pion) {
+      "place-marker-at":function (infos) {
         console.log("new marker");
-          this.broadcastMinus(this.socket.id,'newMarkerAt',pion)
+          this.broadcast('newMarkerAt',infos)
       },
-      "move-marker-at":function (pion) {
+      "move-marker-at":function (infos) {
         console.log("move marker");
-        this.broadcastMinus(this.socket.id,'movePion',pion)
+        this.broadcastMinus(this.socket.id,'moveMarker',infos)
       },
-      "delete-marker":function (id) {
+      "delete-marker":function (infos) {
           console.log("delete marker");
-          this.broadcastMinus(this.socket.id,'deleteMarker',id)
+          this.broadcastMinus(this.socket.id,'deleteMarker',infos)
       },
 
       // MDJ management

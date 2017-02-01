@@ -5,7 +5,7 @@
 
 // here is all require
   var tools = require('./src/Tools');
-  var Main = require('./src/Server/Main');
+  var User = require('./src/Server/Main');
 
   var express, app, http, io;
 
@@ -30,8 +30,11 @@
 
     io.on('connection', function (socket) {
       console.log('new connection');
-        new Main(socket);
+        new User(socket,io);
     })
+
+// test ??
+
 
   }
 

@@ -14,6 +14,7 @@ Gen=function (game,seed,map,groupes) {
 /**
  * Ancienne fonction de génération de carte
  */
+
 this.genererClassique= function (hexagonX, hexagonY) {
   var x = (Math.floor(Math.random() * 2) == 0);
   if (x) {

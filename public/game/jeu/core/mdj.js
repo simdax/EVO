@@ -1,5 +1,5 @@
 
-var MDJ=function (id,groupes,nb,game) {
+var MDJ=function (id,nb,game,groupes) {
 
   this.nbJoueurs=nb;
 
@@ -7,9 +7,17 @@ var MDJ=function (id,groupes,nb,game) {
   this.currentJoueur=0;
   this.mvts=4;
 
+this.groupes=groupes;
   // collisions is for the markers
-  this.collisions=new Collisions(game,groupes.betes,groupes.hexagon)
-  this.joueur= new Joueur(id,groupes.toi,this.collisions,game);
+  this.toi= new Joueur(id,game,groupes);
+  this.joueurs={};
+
+  for (var i = 0; i < nb; i++) {
+    if(i==id){this.joueurs[i]=this.toi}else{
+      this.joueurs[i]=new Joueur(i,game,groupes)
+    }
+  }
+
 }
 
 MDJ.prototype={
@@ -45,26 +53,18 @@ MDJ.prototype={
   },
 
 
-// MDJ current joueur +1
+// its the end of your turn
   next:function () {
-    this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-    // this.current().update();
-    Timbres.synth.triggerAttackRelease("B5",0.2);
-    console.log(this.currentJoueur);
-    console.log("au tour de "+this.currentJoueur);
-    // if(this.currentJoueur==evo.id+1){groupes.betes.inputEnabled=false;}
-    // if(this.currentJoueur==evo.id){groupes.betes.inputEnabled=true;}
-    //this.txt.setText("joueur" + this.currentJoueur);
+    this.nextAlone();
     evo.socket.emit('turn-player',evo.socket.id)
   },
-  // meeeeega loooose
-  // without emit...
+  // end of others turns
   nextAlone: function () {
     this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-    this.current().update();
     Timbres.synth.triggerAttackRelease("B5",0.2);
+    if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
+    if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
     console.log("au tour de "+this.currentJoueur);
-    this.txt.setText("joueur" + this.currentJoueur);
 },
 
 

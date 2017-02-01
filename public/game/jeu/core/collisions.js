@@ -1,39 +1,66 @@
-var Collisions = function (game,betes,hexGroup,joueur,marker) {
+// checkTerrain
+// check rencontre
+// go dans une case hexagonale
+
+/// + tout ça dans un main placeIF
+
+
+var Collisions = function (betes,hexGroup,marker) {
 
   this.betes=betes;
   this.hexagons=hexGroup;
-
-  this.joueur=joueur;
   this.marker=marker;
 
-  this.math=new HexagonTools(game,new Map)
+// INCOMPLETE
+//  you have to populate it with a player and at last a marker
+
+  this.math=new HexagonTools(this.marker.joueur.game,new Map)
+  this.always=false; // for ghost = true
 };
 
 Collisions.prototype={
 
-  isYours:function () {
-      return board.groupes.toi.children.indexOf(this.marker) > -1
-  },
 
-  placeIf: function(){
-    // the bool value is for does it should be considered as a move ?
-    var pos=this.math.checkHex();
+  isOut:function (pos=this.math.checkHex()) {
+      var posX=pos[0]; var posY=pos[1];
+      return (posX<0 || posY<0 || posX>=this.math.map.gridSizeX || posY>this.math.map.columns[posX%2]-1)
+  },
+  placeIf: function(pos=this.math.checkHex()){
+
     var posX=pos[0]; var posY=pos[1];
+
     if (this.checkTerrain(posX,posY)) {
-      var ids=this.betes.children;
-      for(var i = 0; i < ids.length; i++) {
-        if (Lang.arraysEqual(ids[i].pos,[posX,posY])) {
-          // sound
-          return this.rencontre(ids[i])
+
+      if(this.always){this.go(posX,posY)}
+
+      for (var i = 0; i < this.betes.children.length; i++) {
+        for (var j = 0; j < this.betes.children[i].length; j++) {
+
+          var sp = this.betes.children[i].children[j];
+          if (Lang.arraysEqual(
+            this.math.checkHex(sp.x,sp.y),[posX,posY])){
+            // sound
+            var res= this.rencontre(i,sp.key,sp,posX,posY)
+              if(res){
+                this.return=res;return true
+              }else{
+                return false;
+              }
+          }else{}
         }
-      };
-      this.go(posX,posY);
-      return true
+      }
+      // si aucun retour alors
+      this.return =   function () {this.go(posX,posY)}.bind(this);
+      this.hex=this.hexagons.getAt(this.math.convert(posX,posY))
+      return true;
     }
-    return false
+    else{
+      this.hex=null
+      return false;
+    }
   },
   go:function (posX,posY) {
-    if(posX<0 || posY<0 || posX>=this.math.map.gridSizeX || posY>this.math.map.columns[posX%2]-1){
+    if(this.isOut([posX,posY])){
       this.marker.sprite.visible=false;
     }
     else{
@@ -61,23 +88,20 @@ Collisions.prototype={
   },
 
 
-  rencontre:function (autre,x,y) {
-    if (this.marker.image=="vaisseau") { // le vaisseau est totalement inoffensif
-      return false
-    }
-    if (autre.image=="vaisseau") {
-      if (autre.joueur==this.joueur) {
-        this.joueur.rentrerBete()
-        return true
+  rencontre:function (autreJoueur,autreImage,autreSprite,posX,posY) {
+    if(this.marker.image=="vaisseau"){return false}
+    else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur)
+      {
+          return function () {
+            this.marker.meurt();
+            this.marker.joueur.rentrerBete();
+          }.bind(this)
       }
-      return false
-      // le vaisseau n'interagit pas avec les bêtes
-      // il faudrait aller en-dessous et tout, mais compliqué...
-    }
-    else if (this.marker.esp.proies.includes(autre.image)) {
-      autre.meurt();
-      this.go(autre.pos[0],autre.pos[1])
-      return true
+    else if (this.marker.esp.proies.includes(autreImage)) {
+      return function () {
+        autreSprite.destroy();
+        this.go(posX,posY)
+      }.bind(this);
     }
     else {
       return false

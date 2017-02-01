@@ -14,9 +14,11 @@ var evo={};
 (function() {
   'use strict';
 
+//init angular
+
   evo.app = angular.module('evoApp', []);
 
-// init angular
+// init socket io
 
   evo.socket = io({
     transports: ['websocket'],
@@ -42,7 +44,6 @@ var evo={};
     };
   };
 
-// global variable for game management !
-evo.yourTurn=false
+evo.io = io
 
 }());
