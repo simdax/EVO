@@ -21,6 +21,7 @@
     };
     // et on reçoit
     $scope.$on('updateChat',function (phrases) {
+      console.log(phrases);
         $scope.phrases=phrases;
     });
 

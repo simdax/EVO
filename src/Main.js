@@ -75,7 +75,6 @@
         playerRegister.registerPlayer(this.socket, player);
         this.br.broadcastPlayersList();
         // ouuuuh yeah very ugly updating chat
-        console.log(    User.prototype['new-phrase']);
         User.prototype['new-phrase'].call(this);
         return callback && callback(null);
       },
@@ -95,15 +94,14 @@
           if(phrase){this.chat.add(phrase, this.socket.id)};
 
           // braodcast with your name
-          var phrases=this.chat.getPhrases();
+          // it works because the size of lasts and the getphrases function is always the same
+          var phrases=this.chat.lastEls();
           for (var i = 0; i < phrases.length; i++) {
-            console.log(phrases);
-            phrases[i]=phrases[i].replace(this.socket.id,this.me().name);
-            console.log(this.me().name);
-            console.log(phrases);
-          }
+            if(phrases[i].match(this.socket.id))
+            {this.chat.lasts[i]=phrases[i].replace(this.socket.id,this.me().name)};
+          };
           // broadcast the final 5 el
-          this.br.broadcastAll('updateChat',phrases)
+          this.br.broadcastAll('updateChat',this.chat.lasts)
       },
 
       /*
