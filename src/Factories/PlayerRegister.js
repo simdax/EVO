@@ -9,7 +9,7 @@ var PlayerRegister= function() {
 /*Users functions ==> add/delete and change Status*/
 
  /*receive a player*/
-  PlayerRegister.prototype.registerPlayer = function(socket, player) {
+  PlayerRegister.prototype.addPlayer = function(socket, player) {
     player.socket = socket;
     player.status = "squatteur"
     this.players[socket.id] = player;
