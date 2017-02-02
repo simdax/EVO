@@ -15,6 +15,9 @@
     'use strict'
 
 
+
+    
+
     /*require our managers*/
 
     var GM=require('./Factories/GameManager');
@@ -71,7 +74,9 @@
             playerRegister.removePlayer(this.socket);
             gameManager.deleteGame(this.socket.id)
             broadcaster.broadcastPlayersList();
-            // no callback return ?
+
+            delete this
+            // gros truc de bourrin ?
         },
 
         "register-player": function(player, callback) {

@@ -1,14 +1,14 @@
 
 var Game =function (phaser,seed,id,nb) {
 
-this.id=id;
-this.phaser=phaser;
+    this.id=id;
+    this.phaser=phaser;
 
-this.states={}; // TODO: add more states ?
-  this.board= new Board(phaser,seed,id,nb);
+    this.states={}; // TODO: add more states ?
+    this.board= new Board(phaser,seed,id,nb);
 
-  phaser.state.add("board", this.board);
-  phaser.state.start("board");
+    phaser.state.add("board", this.board);
+    phaser.state.start("board");
 
   // we create the map with the seed
 
@@ -33,7 +33,6 @@ Game.prototype={
     this.board.mdj.toi.vaisseau.land();
     this.board.groupes.hexagon.setAll('alpha', 0.65);
     this.board.game.input.onDown.add(callback,this);
-
   },
 
 

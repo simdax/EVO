@@ -34,10 +34,11 @@ PlayerRegister.prototype.findPlayerForID = function(id) {
       res=this.players[id]
     }
   }
-    if (res) { return res} else{
-      console.log("joueur inconnu !! ==> id : " + id)
-      return {name:"un mec inconnu"}
+    if (!res){ // it can be possible with server bug ?
+        console.log("joueur inconnu !! ==> id : " + id)
+        res={name:'un mec inconnu', status:'un dingue'}
     }
+    return res;
 };
 
 

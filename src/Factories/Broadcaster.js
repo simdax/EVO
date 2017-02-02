@@ -40,7 +40,6 @@
       //return callback && callback(null)
     },
     updateChat:function () {
-
       this.br.broadcastAll('updateChat',phrases.slice(Math.max(phrases.length - 5, 1)))
     },
   };
