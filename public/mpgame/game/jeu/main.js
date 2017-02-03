@@ -1,39 +1,39 @@
 
-var Game =function (phaser,seed,id,nb) {
 
-    this.id=id;
-    this.phaser=phaser;
+require.config({
+    baseUrl:"jeu/core",
+    paths:{
 
-    this.states={}; // TODO: add more states ?
-    this.board= new Board(phaser,seed,id,nb);
+        lang:"helpers/lang",
+        math:"helpers/math",
 
-    phaser.state.add("board", this.board);
-    phaser.state.start("board");
+        pion:"marker/pion",
+        collisions:"marker/collisions",
+        landing:"marker/landing",
+        marker:"marker/marker",
 
-  // we create the map with the seed
+        gen:"board/gen/generate",
+        groupes:"board/groupes",
+        light:"board/light",
+        map:"board/map",
+        board:"board/main",
 
-};
+        especes:"interface/especes",
+        joueur:"interface/joueur",
+        mdj:"interface/mdj",
+        
+        callbacks:"server/callbacks",
+        network:"server/network",
+        game:"server/game",
+    }
+})
 
-Game.prototype={
+console.log("ta mere");
 
-  start: function() {
+require(['game','callbacks','network'],function(Game,Callbacks,Network) {
 
-    var callback=function () {
-      var pion=this.board.mdj.toi.vaisseau;
-      if (pion.landing) {  }
-      else{
-        this.board.game.input.onDown.remove(callback,this)
-        this.board.groupes.hexagon.setAll('alpha', 1);
-        this.board.mdj.next(); // et go !
-      }
-    };
-    // init vaisseau
-
-    this.board.mdj.toi.vaisseau = marker("vaisseau",this.board.mdj.toi);
-    this.board.mdj.toi.vaisseau.land();
-    this.board.groupes.hexagon.setAll('alpha', 0.65);
-    this.board.game.input.onDown.add(callback,this);
-  },
-
-
-};
+    console.log(Game);
+    console.log(Callbacks);
+    console.log(Network);
+  
+})
