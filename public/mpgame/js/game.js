@@ -15,12 +15,13 @@
 
   $scope.$on('createGame',function (gameInfos) { // game infos are seed and nb players
 
-          if($scope.status=="createur"||$scope.status=="player")
+          if( $scope.status=="createur" || $scope.status=="player" )
           {
-            var phaser=new Phaser.Game(1500,630,Phaser.AUTO,'phaser');
-            evo.game=new Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
-            // we have only one state
-            new GameCallbacks(evo.socket,evo.game).init("board");
+              var phaser=new Phaser.Game(1500,630,Phaser.AUTO,'phaser');
+              console.log();
+            // evo.game=new Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
+            // // we have only one state
+            // new GameCallbacks(evo.socket,evo.game).init("board");
           }
         }
       )
