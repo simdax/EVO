@@ -1,0 +1,45 @@
+
+#fond{
+    position:relative;
+    top: 30px;
+    left: 30px;
+}
+img{
+    position:absolute;
+}
+#0{
+    z-index:0
+}
+#1{
+    z-index:1
+}
+#2{
+    z-index:2              
+}
+#3{
+    z-index:3             
+}
+
+
+
+#phaser{
+    position:absolute;
+    top: 80px;
+    left: 200px;
+    z-index:0;
+}
+@font-face {
+    font-family: audiowide;
+    src: url(../../Audiowide-Regular.ttf);
+}
+#txt{
+    position:relative;
+    top: 325px;
+    left: 0px;
+    font-size:30pt;
+    font-family:audiowide;
+    text-align:center;
+    color:white;
+    z-index:1;
+    
+}
