@@ -28,12 +28,13 @@ require.config({
     }
 })
 
-console.log("ta mere");
 
 require(['game','callbacks','network'],function(Game,Callbacks,Network) {
 
-    console.log(Game);
-    console.log(Callbacks);
-    console.log(Network);
+
+    var canvas=new Phaser.Game(1200,1200,Phaser.AUTO);
+    var g=new Game(canvas,0,0,2)
+    ga= new Callbacks(g)
+//    console.log(Network);
   
 })

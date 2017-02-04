@@ -18,6 +18,7 @@ define({
     osteoichtyens:{
         thons:{ancetre:null,proies:["annelides"],xp:3,type:"hexMer"},
         coelacanthes:{ancetre:"thons",proies:["thons"],xp:3,type:"hexMer"}
+
     },
     anapasides:{
         grenouilles:{ancetre:"coelacanthes",proies:["insectes"],xp:3,type:"hexTerre"},

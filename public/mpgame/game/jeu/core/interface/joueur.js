@@ -1,4 +1,4 @@
-define(function name(arg) {
+define(['especes'],function name(Especes) {
     
 
     var Joueur = function (id,game,groupes) {

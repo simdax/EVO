@@ -1,4 +1,4 @@
-define(function() {
+define(['joueur'],function(Joueur) {
     
 
     var MDJ=function (id,nb,game,groupes) {
@@ -24,7 +24,7 @@ define(function() {
 
     MDJ.prototype={
 
-        /*  END OF TURN */
+        /*  END OF TUrn */
 
         //  update => clean if pending operations
         // endofturn => confirmation box
