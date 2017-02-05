@@ -1,5 +1,5 @@
 $(function(){ // on dom ready
-
+    
 // photos from flickr with creative commons license
   
 var cy = cytoscape({

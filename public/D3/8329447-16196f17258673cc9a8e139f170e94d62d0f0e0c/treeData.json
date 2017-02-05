@@ -1,5 +1,5 @@
-
-define({
+[
+    {
     mollusques: {
         annelides:{ancetre:null,proies:[],xp:1,type:"hexMer"},
         escargots:{ancetre:"annelides",proies:[],xp:2,type:"hexTerre"}
@@ -38,4 +38,30 @@ define({
         hippopotames:{ancetre:"rongeurs",proies:["crocodiles"],xp:3,type:"hexTerre"},
         gorilles:{ancetre:"rongeurs",proies:[],xp:2,type:"hexTerre"}
     }
-})
+}
+
+//   {
+//   "name": "Top Level",
+//   "parent": "null",
+//   "children": [
+//     {
+//       "name": "Level 2: A",
+//       "parent": "Top Level",
+//       "children": [
+//         {
+//           "name": "Son of A",
+//           "parent": "Level 2: A"
+//         },
+//         {
+//           "name": "Daughter of A",
+//           "parent": "Level 2: A"
+//         }
+//       ]
+//     },
+//     {
+//       "name": "Level 2: B",
+//       "parent": "Top Level"
+//     }
+//   ]
+// }
+]
