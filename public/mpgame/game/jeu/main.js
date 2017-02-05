@@ -1,7 +1,6 @@
 
-
 require.config({
-    baseUrl:"jeu/core",
+    baseUrl:"game/jeu/core",
     paths:{
 
         lang:"helpers/lang",
@@ -29,12 +28,9 @@ require.config({
 })
 
 
-require(['game','callbacks','network'],function(Game,Callbacks,Network) {
+require(['game','network'],function(Game,Network) {
 
-
-    var canvas=new Phaser.Game(1200,1200,Phaser.AUTO);
-    var g=new Game(canvas,0,0,2)
-    ga= new Callbacks(g)
-//    console.log(Network);
+    evo.Game=Game;
+    evo.Network= Network
   
 })

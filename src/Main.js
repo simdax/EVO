@@ -105,7 +105,7 @@
             };
 
             // braodcast with your name
-            // it works because the size of lasts and the getphrases function is always the same
+            // it works because the size of lasts and the get phrases function is always the same
             var phrases=chat.lastEls();
             for (var i = 0; i < phrases.length; i++) {
                 if(phrases[i].match(this.socket.id))
@@ -120,19 +120,21 @@
         */
 
         // game managment
-        "new-game": function (name,callback) {
-            var game=gameManager.createGame(this.socket.id,name,this.me().name);
+        "new-game": function (infoGame,callback) {
+
+            var game=gameManager.createGame(this.socket.id,infoGame.name,this.me().name,infoGame.nb);
             broadcaster.broadcastGamelist();
+
             // like you were joigning your own game
             // (stupid but ok)
             this.joinGame(game.id);
-            return callback && callback(null)
+            //return callback && callback(null)
         },
         "cancel-game": function (undefined, callback) {
             console.log("game cancelled");
             gameManager.deleteGame(this.socket.id);
             broadcaster.broadcastGamelist();
-            return callback && callback(null)
+//            return callback && callback(null)
         },
         joinGame:function (id) {
             console.log("u join");
@@ -145,10 +147,11 @@
             this.socket.emit('getID',game.players);
 
             // we increase the count
-            game.players-=1;
+            game.players+=1;
             // and if its ok
-            if (game.players==0) {
+            if (game.players==game.nb) {
                 // boum
+                console.log("nouvelle partie commencée");
                 broadcaster.broadcastAll('createGame',
                                          // i cant send a object ,??
                                          [game.seed,game.nb]);

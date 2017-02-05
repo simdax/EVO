@@ -7,7 +7,7 @@
     $scope.blabla="";
     $scope.phrases=[];
 
-    evo.caca=function(event) {
+    evo.keyPressed=function(event) {
       if (event.keyCode==13) {
           $scope.sendPhrase($scope.blabla)
       }

@@ -8,19 +8,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.7.1/less.min.js" type="text/javascript"></script>
 
     <!-- game stuff -->
-
-
-
-    <!-- <link rel="import" href="game/index.html"> -->
-
-
-
     <!-- angular stuff -->
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/salon.js"></script>
     <script type="text/javascript" src="js/gamesList.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/miaou.js"></script>
+    
+    <!-- GAME -->
+    <!-- <link rel="import" href="game/index.html"> -->
+    <script src="game/lib/phaser.js"></script>
+    <script src="game/lib/seedrandom/simpleRandomSeed.js"></script>
+    <script data-main="game/jeu/main.js" src="game/jeu/require.js"></script>
+
 
   </head>
 
@@ -28,53 +28,86 @@
   <body ng-app="evoApp">
 
 
-  <div ng-controller="Salon">
-    <h1> SALUTATIONS </h1>
+    <!-- REGISTER -->
+    <div ng-controller="Salon">
+      <h1> SALUTATIONS </h1>
       Put your name : <input type="text" ng-model="player.name" ng-change="updatePlayer()">
-        <p>Pleins de joueurs assoiffés de sang : </p>
+      <p>Pleins de joueurs assoiffés de sang : </p>
       <ul>
         <li ng-repeat="name in players track by $index">{{name}}</li>
       </ul>
     </div>
 
+
+
+    <!-- ///CHAT -->
     <div ng-controller="miaou">
       qui parle et qui parle...
       <li ng-repeat="phrase in phrases track by $index">{{phrase}}</li>
-      <input id="chat" type="text" ng-model="blabla" onkeypress="evo.caca(event)">
+      <input id="chat" type="text" ng-model="blabla" onkeypress="evo.keyPressed(event)">
     </div>
 
-      <div ng-controller="gamesList">
-        <p>tu es un : {{status}}</p>
-        <p>et maintenant, si tu le veux : </p>
-        <button
-         ng-if="started!=true"
+
+
+    <!-- Games List -->
+    <div ng-controller="gamesList">
+
+       <h1>Parties commencées</h1>
+
+       <button
+        ng-if="started!=true"
         ng-click="newGame()">
-          Create a gros Game
-        </button>
-        <h1>Parties commencées</h1>
-          <li ng-repeat="game in games">
-            pending game : {{game.name}} created by {{game.owner}}
+        Create a gros Game
+      </button>
+      <p>tu es un : {{status}}</p>
 
-            <!--Bouton for other players-->
-            <button ng-if="game.owner!='YOU' && status!='createur'" ng-click="joinGame(game.id)">join</button>
-            <button ng-if="status=='player'" ng-click="unjoinGame(game.id)">unjoin</button>
-            <button ng-if="game.owner!='YOU'" ng-click="changeStatus('watcher')">watch</button>
+      <li ng-repeat="game in games">
+        pending game : {{game.name}} created by {{game.owner}}
 
-            <!--BOutons for you-->
-            <button ng-if="game.owner=='YOU'" ng-click="cancel()">cancel, fiotasse ?</button>
+        <!--Bouton for other players-->
+        <button ng-if="game.owner!='YOU' && status!='createur'" ng-click="joinGame(game.id)">join</button>
+        <button ng-if="status=='player'" ng-click="unjoinGame(game.id)">unjoin</button>
+        <button ng-if="game.owner!='YOU'" ng-click="changeStatus('watcher')">watch</button>
 
-           </li>
-        </ul>
+        <!--BOutons for you-->
+        <button ng-if="game.owner=='YOU'" ng-click="cancel()">cancel, fiotasse ?</button>
+
+      </li>
+      <!-- </ul> -->
 
 
-       <div ng-controller="game">
-          <div id="phaser"></div>
-        </div>
+      <div ng-controller="game">
+        
+        <p>Joueur numéro : {{id}}</p>
 
+        <!-- <script src="game/assets/images/interieurVaisseau/test.js"></script> -->
+        <link rel="stylesheet" href="game/assets/images/interieurVaisseau/css.css" type="text/css" media="screen" />
+
+        <body>
+
+          <div id="fond">
+            <img id="0" src="game/assets/images/interieurVaisseau/photonasa.png"/>
+            <img id="1" src="game/assets/images/interieurVaisseau/ecranprincipal.png"/>
+            <img id="3" src="game/assets/images/interieurVaisseau/boutonarbreevolution.png" alt="" />
+            <img id="2" src="game/assets/images/interieurVaisseau/cuberouge.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/ecranbleuincubateurespeces.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/endofturn.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/fenetreplanetaire.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/gameboyarbreevolutiob.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/gameboyquimangequi.png"/>
+            <img id="1" src="game/assets/images/interieurVaisseau/incubateurembryon.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/liquide.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/pierredevantdecors.png"/>
+            <img id="2" src="game/assets/images/interieurVaisseau/solblanc.png" />
+            <img id="2" src="game/assets/images/interieurVaisseau/quimangequi.png">
+            <img id="2" src="game/assets/images/interieurVaisseau/tubehorizontale.png"/>
+
+            <div id="phaser">
+              <!-- <div id="txt" >Un gros game de ouf</div> -->
+            </div>
+          </div>
 
       </div>
-
-
 
 
   </body>

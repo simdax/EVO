@@ -36,7 +36,7 @@ define(['joueur'],function(Joueur) {
         // "pendantes" et que c'est un endofturn
 
         clean:function () {
-            Light.normal();
+            this.groupes.light.normal();
             if(marker.fantome){ marker.fantome.meurt()}
             this.joueur.vaisseau.sprite.inputEnabled=true;
         },
@@ -54,16 +54,13 @@ define(['joueur'],function(Joueur) {
             }
         },
 
-
         // its the end of your turn
         next:function () {
             this.nextAlone();
-            evo.socket.emit('turn-player',evo.socket.id)
         },
         // end of others turns
         nextAlone: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-            Timbres.synth.triggerAttackRelease("B5",0.2);
             if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
             if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
             console.log("au tour de "+this.currentJoueur);

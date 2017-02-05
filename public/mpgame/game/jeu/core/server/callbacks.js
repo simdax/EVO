@@ -1,19 +1,7 @@
-// server communication
-define(["marker"],function(marker) {
-    
 
-    GameCallbacks=function(game) {
-        this.game = game;
-        var c=function(key) {
-            this[key]=function() {
-                g[key].apply(this.game.board,arguments)
-            };
-        }
-        for(var key in g){
-            c.call(this,key)
-        }
-    };
-    var g={
+define(["marker"],function(marker){
+
+    var dict={
         //inventaire:{
         acheter:function(id,espece) {
             this.mdj.joueurs[id].acheter(espece)
@@ -34,9 +22,7 @@ define(["marker"],function(marker) {
                     this.game.input.onDown.remove(callback,this)
                 }
             };
-            
             this.game.input.onDown.addOnce(callback,this);
-            
         },
         //mouvement    board:{
         changeTurn:function () {
@@ -55,8 +41,8 @@ define(["marker"],function(marker) {
             pion.setId();
             return pion
         }
+
     }
 
-    return GameCallbacks
-    
+    return dict
 })

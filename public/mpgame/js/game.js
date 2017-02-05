@@ -1,32 +1,40 @@
 
 (function(){
-  'use strict'
+    'use strict'
 
-  evo.app.controller('game',function ($scope) {
+    evo.app.controller('game',function ($scope) {
 
-    evo.tools.addOnAndEmit($scope,evo.socket)
+        evo.tools.addOnAndEmit($scope,evo.socket)
 
-  /*
-  LISTENERS
-  */
-  $scope.$on('getID',function (id) {
-      $scope.id=id;
-  });
+        /*
+          LISTENERS
+        */
 
-  $scope.$on('createGame',function (gameInfos) { // game infos are seed and nb players
+        // when you join a party, you have to know wich player you are
+        
+        $scope.$on('getID',function (id) {
+            $scope.id=id;
+        });
 
-          if( $scope.status=="createur" || $scope.status=="player" )
-          {
-              var phaser=new Phaser.Game(1500,630,Phaser.AUTO,'phaser');
-              console.log();
-            // evo.game=new Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
-            // // we have only one state
-            // new GameCallbacks(evo.socket,evo.game).init("board");
-          }
+
+        //////////
+        ///MAIN FUNCTION
+        /////////
+
+        
+        $scope.$on('createGame',function (gameInfos) { // game infos are seed and nb players
+
+            if( $scope.status=="createur" || $scope.status=="player" )
+            {
+                var phaser=new Phaser.Game(1000,600,Phaser.AUTO,'phaser');
+                evo.game=new evo.Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
+                // we have only one state
+                evo.network=new evo.Network(evo.socket,evo.game)
+            }
         }
-      )
+                  )
 
 
-  })
+    })
 
-  }())
+}())

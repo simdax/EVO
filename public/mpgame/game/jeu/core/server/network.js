@@ -1,23 +1,28 @@
-define(function() {
+// we define the socket's hooks for game callbacks calls
 
-    GameCallbackSocket=function(socket,gameCallBacks) {
 
-        console.log(socket);
+// server communication
+define(["callbacks"],function(Callbacks) {
+    
+
+    Network=function(socket,game) {
+
+        this.game = game;
+        this.socket=socket;
         
-        this.socket = socket;
-        this.dict=gameCallBacks;
+        var callback=function(key) {
+            this[key]=function() {
+                Callbacks[key].apply(this.game.board,arguments);
+                this.socket.emit(key,arguments);
+            };
+        };
+        for(var key in Callbacks){
+            callback.call(this,key)
+        }
 
-        console.log(socket.on);
-        console.log(this.socket.on);
-        
-        //we translate callbacks into socket on event
-        for(var key in this.dict){
-            this.socket.on(key,function (args) {
-                this.dict[key](args)
-            }.bind(this))
-        };   
+
     };
 
-    return GameCallbackSocket
-    
+    return Network;
+
 })
