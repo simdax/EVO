@@ -1,4 +1,4 @@
-define(['especes'],function name(Especes) {
+define(['especes','marker'],function name(Especes,marker) {
     
 
     var Joueur = function (id,game,groupes) {

@@ -2,6 +2,18 @@ define(['especes'], function(Especes) {
     
     var Lang= {
 
+
+        object2Array:function(obj) {
+            
+            var res=[];
+            for(var i = 0; i < Object.keys(obj).length; i++) {
+                res.push(obj[i])
+            };
+            return res
+        }, 
+        
+
+        
         // First, checks if it isn't implemented yet.
         format:function (str) {
             var args = arguments;

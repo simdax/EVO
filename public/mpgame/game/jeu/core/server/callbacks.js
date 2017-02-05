@@ -35,14 +35,15 @@ define(["marker"],function(marker){
             this.mdj.joueurs[idJoueur].grp[idbete].collider.go(pos[0],pos[1])
         },
         newMarkerAt:function(image,joueur,pos) {
-            console.log(arguments);
+            console.log(image);
+            console.log(joueur);
+            console.log(pos);
             var pion=this.mdj.joueurs[joueur].newMarker(image)
             pion.collider.go(pos[0],pos[1]);
             pion.setId();
-            return pion
+//            return pion
         }
-
-    }
+    };
 
     return dict
 })

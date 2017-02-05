@@ -27,12 +27,12 @@ define(['pion'], function(Pion) {
             this.clean();
             if (this.marker.collider.placeIf()) {
                 this.marker.collider.return.call();
-                // if (this.marker.landing) {
-                //     evo.socket.emit("place-marker-at",[this.marker.image,this.marker.joueur.id,this.marker.pos]);
-                //     this.marker.landing=false//but its no more landing
-                // }else{
-                //     evo.socket.emit("move-marker-at", [this.marker.joueur.id,this.marker.id,this.marker.pos]);
-                // };
+                if (this.marker.landing) {
+                    evo.network("newMarkerAt",[this.marker.image,this.marker.joueur.id,this.marker.pos]);
+                    this.marker.landing=false//but its no more landing
+                }else{
+                    evo.network("moveMarker", [this.marker.joueur.id,this.marker.id,this.marker.pos]);
+                };
             };
             this.marker.sprite.inputEnabled=true;
         },

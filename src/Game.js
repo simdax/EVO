@@ -13,20 +13,20 @@
 
     Game.prototype = {
       // MARKER managment
-      "place-marker-at":function (infos) {
-        console.log("new marker");
+      "newMarkerAt":function (infos) {
+          console.log("new marker");
           this.socket.broadcast.emit('newMarkerAt',infos)
       },
-      "move-marker-at":function (infos) {
+      "moveMarker":function (infos) {
         console.log("move marker");
         this.socket.broadcast.emit('moveMarker',infos)
       },
-      "delete-marker":function (infos) {
+      "deleteMarker":function (infos) {
           console.log("delete marker");
           this.socket.broadcast.emit('deleteMarker',infos)
       },
       // MDJ management
-      "turn-player":function (id) {
+      "changeTurn":function (id) {
         this.socket.broadcast.emit(id,'changeTurn')
       },
   };
