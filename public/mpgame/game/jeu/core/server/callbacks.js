@@ -57,7 +57,9 @@ define(["marker","lang"],function(marker,Lang){
             pion.sprite.events.onInputDown.add(
                 function(pion,image,joueurID) {
                     console.log(Lang.format("clicked at {1} de {2} ",image,joueurID));
-                    if (this.mdj.currentJoueur==joueurID) {
+                    if (this.mdj.currentJoueur==joueurID
+                        && this.mdj.currentJoueur == this.id
+                       ) {
                         console.log("deplacement !");
                         pion.land()
                     }

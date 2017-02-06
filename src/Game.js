@@ -15,8 +15,6 @@
 
     Game.prototype = {
 
-        
-
         ready:function(id) {
             console.log("prout");
             var game=this.gameManager.games[id];
@@ -27,7 +25,6 @@
             }
         },
 
-        
         // MARKER managment
         newMarker:function (infos) {
             console.log("new marker");

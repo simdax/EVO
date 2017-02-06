@@ -59,13 +59,13 @@ define(['joueur'],function(Joueur) {
         // end of others turns
         next: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-            if(this.currentJoueur!=this.id){
+            if(this.currentJoueur!=this.toi.id){
                 this.groupes.inputEnabled=false;
-                this.groupes.hexagon.tint=0x222222;
-            };
-            if(this.currentJoueur==this.id){
+                this.groupes.hexagon.alpha=0.2;
+            }
+            else{
                 this.groupes.inputEnabled=true;
-                this.groupes.hexagon.tint=0xffffff;
+                this.groupes.hexagon.alpha=1;
             };
             console.log("au tour de "+this.currentJoueur);
         },
