@@ -1,0 +1,19 @@
+
+#wrapper{
+    position:relative;
+    top: 30px;
+    left: 30px;
+}
+/* #fond{ */
+/*     position:absolute; */
+/*     z-index:-1; */
+/*     left: 0; */
+/*     top: 0; */
+/* } */
+
+#phaser{
+    position:absolute;
+    top: 280px;
+    left: 200px;
+    z-index:0;
+}

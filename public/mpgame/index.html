@@ -25,18 +25,26 @@
   </head>
 
 
+
+  
   <body ng-app="evoApp">
 
 
     <!-- REGISTER -->
     <div ng-controller="Salon">
+
+
       <h1> SALUTATIONS </h1>
       Put your name : <input type="text" ng-model="player.name" ng-change="updatePlayer()">
       <p>Pleins de joueurs assoiffés de sang : </p>
       <ul>
         <li ng-repeat="name in players track by $index">{{name}}</li>
       </ul>
+
+
     </div>
+
+
 
 
 
@@ -52,9 +60,9 @@
     <!-- Games List -->
     <div ng-controller="gamesList">
 
-       <h1>Parties commencées</h1>
+      <h1>Parties commencées</h1>
 
-       <button
+      <button
         ng-if="started!=true"
         ng-click="newGame()">
         Create a gros Game
@@ -81,34 +89,21 @@
         <p>Joueur numéro : {{id}}</p>
 
         <!-- <script src="game/assets/images/interieurVaisseau/test.js"></script> -->
-        <link rel="stylesheet" href="game/assets/images/interieurVaisseau/css.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css.css" type="text/css" media="screen" />
 
-        <body>
 
-          <div id="fond">
-            <img id="0" src="game/assets/images/interieurVaisseau/photonasa.png"/>
-            <img id="1" src="game/assets/images/interieurVaisseau/ecranprincipal.png"/>
-            <img id="3" src="game/assets/images/interieurVaisseau/boutonarbreevolution.png" alt="" />
-            <img id="2" src="game/assets/images/interieurVaisseau/cuberouge.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/ecranbleuincubateurespeces.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/endofturn.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/fenetreplanetaire.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/gameboyarbreevolutiob.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/gameboyquimangequi.png"/>
-            <img id="1" src="game/assets/images/interieurVaisseau/incubateurembryon.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/liquide.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/pierredevantdecors.png"/>
-            <img id="2" src="game/assets/images/interieurVaisseau/solblanc.png" />
-            <img id="2" src="game/assets/images/interieurVaisseau/quimangequi.png">
-            <img id="2" src="game/assets/images/interieurVaisseau/tubehorizontale.png"/>
+        <div id="wrapper">
+          
+          <div id="fond" ng-include="'game/assets/images/dessin.svg'"/>
 
-            <div id="phaser">
-              <div id="txt" >{{phrase}}</div>
-            </div>
+        </div>
+
+        <div id="phaser">
+            <div id="txt" >{{phrase}}</div>
           </div>
 
       </div>
-
+    </div>
 
   </body>
 </html>

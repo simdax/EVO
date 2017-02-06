@@ -21,12 +21,14 @@
     /*here initialize the on and emit for the rests*/
     evo.tools.addOnAndEmit($scope, evo.socket);
 
+            
       /*
       INIT
       */
     // get memorised name
     $scope.player = getPlayerFromLocalStorage();
 
+      
     /*   and init gogogo
     emit directly a register demand
     */

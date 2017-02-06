@@ -14,7 +14,6 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
         var callback=function(key) {
 
             var apply=function(args) {
-                console.log(this);
                 return  this.dict[key].apply(this.game.board,args)
             }.bind(this);
             
