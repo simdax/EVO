@@ -102,18 +102,7 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
 
         },
 
-        render: function() {
-
-            if (this.mdj) {
-
-                // // todo, infos plus belles
-                this.game.debug.text(console.txt, 0, 100);
-                this.game.debug.text("mvts:" + this.mdj.mvts, 0, 300);
-
-            }
-        },
-
-        //  private
+                //  private
         goTo: function() {
             this.game.state.start("interieur")
         },

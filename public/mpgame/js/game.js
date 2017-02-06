@@ -16,7 +16,7 @@
             $scope.id=id;
         });
 
-        $scope.phrase="attends un peu, bitch";
+        $scope.phrase="";
 
         //////////
         ///MAIN FUNCTION

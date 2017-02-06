@@ -23,6 +23,26 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
     Collisions.prototype={
 
 
+        actions:{
+            go:function(posX,posY) {
+                return function() {
+                    this.go(posX,posY)
+                }
+            },
+            mange:function() {
+                return function () {
+                    autreSprite.destroy();
+                    this.go(posX,posY)
+                }
+            },
+            rentre:function() {
+                return function () {
+                    this.marker.meurt();
+                    this.marker.joueur.rentrerBete();
+                }
+            }
+        },
+        
         isOut:function (pos=this.math.checkHex()) {
             var posX=pos[0]; var posY=pos[1];
             return (posX<0 || posY<0 || posX>=this.math.map.gridSizeX || posY>this.math.map.columns[posX%2]-1)
@@ -57,8 +77,8 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                         }
                     }
                     // si aucun retour alors
-                    this.return =function(){this.go(posX,posY)}.bind(this);
-                    //            console.log(this.return);
+                    this.return =
+                        this.actions.go(posX,posY).bind(this)
                     return true;
                 }
                 else{
@@ -100,16 +120,10 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
             if(this.marker.image=="vaisseau"){return false}
             else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur)
             {
-                return function () {
-                    this.marker.meurt();
-                    this.marker.joueur.rentrerBete();
-                }.bind(this)
+                this.actions.rentre().bind(this)
             }
             else if (this.marker.esp.proies.includes(autreImage)) {
-                return function () {
-                    autreSprite.destroy();
-                    this.go(posX,posY)
-                }.bind(this);
+                this.actions.mange(posX,posY).bind(this)
             }
             else {
                 return false

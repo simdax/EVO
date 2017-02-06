@@ -25,7 +25,7 @@ define(["collisions","lang"],function(Collisions,Lang) {
         create:function () {
             var sp=this.joueur.game.add.sprite(0,0,this.image);
             //var rond=draw()
-            sp.tint= (this.joueur + 0.2) * 	0xCCCCCC
+            sp.tint= (this.joueur + 0.2) * 0xCCCCCC
             sp.anchor.setTo(0.5);
             sp.visible=false;
             sp.inputEnabled=true;

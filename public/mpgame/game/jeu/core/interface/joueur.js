@@ -5,13 +5,14 @@ define(['especes','marker'],function name(Especes,marker) {
 
         this.id=id;
         this.groupe=game.add.group();
-        groupes.betes.add(this.groupe)
-
-        this.grp=[];
-
+        groupes.betes.add(this.groupe);
+        
         this.game=game;
         this.groupes=groupes;
 
+        this.grp=[];
+        this.vaisseau = marker("vaisseau",this);
+                
         this.xps=10;
 
         this.inventaire= {
