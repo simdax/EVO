@@ -20,6 +20,8 @@ define(['joueur'],function(Joueur) {
             }
         }
 
+        this.turns=0;
+
     }
 
     MDJ.prototype={
@@ -57,8 +59,14 @@ define(['joueur'],function(Joueur) {
         // end of others turns
         next: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-            // if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
-            // if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
+            if(this.currentJoueur!=this.id){
+                this.groupes.inputEnabled=false;
+                this.groupes.hexagon.tint=0x222222;
+            };
+            if(this.currentJoueur==this.id){
+                this.groupes.inputEnabled=true;
+                this.groupes.hexagon.tint=0xffffff;
+            };
             console.log("au tour de "+this.currentJoueur);
         },
 

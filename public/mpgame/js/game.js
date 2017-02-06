@@ -19,8 +19,15 @@
         $scope.phrase="";
 
         $scope.test1=function() {
-            //console.log("meu");
-            if(evo.game){evo.network.changeTurn()};
+            if(evo.game &&
+               evo.game.board.mdj.currentJoueur==$scope.id){
+                evo.network.changeTurn()};
+        };
+        $scope.land=function() {
+            if(evo.game &&
+               evo.game.board.mdj.currentJoueur==$scope.id){
+                evo.network.dict.land.call(evo.game.board)
+            };
         };
 
         /////////

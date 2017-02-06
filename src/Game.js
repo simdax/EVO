@@ -26,6 +26,7 @@
                 this.broadcaster.broadcastAll('start')
             }
         },
+
         
         // MARKER managment
         newMarker:function (infos) {
@@ -41,8 +42,9 @@
             this.socket.broadcast.emit('deleteMarker',infos)
         },
         // MDJ management
-        changeTurn:function (id) {
-            this.socket.broadcast.emit(id,'changeTurn')
+        changeTurn:function () {
+            console.log("turn changed");
+            this.socket.broadcast.emit('changeTurn')
         },
     };
 

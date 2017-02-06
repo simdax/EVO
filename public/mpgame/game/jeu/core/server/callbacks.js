@@ -9,16 +9,16 @@ define(["marker","lang"],function(marker,Lang){
     var dict={
 
 
-//        player actions inventaire:{
+        //        player actions inventaire:{
         acheter:function(id,espece) {
             this.mdj.joueurs[id].acheter(espece)
         },
 
 
-  //      init
+        //      init
         start: function() {
 
-            console.log("on starte !!");
+            console.log("start !!");
 
             // on créée des vaisseaux pour tous les joueurs
             for(var k in this.mdj.joueurs) {
@@ -30,29 +30,18 @@ define(["marker","lang"],function(marker,Lang){
                     evo.network.dict
                     .newMarker.call(this,"vaisseau",joueur.id);
             };
+            
+        },
 
+        land:function(id) {
             // on lande le sien
             var pion=this.mdj.toi.vaisseau;
             // null here means "the entire board is available for landing"
             pion.land(null);
-            
-            var callback=function() {
-
-                console.log(this.mdj.currentJoueur);
-                console.log(this.id);
-                
-                if(pion.ok && this.mdj.currentJoueur == this.id ){
-                    evo.network.changeTurn();
-                    this.game.input.onDown.remove(callback,this)
-                };
-            };
-
-            this.game.input.onDown.addOnce(callback,this);
-            
         },
 
 
-    //    mdj
+        //    mdj
         changeTurn:function () {
             console.log("NEXT !");
             this.mdj.next()
@@ -66,21 +55,21 @@ define(["marker","lang"],function(marker,Lang){
 
             var pion=this.mdj.joueurs[joueurID].newMarker(image)
             pion.sprite.events.onInputDown.add(
-                    function(pion,image,joueurID) {
-                        console.log(Lang.format("clicked at {1} de {2} ",image,joueurID));
-                        if (this.mdj.currentJoueur==joueurID) {
-                            console.log("deplacement !");
-                            pion.land()
-                        }
-                        else{
-                            console.log("rien");
-//                            infos générales
-                        }
+                function(pion,image,joueurID) {
+                    console.log(Lang.format("clicked at {1} de {2} ",image,joueurID));
+                    if (this.mdj.currentJoueur==joueurID) {
+                        console.log("deplacement !");
+                        pion.land()
+                    }
+                    else{
+                        console.log("rien");
+                        //                            infos générales
+                    }
                 }.bind(this,pion,image,joueurID)
             );
             
             pion.setId();
-//            pion.landing=false;   
+            //            pion.landing=false;   
 
             if (pos) {
                 evo.network.moveMarker(pos)

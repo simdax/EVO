@@ -32,7 +32,7 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
         for(var key in this.dict){
             callback.call(this,key)
         }
-
+        
 
     };
 

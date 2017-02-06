@@ -67,8 +67,6 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
 
             // generation
             this.gen.createHexs(this.seed,this.mapSettings);
-            // this.menu.createMenu();
-            // this.menu.createBarres();
 
             // LOGIC
             // zoomKey =this.game.input.keyboard.addKey(Phaser.Keyboard.P);
