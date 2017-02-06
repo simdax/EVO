@@ -32,9 +32,11 @@ define(["collisions","lang"],function(Collisions,Lang) {
 
             // marker properties
 
-            sp.events.onInputDown.add(function () {
-                this.land()
-            },this)
+            // sp.events.onInputDown.add(function () {
+            //     if (this.joueur.id==this.mdj.) {
+            //         this.land()
+            //     }
+            // },this)
             this.sprite=sp;
 
         },

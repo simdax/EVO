@@ -15,9 +15,9 @@
 
     Game.prototype = {
         // MARKER managment
-        "newMarkerAt":function (infos) {
+        "newMarker":function (infos) {
             console.log("new marker");
-            this.socket.broadcast.emit('newMarkerAt',infos)
+            this.socket.broadcast.emit('newMarker',infos)
         },
         "moveMarker":function (infos) {
             console.log("move marker");

@@ -28,16 +28,17 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                 return function() {
                     if (this.marker.landing) {
                         // means its first appearance
-                        evo.network.newMarker(
+                        // so create and after move
+                        evo.network.newMarkerAt(
                             this.marker.image,
-                            this.marker.joueur.id);
-                        this.marker.setId();
-                        this.marker.landing=false
-                    };
-                    evo.network.moveMarker(
-                        this.marker.joueur.id,
-                        this.marker.id,
-                        [posX,posY]);
+                            this.marker.joueur.id,
+                            [posX,posY]);
+                    }else{
+                        evo.network.moveMarker(
+                            this.marker.joueur.id,
+                            this.marker.id,
+                            [posX,posY]);
+                    }
                 };
             },
             mange:function() {
@@ -73,7 +74,6 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                     // this is for ghost.
                     // its a insider function
                     if(this.always){
-                        console.log("fantome");
                         this.go(posX,posY)
                         return true;
                     };

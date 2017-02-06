@@ -9,8 +9,8 @@ define(["pion","landing","lang"],function(Pion,Landing,Lang) {
         res.landingObject=new Landing(res);
         res.land=function (pos=this.pos) { // for first time it can be your main ship
 
-            console.log(Lang.format("clicked at {1} de {2} ",this.image,this.joueur.id));        
 
+            
             this.joueur.groupes.light.highlight(pos);
             this.landingObject.fantome.visible=true;
             this.sprite.inputEnabled=false;

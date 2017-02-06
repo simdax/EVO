@@ -57,8 +57,8 @@ define(['joueur'],function(Joueur) {
         // end of others turns
         next: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
-            if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
-            if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
+            // if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
+            // if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
             console.log("au tour de "+this.currentJoueur);
         },
 

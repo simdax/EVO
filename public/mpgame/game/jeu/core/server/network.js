@@ -10,21 +10,21 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
         this.game = game;
         this.socket=socket;
 
-
         var callback=function(key) {
 
             var apply=function(args) {
-                    Callbacks[key].apply(this,args)
+                  return  Callbacks[key].apply(this,args)
             }.bind(this.game.board);
             
             this.socket.on(key,function(args) {
+                console.log("on reçoit "+key+args);
                 // object in array conversion, something really strange and ugly...
-                apply(Lang.object2Array(args))                    
+                apply(Lang.object2Array(args));                 
             });
             
             this[key]=function() {
-                apply( [...arguments]);
                 this.socket.emit(key,arguments);
+                return  apply( [...arguments]);
             };
             
         };

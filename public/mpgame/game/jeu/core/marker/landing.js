@@ -1,3 +1,9 @@
+//  _              _ _
+// | |__ _ _ _  __| (_)_ _  __ _
+// | / _` | ' \/ _` | | ' \/ _` |
+// |_\__,_|_||_\__,_|_|_||_\__, |
+//                         |___/
+
 
 define(['pion'], function(Pion) {
     
@@ -28,11 +34,11 @@ define(['pion'], function(Pion) {
             this.clean();
             if (this.marker.collider.placeIf()) {
                 this.marker.collider.return();
-                console.log(this.marker);
             };
             this.marker.sprite.inputEnabled=true;
         },
         clean:function () {
+            // hard move callback reset
             this.marker.joueur.game.input.moveCallbacks=[];
             this.fantome.visible=false;
         },
