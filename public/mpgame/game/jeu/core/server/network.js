@@ -14,13 +14,7 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
         var callback=function(key) {
 
             var apply=function(args) {
-
-                if   (Array.isArray(args))
-                {
                     Callbacks[key].apply(this,args)
-                }
-                
-                // else
             }.bind(this.game.board);
             
             this.socket.on(key,function(args) {

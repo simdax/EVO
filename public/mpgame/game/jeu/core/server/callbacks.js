@@ -2,32 +2,46 @@
 define(["marker"],function(marker){
 
     var dict={
-        //inventaire:{
+
+
+        // player actions inventaire:{
         acheter:function(id,espece) {
             this.mdj.joueurs[id].acheter(espece)
         },
+
+
         //init
         start: function() {
-            // init player ship
-            var pion = this.mdj.toi.vaisseau = marker("vaisseau",this.mdj.toi);
 
-            // null here means "all the board is available for landing"
-            this.mdj.toi.vaisseau.land(null);
-
+            console.log("on starte !!");
             // the first round is just a "one move" round
+
+            var pion=this.mdj.toi.vaisseau = marker("vaisseau",this.mdj.toi);
+            this.mdj.toi.vaisseau.land(null);
+            
             var callback=function() {
-                if(pion.ok){
+
+                // null here means "all the board is available for landing"
+                
+                if(pion.ok && this.mdj.currentJoueur == this.id ){
                     console.log("NEXT ! ");
-                    this.mdj.next();
+                    evo.network.changeTurn();
                     this.game.input.onDown.remove(callback,this)
-                }
+                };
             };
+
             this.game.input.onDown.addOnce(callback,this);
+            
         },
-        //mouvement    board:{
+
+
+        // mdj
         changeTurn:function () {
-            this.mdj.nextAlone()
+            this.mdj.next()
         },
+
+
+        // pion movements
         deleteMarker:function (idJoueur,idbete) {
             this.mdj.joueurs[idJoueur].grp[idbete].meurt()
         },
@@ -41,8 +55,11 @@ define(["marker"],function(marker){
             var pion=this.mdj.joueurs[joueur].newMarker(image)
             pion.collider.go(pos[0],pos[1]);
             pion.setId();
-//            return pion
+            //            return pion
         }
+
+        //
+       
     };
 
     return dict

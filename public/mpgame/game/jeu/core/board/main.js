@@ -76,6 +76,10 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
             this.cursors =this.game.input.keyboard.createCursorKeys();
             this.mdj=new MDJ(this.id,this.nbJoueurs,this.game,this.groupes);
 
+            this.game.stage.disableVisibilityChange = true;
+
+            evo.network.start()
+
         },
 
         update: function() {

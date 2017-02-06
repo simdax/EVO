@@ -54,18 +54,13 @@ define(['joueur'],function(Joueur) {
             }
         },
 
-        // its the end of your turn
-        next:function () {
-            this.nextAlone();
-        },
         // end of others turns
-        nextAlone: function () {
+        next: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
             if(this.currentJoueur!=this.id){this.groupes.inputEnabled=false};
             if(this.currentJoueur==this.id){this.groupes.inputEnabled=true};
             console.log("au tour de "+this.currentJoueur);
         },
-
 
 
         /* select funcs */
