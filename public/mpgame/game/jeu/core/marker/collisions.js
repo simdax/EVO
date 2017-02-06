@@ -26,19 +26,10 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
         actions:{
             go:function(posX,posY) {
                 return function() {
-                    if (this.marker.landing) {
-                        // means its first appearance
-                        // so create and after move
-                        evo.network.newMarkerAt(
-                            this.marker.image,
-                            this.marker.joueur.id,
-                            [posX,posY]);
-                    }else{
-                        evo.network.moveMarker(
-                            this.marker.joueur.id,
-                            this.marker.id,
-                            [posX,posY]);
-                    }
+                    evo.network.moveMarker(
+                        this.marker.joueur.id,
+                        this.marker.id,
+                        [posX,posY]);
                 };
             },
             mange:function() {

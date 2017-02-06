@@ -9,12 +9,13 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
 
         this.game = game;
         this.socket=socket;
+        this.dict=Callbacks;
 
         var callback=function(key) {
 
             var apply=function(args) {
-                  return  Callbacks[key].apply(this,args)
-            }.bind(this.game.board);
+                return  this.dict[key].apply(this.game.board,args)
+            }.bind(this);
             
             this.socket.on(key,function(args) {
                 console.log("on reçoit "+key+args);
@@ -28,7 +29,7 @@ define(["callbacks","lang"],function(Callbacks,Lang) {
             };
             
         };
-        for(var key in Callbacks){
+        for(var key in this.dict){
             callback.call(this,key)
         }
 

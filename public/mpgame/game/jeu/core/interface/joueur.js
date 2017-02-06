@@ -12,6 +12,11 @@ define(['especes','marker'],function name(Especes,marker) {
         this.groupes=groupes;
 
         this.grp=[];
+        
+        // here we create already a mainship for every player
+        this.vaisseau=marker("vaisseau",this);
+        this.vaisseau.setId();
+        this.landing=false;
 
         this.xps=10;
 

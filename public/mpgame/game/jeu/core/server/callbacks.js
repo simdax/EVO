@@ -20,10 +20,17 @@ define(["marker","lang"],function(marker,Lang){
 
             console.log("on starte !!");
 
-            var pion=this.mdj.toi.vaisseau=
-                evo.network.newMarker(
-                    "vaisseau",this.mdj.toi.id
-                );
+            // on créée des vaisseaux pour tous les joueurs
+            for(var k in this.mdj.joueurs) {
+                
+                var joueur=this.mdj.joueurs[k];
+                joueur.vaisseau=
+                    evo.network.dict
+                    .newMarker.call(this,"vaisseau",joueur.id);
+                        
+            };
+            var pion=this.mdj.toi.vaisseau
+                
                // null here means "all the board is available for landing"
             pion.land(null);
             
@@ -47,9 +54,10 @@ define(["marker","lang"],function(marker,Lang){
         },
 
 
-      //  pion movements
+        //  pion movements
         newMarker:function(image,joueurID,pos) {
             console.log("new "+image+joueurID);
+            console.log(this);
             var pion=this.mdj.joueurs[joueurID].newMarker(image)
             pion.sprite.events.onInputDown.add(
                     function(pion,image,joueurID) {
@@ -66,7 +74,7 @@ define(["marker","lang"],function(marker,Lang){
             );
             
             pion.setId();
-            pion.landing=false;
+//            pion.landing=false;   
 
             if (pos) {
                 evo.network.moveMarker(pos)
