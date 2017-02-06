@@ -26,8 +26,19 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
         actions:{
             go:function(posX,posY) {
                 return function() {
-                    this.go(posX,posY)
-                }
+                    if (this.marker.landing) {
+                        // means its first appearance
+                        evo.network.newMarker(
+                            this.marker.image,
+                            this.marker.joueur.id);
+                        this.marker.setId();
+                        this.marker.landing=false
+                    };
+                    evo.network.moveMarker(
+                        this.marker.joueur.id,
+                        this.marker.id,
+                        [posX,posY]);
+                };
             },
             mange:function() {
                 return function () {
@@ -42,22 +53,30 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                 }
             }
         },
-        
-        isOut:function (pos=this.math.checkHex()) {
+        here:function() {
+            return this.math.checkHex()
+        },
+        isOut:function (pos=this.here()) {
             var posX=pos[0]; var posY=pos[1];
             return (posX<0 || posY<0 || posX>=this.math.map.gridSizeX || posY>this.math.map.columns[posX%2]-1)
         },
         placeIf: function(){
 
-            var pos=this.math.checkHex();
+            var pos=this.here();
             if(this.isOut(pos)){}
             else{
                 var posX=pos[0]; var posY=pos[1];
                 
                 if (this.checkTerrain(posX,posY)) {
                     //    console.log("terrain OK");
-                    
-                    if(this.always){this.go(posX,posY)}
+
+                    // this is for ghost.
+                    // its a insider function
+                    if(this.always){
+                        console.log("fantome");
+                        this.go(posX,posY)
+                        return true;
+                    };
 
                     for (var i = 0; i < this.betes.children.length; i++) {
                         for (var j = 0; j < this.betes.children[i].length; j++) {
@@ -120,10 +139,10 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
             if(this.marker.image=="vaisseau"){return false}
             else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur)
             {
-                this.actions.rentre().bind(this)
+                return this.actions.rentre().bind(this)
             }
             else if (this.marker.esp.proies.includes(autreImage)) {
-                this.actions.mange(posX,posY).bind(this)
+                return this.actions.mange(posX,posY).bind(this)
             }
             else {
                 return false

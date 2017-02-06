@@ -12,7 +12,9 @@ define(['especes','marker'],function name(Especes,marker) {
 
         this.grp=[];
         this.vaisseau = marker("vaisseau",this);
-                
+        this.vaisseau.landing=false;
+        this.vaisseau.setId();
+        
         this.xps=10;
 
         this.inventaire= {

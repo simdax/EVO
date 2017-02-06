@@ -7,7 +7,8 @@ define(['pion'], function(Pion) {
         var res = new Pion(marker.image,marker.joueur);
         res.sprite.alpha=0.5;
         res.sprite.inputEnabled=false;
-        this.fantome=res
+        res.collider.always=true;
+        this.fantome=res;
     };
 
     Landing.prototype={
@@ -15,7 +16,7 @@ define(['pion'], function(Pion) {
         moveCallback:function(){
             // fantome
             if(this.fantome.collider.placeIf()){
-                this.fantome.collider.return.call()
+               // this.fantome.collider.go(this.)
                 this.marker.ok=true;
             }else{this.marker.ok=false};
         },
@@ -26,20 +27,8 @@ define(['pion'], function(Pion) {
             // delete fantome
             this.clean();
             if (this.marker.collider.placeIf()) {
-                this.marker.collider.return.call();
-                if (this.marker.landing) {
-                    evo.network.newMarkerAt(
-                        this.marker.image,
-                        this.marker.joueur.id,
-                        this.marker.pos);
-                    this.marker.setId();
-                    this.marker.landing=false//but its no more landing
-                }else{
-                    evo.network.moveMarker(
-                        this.marker.joueur.id,
-                        this.marker.id,
-                        this.marker.pos);
-                };
+                this.marker.collider.return();
+                console.log(this.marker);
             };
             this.marker.sprite.inputEnabled=true;
         },

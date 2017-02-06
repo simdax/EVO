@@ -41,8 +41,17 @@ define(["marker"],function(marker){
 
 
         // pion movements
+        newMarker:function(image,joueur) {
+            console.log("new");
+            var pion=this.mdj.joueurs[joueur].newMarker(image)
+            pion.setId();
+        },
         deleteMarker:function (idJoueur,idbete) {
             this.mdj.joueurs[idJoueur].grp[idbete].meurt()
+        },
+        moveMarker:function (idJoueur,idbete,pos) {
+            console.log("move");
+            this.mdj.joueurs[idJoueur].grp[idbete].collider.go(pos[0],pos[1])
         },
         mange:function() {
             
@@ -50,23 +59,6 @@ define(["marker"],function(marker){
         rentre:function() {
             
         },
-        moveMarker:function (idJoueur,idbete,pos) {
-            console.log("move");
-            console.log(idJoueur);
-            console.log(idbete);
-            console.log(pos);
-            this.mdj.joueurs[idJoueur].grp[idbete].collider.go(pos[0],pos[1])
-        },
-        newMarkerAt:function(image,joueur,pos) {
-            console.log("create");
-            console.log(image);
-            console.log(joueur);
-            console.log(pos);
-            var pion=this.mdj.joueurs[joueur].newMarker(image)
-            pion.collider.go(pos[0],pos[1]);
-            pion.setId();
-            //            return pion
-        }
 
         //
        
