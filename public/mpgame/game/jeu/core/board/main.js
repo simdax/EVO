@@ -1,10 +1,11 @@
 
 define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,Light,Gen,Map,Groupes,MDJ,HexagonTools) {
     
-    var Board  = function(game,seed,id,nb) {
+    var Board  = function(game,seed,id,nb,gameID) {
         this.game=game;
         this.seed=seed;
-        this.id=id;
+        this.id=id; // playerID
+        this.gameID=gameID;
         this.nbJoueurs=nb;
         this.mapSettings =new Map;
     };
@@ -78,7 +79,7 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
 
             this.game.stage.disableVisibilityChange = true;
 
-            evo.network.start()
+            evo.socket.emit('ready',this.gameID);
 
         },
 

@@ -14,21 +14,34 @@
     };
 
     Game.prototype = {
+
+        
+
+        ready:function(id) {
+            console.log("prout");
+            var game=this.gameManager.games[id];
+            game.playersNotOk-=1;
+            console.log("il reste"+game.playersNotOk);
+            if (this.gameManager.games[id].playersNotOk==0) {
+                this.broadcaster.broadcastAll('start')
+            }
+        },
+        
         // MARKER managment
-        "newMarker":function (infos) {
+        newMarker:function (infos) {
             console.log("new marker");
             this.socket.broadcast.emit('newMarker',infos)
         },
-        "moveMarker":function (infos) {
+        moveMarker:function (infos) {
             console.log("move marker");
             this.socket.broadcast.emit('moveMarker',infos)
         },
-        "deleteMarker":function (infos) {
+        deleteMarker:function (infos) {
             console.log("delete marker");
             this.socket.broadcast.emit('deleteMarker',infos)
         },
         // MDJ management
-        "changeTurn":function (id) {
+        changeTurn:function (id) {
             this.socket.broadcast.emit(id,'changeTurn')
         },
     };

@@ -4,12 +4,17 @@ define(['especes'], function(Especes) {
 
 
         object2Array:function(obj) {
-            
+
+            if (!obj) {
+                return null
+            }
+            else{
             var res=[];
             for(var i = 0; i < Object.keys(obj).length; i++) {
                 res.push(obj[i])
             };
-            return res
+                return res
+                }
         }, 
         
 

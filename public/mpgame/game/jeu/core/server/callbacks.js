@@ -24,18 +24,23 @@ define(["marker","lang"],function(marker,Lang){
             for(var k in this.mdj.joueurs) {
                 
                 var joueur=this.mdj.joueurs[k];
+                // here we bypass the send effect
+                // using the good callback method
                 joueur.vaisseau=
                     evo.network.dict
                     .newMarker.call(this,"vaisseau",joueur.id);
-                        
             };
-            var pion=this.mdj.toi.vaisseau
-                
-               // null here means "all the board is available for landing"
+
+            // on lande le sien
+            var pion=this.mdj.toi.vaisseau;
+            // null here means "the entire board is available for landing"
             pion.land(null);
             
             var callback=function() {
 
+                console.log(this.mdj.currentJoueur);
+                console.log(this.id);
+                
                 if(pion.ok && this.mdj.currentJoueur == this.id ){
                     evo.network.changeTurn();
                     this.game.input.onDown.remove(callback,this)
@@ -56,8 +61,9 @@ define(["marker","lang"],function(marker,Lang){
 
         //  pion movements
         newMarker:function(image,joueurID,pos) {
+
             console.log("new "+image+joueurID);
-            console.log(this);
+
             var pion=this.mdj.joueurs[joueurID].newMarker(image)
             pion.sprite.events.onInputDown.add(
                     function(pion,image,joueurID) {

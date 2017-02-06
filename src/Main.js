@@ -44,8 +44,11 @@
         // so we instantiante with a new User
         // it just extends User prototype
         new Game(User.prototype);
-        new Chat(User.prototype);
 
+        this.gameManager=gameManager;
+        this.playerRegister=playerRegister;
+        this.broadcaster=broadcaster;
+        
         this.socket=socket;
         Object.keys(User.prototype).forEach((func)=>{
             socket.on(func, this[func].bind(this))
@@ -54,8 +57,7 @@
         // add a broadcaster object
 
         // petite musique de bienvenue
-
-        this.socket.broadcast.emit("welcome")
+//        this.socket.broadcast.emit("welcome")
 
     };
 
@@ -66,22 +68,21 @@
 
         /*helper for broadcasting */
 
-
         // players management
 
         'disconnect': function() {
             console.log('user disconnect');
-            playerRegister.removePlayer(this.socket);
-            gameManager.deleteGame(this.socket.id)
-            broadcaster.broadcastPlayersList();
+            this.playerRegister.removePlayer(this.socket);
+            this.gameManager.deleteGame(this.socket.id)
+            this.broadcaster.broadcastPlayersList();
 
             delete this
             // gros truc de bourrin ?
         },
 
         "register-player": function(player, callback) {
-            playerRegister.addPlayer(this.socket, player);
-            broadcaster.broadcastPlayersList();
+            this.playerRegister.addPlayer(this.socket, player);
+            this.broadcaster.broadcastPlayersList();
             // ouuuuh yeah very ugly updating chat
             console.log('user registered');
             User.prototype['new-phrase'].call(this);
@@ -90,10 +91,10 @@
 
         /*not io function, just static*/
         me:function () {
-            return playerRegister.findPlayerForID(this.socket.id);
+            return this.playerRegister.findPlayerForID(this.socket.id);
         },
         joueur:function (id) {
-            return playerRegister.findPlayerForID(id);
+            return this.playerRegister.findPlayerForID(id);
         },
 
 
@@ -112,7 +113,7 @@
                 {chat.lasts[i]=phrases[i].replace(this.socket.id,this.me().name)};
             };
             // broadcast the final 5 el
-            broadcaster.broadcastAll('updateChat',chat.lasts)
+            this.broadcaster.broadcastAll('updateChat',chat.lasts)
         },
 
         /*
@@ -122,8 +123,8 @@
         // game managment
         "new-game": function (infoGame,callback) {
 
-            var game=gameManager.createGame(this.socket.id,infoGame.name,this.me().name,infoGame.nb);
-            broadcaster.broadcastGamelist();
+            var game=this.gameManager.createGame(this.socket.id,infoGame.name,this.me().name,infoGame.nb);
+            this.broadcaster.broadcastGamelist();
 
             // like you were joigning your own game
             // (stupid but ok)
@@ -132,8 +133,8 @@
         },
         "cancel-game": function (undefined, callback) {
             console.log("game cancelled");
-            gameManager.deleteGame(this.socket.id);
-            broadcaster.broadcastGamelist();
+            this.gameManager.deleteGame(this.socket.id);
+            this.broadcaster.broadcastGamelist();
 //            return callback && callback(null)
         },
         joinGame:function (id) {
@@ -141,7 +142,7 @@
 
             // we join a game that our gameManager
             // already created
-            var game=gameManager.games[id];
+            var game=this.gameManager.games[id];
 
             // we increase count and give player its id
             this.socket.emit('getID',game.players);
@@ -151,20 +152,20 @@
             // and if its ok
             if (game.players==game.nb) {
                 // boum
+                game.playersNotOk=game.nb;
                 console.log("nouvelle partie commencée");
-                broadcaster.broadcastAll('createGame',
+                this.broadcaster.broadcastAll('createGame',
                                          // i cant send a object ,??
-                                         [game.seed,game.nb]);
+                                         [game.seed,game.nb,id]);
             }
         },
         unjoinGame:function (id) {
-            gameManager.games[id].players-=1;
+            this.gameManager.games[id].players-=1;
         },
-
 
         // for player arrival
         askGameList: function () {
-            this.socket.emit('games-list',gameManager.games)
+            this.socket.emit('games-list',this.gameManager.games)
             //return callback && callback(null)
         },
     };

@@ -27,8 +27,7 @@
             if( $scope.status=="createur" || $scope.status=="player" )
             {
                 var phaser=new Phaser.Game(1000,600,Phaser.AUTO,'phaser');
-                evo.game=new evo.Game(phaser,gameInfos[0],$scope.id,gameInfos[1]); // id is the player you play
-                // we have only one state
+                evo.game=new evo.Game(phaser,gameInfos[0],$scope.id,gameInfos[1],gameInfos[2]); // id is the player you play
                 evo.network=new evo.Network(evo.socket,evo.game);
             }
         }
