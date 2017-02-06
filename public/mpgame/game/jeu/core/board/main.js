@@ -72,7 +72,7 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
             // LOGIC
             // zoomKey =this.game.input.keyboard.addKey(Phaser.Keyboard.P);
             // dezoomKey =this.game.input.keyboard.addKey(Phaser.Keyboard.L);
-            this.EOTkey =this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+           // this.EOTkey =this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
             this.cursors =this.game.input.keyboard.createCursorKeys();
             this.mdj=new MDJ(this.id,this.nbJoueurs,this.game,this.groupes);
 
@@ -86,9 +86,9 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
 
             // startZoom(zoomKey,dezoomKey)
             // updateZoom()
-            if (this.EOTkey.isDown) {
-                this.mdj.endofturn()
-            }
+            // if (this.EOTkey.isDown) {
+            //     this.mdj.endofturn()
+            // }
 
             if (this.cursors.left.isDown) {
                 this.game.camera.x -= 4;
