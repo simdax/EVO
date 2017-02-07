@@ -16,7 +16,6 @@
     Game.prototype = {
 
         ready:function(id) {
-            console.log("prout");
             var game=this.gameManager.games[id];
             game.playersNotOk-=1;
             console.log("il reste"+game.playersNotOk);
@@ -24,7 +23,7 @@
                 this.broadcaster.broadcastAll('start')
             }
         },
-
+        
         // MARKER managment
         newMarker:function (infos) {
             console.log("new marker");

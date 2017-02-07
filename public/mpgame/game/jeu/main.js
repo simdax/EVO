@@ -24,6 +24,10 @@ require.config({
         callbacks:"server/callbacks",
         network:"server/network",
         game:"server/game",
+
+        // menus
+        menu:"../features/menu"
+
     }
 })
 

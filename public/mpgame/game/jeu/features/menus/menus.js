@@ -1,3 +1,5 @@
+define(function() {
+    
 var Menu=function (board) {
 
   this.groupes=board.groupes;
@@ -112,3 +114,6 @@ var Menu=function (board) {
     };
 }
   }
+    return Menu
+
+})

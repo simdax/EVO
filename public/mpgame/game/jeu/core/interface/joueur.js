@@ -1,5 +1,5 @@
 
-define(['especes','marker'],function name(Especes,marker) {
+define(['especes','marker','lang'],function name(Especes,marker,Lang) {
     
 
     var Joueur = function (id,game,groupes) {
@@ -12,11 +12,6 @@ define(['especes','marker'],function name(Especes,marker) {
         this.groupes=groupes;
 
         this.grp=[];
-        
-        // here we create already a mainship for every player
-        this.vaisseau=marker("vaisseau",this);
-        this.vaisseau.setId();
-        this.landing=false;
 
         this.xps=10;
 
@@ -110,7 +105,7 @@ define(['especes','marker'],function name(Especes,marker) {
             if (res!=-1) {
                 return res
             }else
-            { console.log("error sur " +key)}
+            { console.log("error sur " +key); return -1}
         },
         checkPhylums:function () {
             var res=0;
@@ -129,17 +124,19 @@ define(['especes','marker'],function name(Especes,marker) {
             this.xps = this.xps + 1 + this.checkPhylums()
         },
         assezdargent:function (phylum) {
-            if(phylum.xp <= this.xps){return true}else{
+            if(phylum.xp <= this.xps){return true}
+            else{
                 console.log("pas assez d'argent"); return false
             }
         },
         acheter:function (espece) {
-            var phylum=Lang.get(espece,Especes);
+            console.log(this.get(espece));
             switch(this.get(espece)){
             case -1:
                 console.log("error");
                 break;
             case false:
+                var phylum=Lang.get(espece,Especes);
                 if(this.hasParent(espece) && this.assezdargent(phylum) ){
                     this.xps -= phylum.xp;
                     this.set(espece, 2)

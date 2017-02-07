@@ -6,7 +6,14 @@
     this.gameManager=gameManager;
     this.chat=chat;
   };
-  Broadcaster.prototype={
+    Broadcaster.prototype={
+
+    //     todo
+    // broadcastAllPlayers: function (key,arg) {
+    //   for (var pId in this.playerRegister.players) {
+    //     this.playerRegister.players[pId].socket.emit(key,arg);
+    //   }
+    // },
     broadcastAll: function (key,arg) {
       for (var pId in this.playerRegister.players) {
         this.playerRegister.players[pId].socket.emit(key,arg);

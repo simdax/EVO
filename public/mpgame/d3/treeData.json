@@ -1,169 +1,171 @@
 {
-  "name": "Vaisseau",
-  "value": 0,
-  "type": "black",
-  "level": "red",
-  "icon": "game/assets/images/sprites/vaisseau.png",
-  "children": [
-    {
-      "name": "Annelides",
-      "value": 5,
-      "type": "grey",
-      "level": "red",
-      "icon": "game/assets/images/sprites/annelides.png",
-      "children": [
+    "name": "Vaisseau",
+    "value": 0,
+    "type": "black",
+    "level": "red",
+    "icon": "game/assets/images/sprites/vaisseau.png",
+    "children": [
         {
-          "name": "escargots",
-          "value": 5,
-          "type": "steelblue",
-          "icon": "game/assets/images/sprites/escargots.png",
-          "level": "orange"
-        },
-        {
-          "name": "seches",
-          "value": 18,
-          "type": "steelblue",
-          "icon": "game/assets/images/sprites/seches.png",
-          "level": "red",
-          "children": [
-            {
-              "name": "pieuvres",
-              "value": 5,
-              "type": "steelblue",
-              "icon": "game/assets/images/sprites/pieuvres.png",
-              "level": "orange"
-            }
-          ]
-        },
-        {
-          "name": "insectes",
-          "value": 5,
-          "type": "steelblue",
-          "icon": "game/assets/images/sprites/insectes.png",
-          "level": "orange",
-          "children": [
-            {
-              "name": "arachnides",
-              "value": 5,
-              "type": "steelblue",
-              "icon": "game/assets/images/sprites/arachnides.png",
-              "level": "orange"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "thons",
-      "value": 5,
-      "type": "grey",
-      "level": "red",
-      "icon": "game/assets/images/sprites/thons.png",
-      "children": [
-        {
-          "name": "roussettes",
-          "value": 5,
-          "type": "steelblue",
-          "icon": "game/assets/images/sprites/roussettes.png",
-          "level": "orange",
-          "children": [
-            {
-              "name": "requins",
-              "value": 5,
-              "type": "steelblue",
-              "icon": "game/assets/images/sprites/requins.png",
-              "level": "orange"
-            }
-          ]
-        },
-        {
-          "name": "coelacanthes",
-          "value": 5,
-          "type": "steelblue",
-          "icon": "game/assets/images/sprites/coelacanthes.png",
-          "level": "orange",
-          "children": [
-            {
-              "name": "grenouilles",
-              "value": 5,
-              "type": "steelblue",
-              "icon": "game/assets/images/sprites/grenouilles.png",
-              "level": "orange",
-              "children": [
+            "name": "annelides",
+            "xp":1,
+            "value": 5,
+            "type": "grey",
+            "level": "red",
+            "icon": "game/assets/images/sprites/annelides.png",
+            "children": [
                 {
-                  "name": "compsognathus",
-                  "value": 5,
-                  "type": "steelblue",
-                  "icon": "game/assets/images/sprites/compsognathus.png",
-                  "level": "orange",
-                  "children": [
-                    {
-                      "name": "tyranosaures",
-                      "value": 5,
-                      "type": "steelblue",
-                      "icon": "game/assets/images/sprites/tyrannosaures.png",
-                      "level": "orange"
-                    }
-                  ]
+                    "name": "escargots",
+                    "value": 5,
+                    "xp":2,
+                    "type": "steelblue",
+                    "icon": "game/assets/images/sprites/escargots.png",
+                    "level": "orange"
                 },
                 {
-                  "name": "rongeurs",
-                  "value": 18,
-                  "type": "steelblue",
-                  "icon": "game/assets/images/sprites/rongeurs.png",
-                  "level": "red",
-                  "children": [
-                    {
-                      "name": "hippopotames",
-                      "value": 5,
-                      "type": "steelblue",
-                      "icon": "game/assets/images/sprites/hippopotames.png",
-                      "level": "orange"
-                    },
-                    {
-                      "name": "gorilles",
-                      "value": 18,
-                      "type": "steelblue",
-                      "icon": "game/assets/images/sprites/gorilles.png",
-                      "level": "red",
-                      "children": [
+                    "name": "seches",
+                    "value": 18,
+                    "type": "steelblue",
+                    "icon": "game/assets/images/sprites/seches.png",
+                    "level": "red",
+                    "children": [
                         {
-                          "name": "hommes",
-                          "value": 5,
-                          "type": "steelblue",
-                          "icon": "game/assets/images/sprites/Homme.png",
-                          "level": "orange"
+                            "name": "pieuvres",
+                            "value": 5,
+                            "type": "steelblue",
+                            "icon": "game/assets/images/sprites/pieuvres.png",
+                            "level": "orange"
                         }
-                      ]
-                    },
-                    {
-                      "name": "orques",
-                      "value": 5,
-                      "type": "steelblue",
-                      "icon": "game/assets/images/sprites/orques.png",
-                      "level": "orange"
-                    }
-                  ]
+                    ]
                 },
                 {
-                  "name": "crocodiles",
-                  "value": 5,
-                  "type": "steelblue",
-                  "icon": "game/assets/images/sprites/crocodiles.png",
-                  "level": "orange"
-                },
-                {
-                  "name": "serpents",
-                  "value": 5,
-                  "type": "steelblue",
-                  "icon": "game/assets/images/sprites/serpents.png",
-                  "level": "orange"
+                    "name": "insectes",
+                    "value": 5,
+                    "type": "steelblue",
+                    "icon": "game/assets/images/sprites/insectes.png",
+                    "level": "orange",
+                    "children": [
+                        {
+                            "name": "arachnides",
+                            "value": 5,
+                            "type": "steelblue",
+                            "icon": "game/assets/images/sprites/arachnides.png",
+                            "level": "orange"
+                        }
+                    ]
                 }
-              ]
-            }
-          ]
+            ]
+        },
+        {
+            "name": "thons",
+            "value": 5,
+            "type": "grey",
+            "level": "red",
+            "icon": "game/assets/images/sprites/thons.png",
+            "children": [
+                {
+                    "name": "roussettes",
+                    "value": 5,
+                    "type": "steelblue",
+                    "icon": "game/assets/images/sprites/roussettes.png",
+                    "level": "orange",
+                    "children": [
+                        {
+                            "name": "requins",
+                            "value": 5,
+                            "type": "steelblue",
+                            "icon": "game/assets/images/sprites/requins.png",
+                            "level": "orange"
+                        }
+                    ]
+                },
+                {
+                    "name": "coelacanthes",
+                    "value": 5,
+                    "type": "steelblue",
+                    "icon": "game/assets/images/sprites/coelacanthes.png",
+                    "level": "orange",
+                    "children": [
+                        {
+                            "name": "grenouilles",
+                            "value": 5,
+                            "type": "steelblue",
+                            "icon": "game/assets/images/sprites/grenouilles.png",
+                            "level": "orange",
+                            "children": [
+                                {
+                                    "name": "compsognathus",
+                                    "value": 5,
+                                    "type": "steelblue",
+                                    "icon": "game/assets/images/sprites/compsognathus.png",
+                                    "level": "orange",
+                                    "children": [
+                                        {
+                                            "name": "tyrannosaures",
+                                            "value": 5,
+                                            "type": "steelblue",
+                                            "icon": "game/assets/images/sprites/tyrannosaures.png",
+                                            "level": "orange"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "rongeurs",
+                                    "value": 18,
+                                    "type": "steelblue",
+                                    "icon": "game/assets/images/sprites/rongeurs.png",
+                                    "level": "red",
+                                    "children": [
+                                        {
+                                            "name": "hippopotames",
+                                            "value": 5,
+                                            "type": "steelblue",
+                                            "icon": "game/assets/images/sprites/hippopotames.png",
+                                            "level": "orange"
+                                        },
+                                        {
+                                            "name": "gorilles",
+                                            "value": 18,
+                                            "type": "steelblue",
+                                            "icon": "game/assets/images/sprites/gorilles.png",
+                                            "level": "red",
+                                            "children": [
+                                                {
+                                                    "name": "hommes",
+                                                    "value": 5,
+                                                    "type": "steelblue",
+                                                    "icon": "game/assets/images/sprites/Homme.png",
+                                                    "level": "orange"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "name": "orques",
+                                            "value": 5,
+                                            "type": "steelblue",
+                                            "icon": "game/assets/images/sprites/orques.png",
+                                            "level": "orange"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "crocodiles",
+                                    "value": 5,
+                                    "type": "steelblue",
+                                    "icon": "game/assets/images/sprites/crocodiles.png",
+                                    "level": "orange"
+                                },
+                                {
+                                    "name": "serpents",
+                                    "value": 5,
+                                    "type": "steelblue",
+                                    "icon": "game/assets/images/sprites/serpents.png",
+                                    "level": "orange"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

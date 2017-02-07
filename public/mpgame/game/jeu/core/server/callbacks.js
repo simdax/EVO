@@ -1,7 +1,8 @@
-//                 _
-//  _ __  __ _ _ _| |_____ _ _
-// | '  \/ _` | '_| / / -_) '_|
-// |_|_|_\__,_|_| |_\_\___|_|
+
+//          _ _ _             _
+//  __ __ _| | | |__  __ _ __| |__ ___
+// / _/ _` | | | '_ \/ _` / _| / /(_-<
+// \__\__,_|_|_|_.__/\__,_\__|_\_\/__/
 
 
 define(["marker","lang"],function(marker,Lang){
@@ -10,8 +11,11 @@ define(["marker","lang"],function(marker,Lang){
 
 
         //        player actions inventaire:{
-        acheter:function(id,espece) {
-            this.mdj.joueurs[id].acheter(espece)
+        acheter:function(espece) {
+            this.mdj.toi.acheter(espece)
+        },
+        poper:function(espece) {
+            this.mdj.toi.create(espece)
         },
 
 
@@ -65,7 +69,6 @@ define(["marker","lang"],function(marker,Lang){
                     }
                     else{
                         console.log("rien");
-                        //                            infos générales
                     }
                 }.bind(this,pion,image,joueurID)
             );
@@ -74,12 +77,13 @@ define(["marker","lang"],function(marker,Lang){
             //            pion.landing=false;   
 
             if (pos) {
-                evo.network.moveMarker(pos)
+                pion.collider.go(pos[0],pos[1])
+//                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
             };
             return pion;
         },
         moveMarker:function (idJoueur,idbete,pos) {
-            console.log("move de "+idJoueur+idbete+" a "+pos);
+            console.log("move de "+idJoueur+" "+idbete+" à "+pos);
             this.mdj.joueurs[idJoueur].grp[idbete].collider.go(pos[0],pos[1])
         },
         deleteMarker:function (idJoueur,idbete) {

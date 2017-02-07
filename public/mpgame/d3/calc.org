@@ -1,0 +1,22 @@
+| especes       | xp | proies                                | children                                     | phylum        |
+|---------------+----+---------------------------------------+----------------------------------------------+---------------|
+| annelides     |  1 | []                                    | [escargots,seches,insectes]                  | mollusques    |
+| escargots     |  2 | []                                    | []                                           | mollusques    |
+| seches        |  3 | [annelides]                           | [pieuvres]                                   | cephalopodes  |
+| pieuvres      |  3 | [roussettes]                          | []                                           | cephalopodes  |
+| insectes      |  1 | []                                    | [arachnides]                                 | arthropodes   |
+| arachnides    |  4 | [insectes]                            | []                                           | arthropodes   |
+| thons         |  3 | [annelides]                           | [coelacanthes,roussettes]                    | osteoichtyens |
+| roussettes    |  3 | [seches]                              | [requins]                                    | selaciens     |
+| requins       |  3 | [coelacanthes]                        | []                                           | selaciens     |
+| coelacanthes  |  3 | [thons]                               | [grenouilles]                                | osteoichtyens |
+| grenouilles   |  3 | [insectes]                            | [compsognathus,crocodiles,serpents,rongeurs] | anapasides    |
+| compsognathus |  2 | [grenouilles]                         | [tyrannosaures]                              | anapasides    |
+| crocodiles    |  4 | [serpents]                            | []                                           | dinosauriens  |
+| serpents      |  3 | [rongeurs]                            | []                                           | anapasides    |
+| rongeurs      |  3 | [escargots]                           | [hipppopotames,gorilles,orques]              | mammniferes   |
+| tyrannosaures |  7 | [hippopotames,compsognathus,gorilles] | []                                           | dinosauriens  |
+| hippopotames  |  3 | [crocodiles]                          | []                                           | mammiferes    |
+| gorilles      |  2 | []                                    | [hommes]                                     | mammniferes   |
+| orques        |  7 | [pieuvres,requins]                    | []                                           | cetaces       |
+| homme         | 30 | []                                    | []                                           | mammiferes    |

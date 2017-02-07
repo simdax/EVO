@@ -1,5 +1,5 @@
 
-define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,Light,Gen,Map,Groupes,MDJ,HexagonTools) {
+define(['especes','light','gen','map','groupes','mdj','math','ipad'], function(Especes,Light,Gen,Map,Groupes,MDJ,HexagonTools,IPAD) {
     
     var Board  = function(game,seed,id,nb,gameID) {
         this.game=game;

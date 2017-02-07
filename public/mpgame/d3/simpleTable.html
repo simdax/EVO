@@ -1,0 +1,86 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="utf-8">
+    <style>
+    table {
+        border-collapse: collapse;
+        border: 2px black solid;
+        font: 12px sans-serif;
+    }
+
+td {
+    border: 1px black solid;
+    padding: 5px;
+}
+
+
+
+</style>
+    </head>
+    <body>
+
+    <div id="viz6"></div>
+    <script src="http://d3js.org/d3.v4.min.js"></script>
+    <!-- <script src="d3.min.js?v=3.2.8"></script> -->
+
+    <script type="text/javascript">
+    d3.text("inventaire.csv", function (datasetText) {
+        var rows = d3.csvParseRows(datasetText);
+        var tbl = d3.select("#viz6")
+            .append("table");
+
+        console.log(rows)
+        
+        // headers
+        tbl.append("thead").append("tr")
+            .selectAll("th")
+            .data(rows[0])
+            .enter().append("th")
+            .text(function(d) {
+                return d;
+            });
+
+        // data
+        tbl.append("tbody")
+            .selectAll("tr")
+            .data(rows.slice(1))
+            .enter().append("tr")
+
+            .selectAll("td")
+            .data(function(d){return d;})
+            .enter().append("td")
+            .text(function(d){return d;})
+            .attr("bgColor","blue")
+            .on("click",function(a){
+                if (a!="") {
+                    var a=d3.select(this);
+                    a.attr("bgColor","red")
+                }
+            })
+            .on("mouseover",function(a){
+                if (a!="") {
+                    var a=d3.select(this);
+                    if(a.attr("bgColor") != "red")
+                    {
+                        a.attr("bgColor","gree")
+                    }
+                }
+
+            })
+            .on("mouseout",function(a){
+                if (a!="") {
+                    var a=d3.select(this);
+                    if(a.attr("bgColor") != "red")
+                    {
+                        a.attr("bgColor","blue")
+                    }
+                }
+            })
+
+    });
+
+</script>
+
+</body>
+    </html>
