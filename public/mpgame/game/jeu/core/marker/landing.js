@@ -32,7 +32,6 @@ define(['pion'], function(Pion) {
             if (this.marker.collider.placeIf()) {
                 this.marker.collider.return();
             };
-            this.clean();
         },
         clean:function () {
             console.log("on clean");
@@ -43,6 +42,7 @@ define(['pion'], function(Pion) {
 //            this.marker.sprite.inputEnabled=true;
             this.marker.joueur.groupes.light.normal();
             this.fantome.sprite.visible=false;
+            this.marker.sprite.inputEnabled=true;
         },
     }
 

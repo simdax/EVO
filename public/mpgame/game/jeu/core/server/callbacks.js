@@ -21,27 +21,12 @@ define(["marker","lang"],function(marker,Lang){
 
         //      init
         start: function() {
-
             console.log("start !!");
-
-            // on créée des vaisseaux pour tous les joueurs
-            for(var k in this.mdj.joueurs) {
-                
-                var joueur=this.mdj.joueurs[k];
-                // here we bypass the send effect
-                // using the good callback method
-                joueur.vaisseau=
-                    evo.network.dict
-                    .newMarker.call(this,"vaisseau",joueur.id);
-            };
-            
+            this.mdj.toi.vaisseau=evo.network.newMarker("vaisseau",this.mdj.toi.id)
         },
 
         land:function() {
-            // on lande le sien
-            var pion=this.mdj.toi.vaisseau;
-            // null here means "the entire board is available for landing"
-            pion.land(null);
+            this.mdj.toi.vaisseau.land(null);
         },
 
 
@@ -53,7 +38,7 @@ define(["marker","lang"],function(marker,Lang){
 
 
         //  pion movements
-        newMarker:function(image,joueurID,pos) {
+        newMarker:function(image,joueurID) {
 
             console.log("new "+image+joueurID);
 
@@ -78,12 +63,6 @@ define(["marker","lang"],function(marker,Lang){
             );
             
             pion.setId();
-            //            pion.landing=false;   
-
-            //             if (pos) {
-            //                 pion.collider.go(pos[0],pos[1])
-            // //                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
-            //             }
             return pion;
         },
         moveMarker:function (idJoueur,idbete,pos) {

@@ -21,13 +21,13 @@ define(["pion","landing","lang"],function(Pion,Landing,Lang) {
                 console.log("left");
                 if(this.marker.ok){
                     this.mouseCallback();
-                    this.marker.joueur.game.input.onDown.remove(callbackLeft,this);
-                    this.marker.sprite.inputEnabled=true
+                    this.marker.joueur.game.input.mousePointer.leftButton.onDown.remove(callbackLeft,this);
+                    this.clean();
                 }// else ça continue à vouloir lander
             };
             var callbackRight=function() {
+                this.marker.joueur.game.input.mousePointer.rightButton.onDown.remove(callbackRight,this);
                 this.clean();
-                this.marker.sprite.inputEnabled=true;
             };
 
 

@@ -10,10 +10,10 @@ define(['especes','marker','lang'],function name(Especes,marker,Lang) {
         
         this.game=game;
         this.groupes=groupes;
-
         this.grp=[];
+        this.groupes.push(this.grp,this.id);
 
-        this.xps=10;
+        this.xps=30;
 
         this.inventaire= {
             mollusques: {

@@ -103,8 +103,8 @@
             // internallye, we add the id and not the name, and we put the name after
             if(phrase){
                 chat.add(phrase, this.socket.id)
-            };
 
+            };
             // braodcast with your name
             // it works because the size of lasts and the get phrases function is always the same
             var phrases=chat.lastEls();

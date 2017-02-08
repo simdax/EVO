@@ -22,7 +22,6 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
 
     Collisions.prototype={
 
-
         actions:{
             go:function(posX,posY) {
                 return function() {
@@ -32,15 +31,20 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                         [posX,posY]);
                 };
             },
-            mange:function() {
+            mange:function(pos,joueurID,beteID) {
                 return function () {
-                    autreSprite.destroy();
-                    this.go(posX,posY)
+                    evo.network.deleteMarker(beteID,joueurID)
+                    evo.network.moveMarker(
+                        this.marker.joueur.id,
+                        this.marker.id,
+                        pos);
                 }
             },
             rentre:function() {
                 return function () {
-                    this.marker.meurt();
+                    evo.network.deleteMarker(
+                        this.marker.id,this.marker.meurt()
+                    );
                     this.marker.joueur.rentrerBete();
                 }
             }
@@ -125,7 +129,18 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
             return  terrainOK && (terrain.alpha != 1)
         },
 
-
+        findIdForSpAndPlayer:function(sp,playerID) {
+            var gp=this.marker.joueur.groupes.allMarkers[playerID];
+            for(var i = 0; i < gp.length; i++) {
+                if(sp===gp[i].sprite)
+                    return i
+            }
+            // if we are here, its an error
+            console.log("problème !!!");
+            console.log(gp);
+            console.log(sp);
+            console.log(playerID);
+        },
         rencontre:function (autreJoueur,autreImage,autreSprite,posX,posY) {
             if(this.marker.image=="vaisseau"){return false}
             else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur)
@@ -133,7 +148,9 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
                 return this.actions.rentre().bind(this)
             }
             else if (this.marker.esp.proies.includes(autreImage)) {
-                return this.actions.mange(posX,posY).bind(this)
+                return this.actions.mange([posX,posY],autreJoueur,
+                                          this.findIdForSpAndPlayer(autreSprite,autreJoueur)
+                                         ).bind(this)
             }
             else {
                 return false

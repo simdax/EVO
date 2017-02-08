@@ -25,22 +25,14 @@ define(['math','light'],function(HexagonTools,Light) {
 
         this.light=new Light(this.tools,this.hexagon);
 
-        // et puis les autres bêtes
-        
-        // this.ipad=game.add.group();
-        // this.regle=game.add.group();
-        // this.menu=game.add.group();
-        // this.grosseBarre=game.add.group()
-
-        // this is the group of all sprites
         //on the board
         this.betes=game.add.group();
 
-        // this.hexagon.add(this.betes);
-
-        // this.menu.fixedToCamera = true;
-        // this.menu.add(this.grosseBarre)
-
+        this.allMarkers={};
+        this.push=function(array,id) {
+            this.allMarkers[id]=array
+        };
+        
     };
 
     Groupes.prototype=Light;

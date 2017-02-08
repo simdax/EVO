@@ -15,11 +15,14 @@
 
     Game.prototype = {
 
+        // todo broadcast all players of game + broadcast all players
+
         ready:function(id) {
             var game=this.gameManager.games[id];
             game.playersNotOk-=1;
             console.log("il reste"+game.playersNotOk);
             if (this.gameManager.games[id].playersNotOk==0) {
+                //todo every players
                 this.broadcaster.broadcastAll('start')
             }
         },
