@@ -22,23 +22,27 @@ define(['pion'], function(Pion) {
         moveCallback:function(){
             // fantome
             if(this.fantome.collider.placeIf()){
-                console.log("movecallback");
+//                console.log("movecallback");
                // this.fantome.collider.go(this.)
                 this.marker.ok=true;
             }else{this.marker.ok=false};
         },
         mouseCallback:function() {
             // delete fantome
-            this.clean();
             if (this.marker.collider.placeIf()) {
                 this.marker.collider.return();
             };
-            this.marker.sprite.inputEnabled=true;
+            this.clean();
         },
         clean:function () {
+            console.log("on clean");
             // hard move callback reset
             this.marker.joueur.game.input.moveCallbacks=[];
-            this.fantome.visible=false;
+
+            // give normal state
+//            this.marker.sprite.inputEnabled=true;
+            this.marker.joueur.groupes.light.normal();
+            this.fantome.sprite.visible=false;
         },
     }
 

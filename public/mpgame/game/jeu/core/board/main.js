@@ -76,7 +76,8 @@ define(['especes','light','gen','map','groupes','mdj','math'], function(Especes,
             this.mdj=new MDJ(this.id,this.nbJoueurs,this.game,this.groupes);
 
             this.game.stage.disableVisibilityChange = true;
-
+            this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
+            
             evo.socket.emit('ready',this.gameID);
 
         },

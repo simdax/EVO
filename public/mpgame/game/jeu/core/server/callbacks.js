@@ -57,18 +57,22 @@ define(["marker","lang"],function(marker,Lang){
 
             console.log("new "+image+joueurID);
 
-            var pion=this.mdj.joueurs[joueurID].newMarker(image)
+            var pion=this.mdj.joueurs[joueurID].newMarker(image);
             pion.sprite.events.onInputDown.add(
                 function(pion,image,joueurID) {
-                    console.log(Lang.format("clicked at {1} de {2}",image,joueurID));
-                    if (this.mdj.currentJoueur==joueurID
-                        && this.mdj.currentJoueur == this.id
-                       ) {
-                        console.log("deplacement !");
-                        pion.land()
-                    }
-                    else{
-                        console.log("rien");
+                    
+                    if (evo.game.phaser.input.mousePointer.button==Phaser.Mouse.LEFT_BUTTON) {
+                        
+                        console.log(Lang.format("clicked at {1} de {2}",image,joueurID));
+                        if (this.mdj.currentJoueur==joueurID
+                            && this.mdj.currentJoueur == this.id
+                           ) {
+                            console.log("deplacement !");
+                            pion.land()
+                        }
+                        else{
+                            console.log("rien");
+                        }
                     }
                 }.bind(this,pion,image,joueurID)
             );
@@ -76,10 +80,10 @@ define(["marker","lang"],function(marker,Lang){
             pion.setId();
             //            pion.landing=false;   
 
-//             if (pos) {
-//                 pion.collider.go(pos[0],pos[1])
-// //                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
-//             }
+            //             if (pos) {
+            //                 pion.collider.go(pos[0],pos[1])
+            // //                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
+            //             }
             return pion;
         },
         moveMarker:function (idJoueur,idbete,pos) {
