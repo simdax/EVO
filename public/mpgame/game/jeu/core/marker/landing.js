@@ -22,12 +22,10 @@ define(['pion'], function(Pion) {
         moveCallback:function(){
             // fantome
             if(this.fantome.collider.placeIf()){
+                console.log("movecallback");
                // this.fantome.collider.go(this.)
                 this.marker.ok=true;
             }else{this.marker.ok=false};
-        },
-        cancel:function name(arg) {
-            this.clean()
         },
         mouseCallback:function() {
             // delete fantome

@@ -54,8 +54,10 @@ td {
             .attr("bgColor","blue")
             .on("click",function(a){
                 if (a!="") {
-                    var a=d3.select(this);
-                    a.attr("bgColor","red")
+                    var b=d3.select(this);
+                    console.log(a);
+//                    evo.game.board.mdj.toi.create(a)
+                    b.attr("bgColor","red");
                 }
             })
             .on("mouseover",function(a){
@@ -63,10 +65,9 @@ td {
                     var a=d3.select(this);
                     if(a.attr("bgColor") != "red")
                     {
-                        a.attr("bgColor","gree")
+                        a.attr("bgColor","green")
                     }
                 }
-
             })
             .on("mouseout",function(a){
                 if (a!="") {

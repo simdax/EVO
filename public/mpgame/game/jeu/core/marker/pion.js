@@ -10,10 +10,11 @@ define(["collisions","lang"],function(Collisions,Lang) {
         this.landing=true;  //it means its not already on the board
 
         // prop
+        this.esp=Lang.getEvo(image);
         this.image=image;
         this.pos=[];// x,y  [-1,-1];
         this.isTweened=false; // it makes the menu appears
-        this.esp=Lang.getEvo(image)
+
 
         //init
         this.create()

@@ -12,10 +12,10 @@ define(["marker","lang"],function(marker,Lang){
 
         //        player actions inventaire:{
         acheter:function(espece) {
-            this.mdj.toi.acheter(espece)
+            return this.mdj.toi.acheter(espece)
         },
         poper:function(espece) {
-            this.mdj.toi.create(espece)
+            return this.mdj.toi.create(espece)
         },
 
 
@@ -37,7 +37,7 @@ define(["marker","lang"],function(marker,Lang){
             
         },
 
-        land:function(id) {
+        land:function() {
             // on lande le sien
             var pion=this.mdj.toi.vaisseau;
             // null here means "the entire board is available for landing"
@@ -60,7 +60,7 @@ define(["marker","lang"],function(marker,Lang){
             var pion=this.mdj.joueurs[joueurID].newMarker(image)
             pion.sprite.events.onInputDown.add(
                 function(pion,image,joueurID) {
-                    console.log(Lang.format("clicked at {1} de {2} ",image,joueurID));
+                    console.log(Lang.format("clicked at {1} de {2}",image,joueurID));
                     if (this.mdj.currentJoueur==joueurID
                         && this.mdj.currentJoueur == this.id
                        ) {
@@ -76,10 +76,10 @@ define(["marker","lang"],function(marker,Lang){
             pion.setId();
             //            pion.landing=false;   
 
-            if (pos) {
-                pion.collider.go(pos[0],pos[1])
-//                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
-            };
+//             if (pos) {
+//                 pion.collider.go(pos[0],pos[1])
+// //                evo.network.moveMarker(this.mdj.toi.id,pion.id,pos)
+//             }
             return pion;
         },
         moveMarker:function (idJoueur,idbete,pos) {

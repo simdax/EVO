@@ -83,9 +83,9 @@ define(['especes','marker','lang'],function name(Especes,marker,Lang) {
             var nbRest=this.get(espece);
             console.log("il reste :" +nbRest);
             if (nbRest == 1 || nbRest == 2) {
-                var m=this.newMarker();
-                this.set(espece, nbRest-1)
-                return m
+                var m=evo.network.newMarker(espece,this.id);
+                m.land(this.vaisseau.pos);
+                this.set(espece, nbRest-1);
             }else{
                 console.log("il ne t'en reste plus");
                 return -1
@@ -134,6 +134,7 @@ define(['especes','marker','lang'],function name(Especes,marker,Lang) {
             switch(this.get(espece)){
             case -1:
                 console.log("error");
+                return false;
                 break;
             case false:
                 var phylum=Lang.get(espece,Especes);
@@ -142,12 +143,14 @@ define(['especes','marker','lang'],function name(Especes,marker,Lang) {
                     this.set(espece, 2)
                     //  couleursBouttons[espece].tint=0x410055
                     console.log("acheté : "+ espece);
+                    return true;
                 }else{
                     // rien
                 };
                 break;
             default:
                 console.log("tu as déjà un(e): "+ espece);
+                return false;
                 break;
             }
         },

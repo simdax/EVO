@@ -4,8 +4,9 @@
 
     evo.app.controller('d3',function ($scope) {
 
+        var table={}; // mega a l'arrache...
+        
         evo.tools.addOnAndEmit($scope,evo.socket)
-
 
         $scope.log="";
         $scope.xp=2;//evo.game.board.mdj.toi.xp;
@@ -13,8 +14,15 @@
         $scope.acheter=function(espece) {
             var log= evo.game.board.mdj.toi.acheter(espece);
             $scope.log=log;
+            if (log) {
+                table[espece].forEach(function(element) {
+                    element.attr("bgColor","yellow")  
+                })
+            }
             $scope.xp=evo.game.board.mdj.toi.xp;
+            return log;
         };
+
 
         d3.json('d3/treeData.json',function(err,data) {
 
@@ -36,7 +44,7 @@
 
             // maps the node data to the tree layout
             nodes = treemap(nodes);
-
+            
             // append the svg object to the body of the page
             // appends a 'group' element to 'svg'
             // moves the 'group' element to the top left margin
@@ -93,20 +101,81 @@
 
             // adds the text to the node
             node.append("text")
-//                .attr("y", "130px")
+            //                .attr("y", "130px")
                 .attr("x", function(d) { return d.children ? -30 : 30; })
                 .style("text-anchor", function(d) { 
                     return d.children ? "end" : "start"; })
                 .text(function(d) { return d.data.name; });
 
         })
-    })
+
+        d3.text("d3/inventaire.csv", function (datasetText) {
+            var rows = d3.csvParseRows(datasetText);
+
+            var tbl;
+            tbl = d3.select("#inventaire")
+                .append("table");
+
+            // headers
+            tbl.append("thead").append("tr")
+                .selectAll("th")
+                .data(rows[0])
+                .enter().append("th")
+                .text(function(d) {
+                    return d;
+                });
+
+            // data
+            tbl.append("tbody")
+                .selectAll("tr")
+                .data(rows.slice(1))
+                .enter().append("tr")
+
+                .selectAll("td")
+                .data(function(d){return d;})
+                .enter().append("td")
+                .text(function(d){
+
+                    // we put in a variable to be accessible
+                    if (!table[d]) {table[d]=[] };
+                    table[d].push(d3.select(this));
+
+                    return d;
+                })
+                .attr("bgColor","blue")
+                .on("click",function(a){
+                    if (a!="") {
+                        var b=d3.select(this);
+                        evo.game.board.mdj.toi.create(a);
+                        //                        b.attr("bgColor","red");
+                    }
+                })
+                // .on("mouseover",function(a){
+                //     if (a!="") {
+                //         var a=d3.select(this);
+                //         if(a.attr("bgColor") != "red")
+                //         {
+                //             a.attr("bgColor","green")
+                //         }
+                //     }
+                // })
+                // .on("mouseout",function(a){
+                //     if (a!="") {
+                //         var a=d3.select(this);
+                //         if(a.attr("bgColor") != "red")
+                //         {
+                //             a.attr("bgColor","blue")
+                //         }
+                //     }
+                // });
+
+        }); 
+
+    });
+
 
     
 }())
 
 
-
-// accepted
-// You can use SVG filters.
 

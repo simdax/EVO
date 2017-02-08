@@ -16,8 +16,6 @@
             $scope.id=id;
         });
 
-        $scope.phrase="";
-
         $scope.test1=function() {
             if(evo.game &&
                evo.game.board.mdj.currentJoueur==$scope.id){
@@ -29,6 +27,10 @@
                 evo.network.dict.land.call(evo.game.board)
             };
         };
+        $scope.changeProut=function() {
+            $scope.phrase="fsdfds"
+        };
+        evo.gameScope=$scope
 
         /////////
         ///MAIN FUNCTION
@@ -46,7 +48,7 @@
             }
         }
                   )
-
+        
 
     })
 
