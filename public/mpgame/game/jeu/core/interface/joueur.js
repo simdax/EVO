@@ -156,9 +156,7 @@ define(['especes','marker','lang'],function name(Especes,marker,Lang) {
         },
         rentrerBete:function (bete) {
             console.log("rentrage de bete");
-            this.set(bete.esp, this.get(bete.image) + 1)
-            bete.landing=true; bete.sprite.inputEnabled=false;
-            bete.sprite.visible=false;
+            this.set(bete.esp, this.get(bete.image) + 1);
         }
     }
 

@@ -42,13 +42,14 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
             },
             rentre:function() {
                 return function () {
+                    this.marker.joueur.rentrerBete(this.marker);
                     evo.network.deleteMarker(
-                        this.marker.id,this.marker.meurt()
+                        this.marker.joueur.id,this.marker.id
                     );
-                    this.marker.joueur.rentrerBete();
                 }
             }
         },
+
         here:function() {
             return this.math.checkHex()
         },
@@ -56,6 +57,7 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
             var posX=pos[0]; var posY=pos[1];
             return (posX<0 || posY<0 || posX>=this.math.map.gridSizeX || posY>this.math.map.columns[posX%2]-1)
         },
+
         placeIf: function(){
 
             var pos=this.here();
@@ -143,8 +145,9 @@ define(["math","map","lang"],function(HexagonTools,Map,Lang) {
         },
         rencontre:function (autreJoueur,autreImage,autreSprite,posX,posY) {
             if(this.marker.image=="vaisseau"){return false}
-            else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur)
+            else if (autreImage=="vaisseau" && autreJoueur==this.marker.joueur.id)
             {
+                console.log("c'est ton vaisseau");
                 return this.actions.rentre().bind(this)
             }
             else if (this.marker.esp.proies.includes(autreImage)) {

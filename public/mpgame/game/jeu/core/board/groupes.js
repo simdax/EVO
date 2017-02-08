@@ -32,7 +32,16 @@ define(['math','light'],function(HexagonTools,Light) {
         this.push=function(array,id) {
             this.allMarkers[id]=array
         };
-        
+        this.input=function(bool) {
+            for(var k in this.allMarkers) {
+                this.allMarkers[k].forEach(function(marker) {
+                    if (marker) {
+                        marker.sprite.inputEnabled=bool;
+                        console.log(marker.sprite.inputEnabled);
+                    }
+                })
+            }
+        }
     };
 
     Groupes.prototype=Light;

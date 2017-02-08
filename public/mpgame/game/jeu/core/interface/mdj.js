@@ -60,11 +60,11 @@ define(['joueur'],function(Joueur) {
         next: function () {
             this.currentJoueur =  (this.currentJoueur +1) % this.nbJoueurs;
             if(this.currentJoueur!=this.toi.id){
-                this.groupes.inputEnabled=false;
+                this.groupes.input(false);
                 this.groupes.hexagon.alpha=0.2;
             }
             else{
-                this.groupes.inputEnabled=true;
+                this.groupes.input(true);
                 this.groupes.hexagon.alpha=1;
             };
             console.log("au tour de "+this.currentJoueur);

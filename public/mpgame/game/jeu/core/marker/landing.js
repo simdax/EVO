@@ -9,12 +9,15 @@ define(['pion'], function(Pion) {
     
 
     Landing= function(marker){
+
         this.marker=marker;
+
+        //we create fantome
         var res = new Pion(marker.image,marker.joueur);
         res.sprite.alpha=0.5;
-        res.sprite.inputEnabled=false;
         res.collider.always=true;
         this.fantome=res;
+        console.log(this.marker.sprite.inputEnabled);
     };
 
     Landing.prototype={
@@ -22,8 +25,6 @@ define(['pion'], function(Pion) {
         moveCallback:function(){
             // fantome
             if(this.fantome.collider.placeIf()){
-//                console.log("movecallback");
-               // this.fantome.collider.go(this.)
                 this.marker.ok=true;
             }else{this.marker.ok=false};
         },
@@ -35,14 +36,11 @@ define(['pion'], function(Pion) {
         },
         clean:function () {
             console.log("on clean");
-            // hard move callback reset
+            // hard moveCallbacks reset
             this.marker.joueur.game.input.moveCallbacks=[];
-
-            // give normal state
-//            this.marker.sprite.inputEnabled=true;
             this.marker.joueur.groupes.light.normal();
             this.fantome.sprite.visible=false;
-            this.marker.sprite.inputEnabled=true;
+            this.marker.joueur.groupes.input(true);
         },
     }
 

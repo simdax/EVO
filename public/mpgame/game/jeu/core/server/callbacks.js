@@ -70,7 +70,7 @@ define(["marker","lang"],function(marker,Lang){
             this.mdj.joueurs[idJoueur].grp[idbete].collider.go(pos[0],pos[1])
         },
         deleteMarker:function (idJoueur,idbete) {
-            console.log("mort de "+idJoueur+idbete);
+            console.log("mort de "+idJoueur+" "+idbete);
             this.mdj.joueurs[idJoueur].grp[idbete].meurt()
         },
         mange:function() {
