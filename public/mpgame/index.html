@@ -18,7 +18,7 @@
     <script type="text/javascript" src="js/gamesList.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/miaou.js"></script>
-    <script type="text/javascript" src="d3/d3.js"></script>
+    <script type="text/javascript" src="d3/d32.js"></script>
 
     <!-- game -->
     <script data-main="game/jeu/main.js" src="game/jeu/require.js"></script>
@@ -86,9 +86,12 @@
       <!-- </ul> -->
 
 
-      <div ng-controller="game">
         
-        <p>Joueur numéro : {{id}}</p>
+           <!-- ng-class="[id===true ? 'style-rouge': 'style-vert','style-bleu']" -->
+      <div ng-controller="game"  >
+
+
+        <p> Joueur numéro : {{id}}</p>
 
         <!-- <script src="game/assets/images/interieurVaisseau/test.js"></script> -->
         <link rel="stylesheet" href="css.css" type="text/css" media="screen" />
@@ -104,12 +107,14 @@
           <div id="txt" >{{phrase}}</div>
         </div>
 
+      <div ng-controller="d3" id="d3">
+        <script src="d3/d3.js"></script>
+        <div class="tamere" ng-include="'game/assets/images/reglesEVO.svg'"></div>
+        <div id="log">{{log}}</div>
+        <div id="inventaire"></div>
       </div>
 
 
-      <div ng-controller="d3">
-        <div id="log">{{log}}</div>
-        <div id="inventaire"></div>
       </div>
 
 

@@ -5,7 +5,7 @@
     evo.app.controller('game',function ($scope) {
 
         evo.tools.addOnAndEmit($scope,evo.socket)
-
+        $scope.prout=true;
         /*
           LISTENERS
         */

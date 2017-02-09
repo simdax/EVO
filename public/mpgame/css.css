@@ -1,15 +1,67 @@
+/*   __         _      __ */
+/*  / _|___ _ _| |_   / _|__ _ __ ___ */
+/* |  _/ _ \ ' \  _| |  _/ _` / _/ -_) */
+/* |_| \___/_||_\__| |_| \__,_\__\___| */
+
+
+@font-face{
+    font-family:audiowide;
+    src:url("game/assets/Audiowide-Regular.ttf")
+}
+p{
+    font-family:audiowide;
+}
+
+
+/*                 _ _ _   _               _      _        _ */
+/*  __ ___ _ _  __| (_) |_(_)___ _ _  __ _| |  __| |_ _  _| |___ ___ */
+/* / _/ _ \ ' \/ _` | |  _| / _ \ ' \/ _` | | (_-<  _| || | / -_|_-< */
+/* \__\___/_||_\__,_|_|\__|_\___/_||_\__,_|_| /__/\__|\_, |_\___/__/ */
+/*                                                    |__/ */
+
+.style-rouge{
+    color:red;
+}
+.style-vert{
+    color:green;
+}
+.style-bleu{
+    color:blue;
+    font-size:30px;
+}
+
+
+/*                             _ */
+/*  __ ___ _ __  _ __  ___ _ _| |_ ___ */
+/* / _/ _ \ '  \| '  \/ -_) ' \  _(_-< */
+/* \__\___/_|_|_|_|_|_\___|_||_\__/__/ */
+
+
+[ng-click],[data-ng-click],[x-ng-click] {
+    cursor: pointer;
+}
 
 #wrapper{
     position:relative;
     top: 30px;
     left: 30px;
 }
+
 /* #fond{ */
 /*     position:absolute; */
 /*     z-index:-1; */
 /*     left: 0; */
 /*     top: 0; */
 /* } */
+
+.tamere {
+    position:absolute;
+    top:0px;
+    left:1100px;
+}
+#d3 image {
+    filter:url(#blur)
+}
 
 #phaser{
     position:absolute;
@@ -25,3 +77,4 @@
 #log{
     font-size:20px;
 }
+
